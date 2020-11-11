@@ -1,10 +1,22 @@
 import './App.css';
+import NavBar from "./Components/Navbar/Navbar";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import Home from '../src/Components/Pages/Home/Home';
+import MyGarden from '../src/Components/Pages/MyGarden/MyGarden';
+import MyPlant from '../src/Components/Pages/MyPlant/MyPlant';
+
+
+
 
 function App() {
   return (
-    <div className="App">
-
-    </div>
+    <Router>
+      <NavBar/>
+      <Switch/>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/mygarden" component={MyGarden}/>
+      <Route exact path="/myplant" component={MyPlant}/>
+    </Router>
   );
 }
 
