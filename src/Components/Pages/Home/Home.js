@@ -1,11 +1,11 @@
 import React from 'react'
 import '../Home/Home.css'
-import Search from "../../Search/Search"
+import Search2 from "../../Search/Search2"
 
 export default function Home() {
     return (
         <div>
-            <Search/>
+            <Search2/>
             <h2>Home</h2>
         </div>
     )
