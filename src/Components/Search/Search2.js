@@ -8,6 +8,8 @@ import "../Search/Search.css";
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 
+// This search component is for when the user is signed in to allow them to add plant to the database when searching for a plant that is not in the database. Most likely this should redirect the user to the "addplant"
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -35,95 +37,97 @@ export default function Search2() {
   const classes = useStyles();
 
   return (
-      <div className={classes.root}>
+    <div className={classes.root}>
       <div>
-      <FormControl className={classes.formControl}></FormControl>
-    <Autocomplete
-      value={value}
-      onChange={(event, newValue) => {
-        if (typeof newValue === 'string') {
-          setValue({
-            name: newValue,
-          });
-        } else if (newValue && newValue.inputValue) {
-          // Create a new value from the user input
-          setValue({
-            name: newValue.inputValue,
-          });
-        } else {
-          setValue(newValue);
-        }
-      }}
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
+        <FormControl className={classes.formControl}>
+          <Autocomplete
+            value={value}
+            onChange={(event, newValue) => {
+              if (typeof newValue === 'string') {
+                setValue({
+                  name: newValue,
+                });
+              } else if (newValue && newValue.inputValue) {
+                // Create a new value from the user input
+                setValue({
+                  name: newValue.inputValue,
+                });
+              } else {
+                setValue(newValue);
+              }
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
 
-        // Suggest the creation of a new value
-        if (params.inputValue !== '') {
-          filtered.push({
-            inputValue: params.inputValue,
-            title: `Add "${params.inputValue}"`,
-          });
-        }
+              // Suggest the creation of a new value
+              if (params.inputValue !== '') {
+                filtered.push({
+                  inputValue: params.inputValue,
+                  title: `Add "${params.inputValue}"`,
+                });
+              }
 
-        return filtered;
-      }}
-      selectOnFocus
-      clearOnBlur
-      handleHomeEndKeys
-      id="free-solo-with-text-demo"
-      options={plantArray}
-      getOptionLabel={(option) => {
-        // Value selected with enter, right from the input
-        if (typeof option === 'string') {
-          return option;
-        }
-        // Add "xxx" option created dynamically
-        if (option.inputValue) {
-          return option.inputValue;
-        }
-        // Regular option
-        return option.name;
-      }}
-      renderOption={(option) => option.name}
-      style={{ width: 300 }}
-      freeSolo
-      renderInput={(params) => (
-        <TextField {...params} label="The Best Plant Search" variant="outlined" />
-      )}
-    />
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        endIcon={<LocalFloristIcon/>}
-      >
-        Search
-      </Button></div>
-    </div>
+              return filtered;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            id="free-solo-with-text-demo"
+            options={plantArray}
+            getOptionLabel={(option) => {
+              // Value selected with enter, right from the input
+              if (typeof option === 'string') {
+                return option;
+              }
+              // Add "xxx" option created dynamically
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              // Regular option
+              return option.name;
+            }}
+            renderOption={(option) => option.name}
+            style={{ width: 300 }}
+            freeSolo
+            renderInput={(params) => (
+              <TextField {...params} label="The Best Plant Search" variant="outlined" />
+            )}
+          />
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<LocalFloristIcon />}
+            >
+              Search
+            </Button>
+          </div>
+        </FormControl>
+      </div>
     </div>
 
   );
 }
 
 
-const plantArray=[
-    {
-    name:"Grapes"
+const plantArray = [
+  {
+    name: "Grapes"
   },
   {
-    name:"Strawberry"
+    name: "Strawberry"
   },
   {
-    name:"Western Red Cedar"
-  }, 
-  {
-    name:"Lavendar"
-  }, 
-  {
-    name:"Squish"
+    name: "Western Red Cedar"
   },
   {
-    name:"Hazel"
+    name: "Lavendar"
+  },
+  {
+    name: "Squish"
+  },
+  {
+    name: "Hazel"
   }
 ]
