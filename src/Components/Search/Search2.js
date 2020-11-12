@@ -111,9 +111,15 @@ export default function Search2() {
 }
 
 
+<<<<<<< HEAD
 const plantArray = [
   {
     name: "Grapes"
+=======
+const plantArray=[
+  {
+    name:"Grapes"
+>>>>>>> dev
   },
   {
     name: "Strawberry"

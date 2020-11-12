@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 
@@ -21,11 +20,17 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(2)
     },
 }));
+class Home extends Component {
+  
+    state = {
+    plants
+  };
 
-export default function Home() {
-    const classes = useStyles();
-
-
+  removePLant = id => {
+      const plants = this.state.plants.filter(plant => plant.id !== id);
+      this.setState({plants})
+  };
+  render() {
     return (
         <React.Fragment>
             <CssBaseline />
@@ -44,6 +49,14 @@ export default function Home() {
                             <Box p={1} style={{ width: '35%' }}>
                                 <Paper className={classes.paper}>
                                     <h2>Recent Activity</h2>
+                                    {this.state.plants.map(plant => (
+                                    <RecentCard
+                                        id={plant.id}
+                                        name={plant.name}
+                                        info={plant.info}
+                                        image={plant.image}
+                                    />
+                                    ))}
                                 </Paper>
                             </Box>
                         </Box>
@@ -55,4 +68,8 @@ export default function Home() {
         </React.Fragment>
 
     )
+    }
+
 }
+
+export default Home;
