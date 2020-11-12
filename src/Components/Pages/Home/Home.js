@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../Home/Home.css";
 import Search2 from "../../Search/Search2";
 import RecentCard from "../../Recent/Recent";
-import plants from "./plantArray.json";
+import plants from "../../../plantArray.json";
 
 class Home extends Component {
   
