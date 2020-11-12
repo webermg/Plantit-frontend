@@ -8,6 +8,9 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
+import Button from '@material-ui/core/Button';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: '25ch',
   },
+  button: {
+    margin: theme.spacing(1),
+  }
 }));
 
 export default function Search() {
@@ -51,7 +57,6 @@ export default function Search() {
 
   return (
     <div className={classes.root}>
-    
       <div>
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="grouped-native-select">Select a Plant</InputLabel>
@@ -83,6 +88,16 @@ export default function Search() {
       style={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Combo box" variant="outlined" />}
     />
+    <div>
+    <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        endIcon={<LocalFloristIcon/>}
+      >
+        Search
+      </Button>
+      </div>
       </div>
     </div>
   );
