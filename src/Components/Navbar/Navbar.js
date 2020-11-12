@@ -186,7 +186,7 @@ const location = useLocation();
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Plant Search…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
