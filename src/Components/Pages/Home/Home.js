@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import RecentCard from '../../Recent/Recent';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,11 +22,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 class Home extends Component {
-  
+    
     state = {
     plants
   };
 
+//   const classes = useStyles();
   removePLant = id => {
       const plants = this.state.plants.filter(plant => plant.id !== id);
       this.setState({plants})
@@ -60,8 +62,6 @@ class Home extends Component {
                                 </Paper>
                             </Box>
                         </Box>
-
-
                     </div>
                 </Typography>
             </Container>
