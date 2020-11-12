@@ -108,7 +108,7 @@ export default function Search2() {
 
 
 const plantArray=[
-    {
+  {
     name:"Grapes"
   },
   {
