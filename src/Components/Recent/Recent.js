@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,7 @@ export default function RecentCard(props) {
       <CardActionArea>
         <CardMedia
           className={classes.media}
+          id={props.id}
           image={props.image}
           title={props.name}
         />
@@ -41,7 +43,7 @@ export default function RecentCard(props) {
         {/* <Button size="small" color="primary">
           Share
         </Button> */}
-        <Button size="small" color="primary">
+        <Button component={RouterLink} to={'/plantdet/:id'} size="small" color="primary">
           Learn More
         </Button>
       </CardActions>
