@@ -20,6 +20,7 @@ function App() {
       <Route exact path="/myplant" component={MyPlant}/>
       <Route exact path="/plantdet/:id" component={PlantDet}/>
       <Route exact path="/plantsearch" component={Results}/>
+      
     </Router>
   );
 }

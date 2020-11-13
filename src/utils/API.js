@@ -9,6 +9,9 @@ const API = {
     },
     getSearchedPlants: function (query, userToken) {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken)
+    },
+    getUser: function(query) {
+        return axios.get("http://localhost:3001/user/"+query)
     }
 }
 
