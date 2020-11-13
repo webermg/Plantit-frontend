@@ -7,6 +7,9 @@ const API = {
     getDatabasePlants: function (query) {
         return axios.get("http://localhost:3001/plants/search/" + query)
     },
+    getUser: function(query) {
+        return axios.get("http://localhost:3001/user/"+query)
+    },
     getPlantID: function (id) {
         return axios.get("http://localhost:3001/plant/" + id)
     },
