@@ -64,7 +64,6 @@ export default function Search() {
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
             <Box p={1} flexShrink={1}>
               <Autocomplete
-                name="searchName"
                 id="combo-box-demo"
                 options={plantArray}
                 getOptionLabel={(option) => option.name}

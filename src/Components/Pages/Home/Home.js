@@ -27,32 +27,7 @@ const useStyles = makeStyles((theme) => ({
 class Home extends Component {
     state = {
         plants,
-        sortedPlant: [],
-        searchName:""
     };
-    // Pull plant name searching for
-    handleInputChange = event => {
-        let { name, value } = event.target;
-        this.setState({
-            [name]: value
-        })
-    };
-
-     // When I hit submit, the results are filtered for that name
-     handleFormSubmit = event => {
-        event.preventDefault();
-        let sortPlant = searchName => {
-            let sortedPlant = this.state.plants.filter(plant => {
-              return plant.name=== searchName
-            });
-            this.setState({sortedPlant})
-        }
-        sortPlant(this.state.searchName)
-       
-
-
-    }
-
 
     removePLant = id => {
         const plants = this.state.plants.filter(plant => plant.id !== id);
