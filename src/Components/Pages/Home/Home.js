@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 class Home extends Component {
     state = {
-        plants
+        plants,
     };
 
     removePLant = id => {
@@ -44,8 +44,9 @@ class Home extends Component {
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
                                 <Box p={1} style={{ width: '65%' }}>
                                     <Paper className={classes.paper}>
-                                        <Search />
+                                        <Search/>
                                         <h2>Search Results</h2>
+                                            <Results/>
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">
