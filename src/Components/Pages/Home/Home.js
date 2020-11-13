@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import '../Home/Home.css';
 import Search from "../../Search/Search";
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
+import Hidden from '@material-ui/core/Hidden';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -24,51 +25,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 class Home extends Component {
     state = {
-    plants
-  };
+        plants
+    };
 
-//   const classes = useStyles();
-  removePLant = id => {
-      const plants = this.state.plants.filter(plant => plant.id !== id);
-      this.setState({plants})
-  };
-  render() {
-    const classes = useStyles;  
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <Container >
-                <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
-                    <div className={classes.root} style={{ width: '100%' }} >
-
-
-                        <Box display="flex"  flexDirection="row-reverse" p={1} m={1} >
-                            <Box p={1} style={{ width: '65%' }}>
-                                <Paper className={classes.paper}>
-                                    <Search />
-                                    <h2>Search Results</h2>
-                                </Paper>
+    removePLant = id => {
+        const plants = this.state.plants.filter(plant => plant.id !== id);
+        this.setState({ plants })
+    };
+    render() {
+        const classes = useStyles;
+        return (
+            <React.Fragment>
+                <CssBaseline />
+                <div className={classes.root} style={{ width: '100%' }} >
+                    <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
+                        <Container >
+                            <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
+                                <Box p={1} style={{ width: '65%' }}>
+                                    <Paper className={classes.paper}>
+                                        <Search />
+                                        <h2>Search Results</h2>
+                                    </Paper>
+                                </Box>
+                                <Hidden only="xs">
+                                    <Box p={1} style={{ width: '35%' }}>
+                                        <Paper className={classes.paper}>
+                                            <h2>Recent Activity</h2>
+                                            {this.state.plants.map(plant => (
+                                                <RecentCard
+                                                    id={plant.id}
+                                                    name={plant.name}
+                                                    info={plant.info}
+                                                    image={plant.image}
+                                                />
+                                            ))}
+                                        </Paper>
+                                    </Box>
+                                </Hidden>
                             </Box>
-                            <Box p={1} style={{ width: '35%' }}>
-                                <Paper className={classes.paper}>
-                                    <h2>Recent Activity</h2>
-                                    {this.state.plants.map(plant => (
-                                    <RecentCard
-                                        id={plant.id}
-                                        name={plant.name}
-                                        info={plant.info}
-                                        image={plant.image}
-                                    />
-                                    ))}
-                                </Paper>
-                            </Box>
-                        </Box>
-                    </div>
-                </Typography>
-            </Container>
-        </React.Fragment>
-
-    )
+                        </Container>
+                    </Typography>
+                </div>
+            </React.Fragment>
+        )
     }
 
 }

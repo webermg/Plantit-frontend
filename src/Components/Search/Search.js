@@ -7,6 +7,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import { Hidden } from "@material-ui/core";
+
 
 
 
@@ -59,25 +61,25 @@ export default function Search() {
     <div className={classes.root}>
       <div>
         <FormControl className={classes.formControl}>
-          <Box display="flex" flexDirection="row" p={1} m={1} bgcolor="background.paper">
-            <Box p={1}>
+          <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
+            <Box p={1} flexShrink={1}>
               <Autocomplete
                 id="combo-box-demo"
                 options={plantArray}
                 getOptionLabel={(option) => option.name}
-                style={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Looking for a Plant?" variant="outlined" />}
+                style={{ width: "90%" }}
+                renderInput={(params) => <TextField {...params} label="Plant?" variant="outlined" />}
               />
             </Box>
-            <Box p={1}>
+            <Box p={1}flexShrink={1}>
               <Button
                 variant="contained"
                 color="primary"
-                // anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                 className={classes.button}
                 endIcon={<LocalFloristIcon />}
-              >
+              ><Hidden only="xs">
                 Search
+                </Hidden>
             </Button>
             </Box>
           </Box>
