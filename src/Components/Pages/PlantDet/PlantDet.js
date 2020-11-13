@@ -19,14 +19,17 @@ const useStyles = makeStyles((theme) => ({
 export default function PlantDet() {
     const [plantDetails, setPlantDetails] = useState([])
     const [comments, setComments] = useState([])
+    const [reset, setReset]= useState(true)
+
     useEffect(() => {
         API.getPlantID("5faed93cd337fd9fc042df4c")
         .then (result => {
             console.log(result.data)
             setPlantDetails(result.data.dbPlant)
             setComments(result.data.dbComment)
+            setReset(r => !reset)
         }).catch(err => console.log(err))
-    }, [])
+    }, [reset])
 
 
     return (
@@ -34,6 +37,7 @@ export default function PlantDet() {
 
             <PlantSearchCard
             data={plantDetails}
+
 
             />
 
