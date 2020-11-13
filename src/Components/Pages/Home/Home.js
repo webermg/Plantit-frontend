@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
+import Results from '../../Results/Results'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,8 +26,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 class Home extends Component {
     state = {
-        plants
+        plants,
+        sortedPlant: [],
+        searchName:""
     };
+    // Pull plant name searching for
+    handleInputChange = event => {
+        let { name, value } = event.target;
+        this.setState({
+            [name]: value
+        })
+    };
+
+     // When I hit submit, the results are filtered for that name
+     handleFormSubmit = event => {
+        event.preventDefault();
+        let sortPlant = searchName => {
+            let sortedPlant = this.state.plants.filter(plant => {
+              return plant.name=== searchName
+            });
+            this.setState({sortedPlant})
+        }
+        sortPlant(this.state.searchName)
+       
+
+
+    }
+
 
     removePLant = id => {
         const plants = this.state.plants.filter(plant => plant.id !== id);
@@ -43,8 +69,18 @@ class Home extends Component {
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
                                 <Box p={1} style={{ width: '65%' }}>
                                     <Paper className={classes.paper}>
-                                        <Search />
+                                        <Search/>
                                         <h2>Search Results</h2>
+                                        {this.state.sortedPlant.map(plant => (
+                                            <Results
+                                                id={plant.id}
+                                                name={plant.name}
+                                                info={plant.info}
+                                                image={plant.image}
+                                                key={plant.id}
+
+                                            />
+                                        ))}
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">
