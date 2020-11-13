@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
+import Results from '../../Results/Results';
 
 
 const useStyles = makeStyles((theme) => ({
