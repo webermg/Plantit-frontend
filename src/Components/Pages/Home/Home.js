@@ -67,7 +67,6 @@ class Home extends Component {
                         </Container>
                     </Typography>
                 </div>
-                <Results/>
             </React.Fragment>
         )
     }
