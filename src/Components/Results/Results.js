@@ -10,7 +10,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
 
 
-// import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
 
 const useStyles = makeStyles((theme) => ({
 
