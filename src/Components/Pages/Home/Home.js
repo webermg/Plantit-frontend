@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
-import Results from '../../Results/Results'
+import Results from '../../Results/Results';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,16 +71,7 @@ class Home extends Component {
                                     <Paper className={classes.paper}>
                                         <Search/>
                                         <h2>Search Results</h2>
-                                        {this.state.sortedPlant.map(plant => (
-                                            <Results
-                                                id={plant.id}
-                                                name={plant.name}
-                                                info={plant.info}
-                                                image={plant.image}
-                                                key={plant.id}
-
-                                            />
-                                        ))}
+                                            <Results/>
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">

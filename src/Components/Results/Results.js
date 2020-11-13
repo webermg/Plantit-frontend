@@ -1,51 +1,50 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import API from '../../utils/API';
+import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
 
-const useStyles = makeStyles({
-    root: {
-      maxWidth: 300,
-    },
-    media: {
-      height: 200,
-    },
-  });
+// import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
 
-export default function Results(props) {
-    const classes = useStyles();
+export default function Results() {
+    const [plantsInDatabase, setPlantsInDatabase] = useState([])
+    const [plantsInTrefle, setPlantsInTrefle] = useState([])
+    useEffect(() => {
+        API.getDatabasePlants("rosemary")
+            .then(result => {
+                console.log(result.data)
+                (Array.isArray(result)) ? setPlantsInDatabase(result.data): setPlantsInDatabase("No plants found")
+                
+            }).catch(err => console.log(err));
+
+        API.getToken().then(result => {
+            console.log(result.data);
+
+
+            API.getSearchedPlants("rosemary", result.data.token)
+                .then(result => {
+                    console.log(result.data)
+                    setPlantsInTrefle(result.data)
+                }).catch(err => console.log(err));
+        }, err => console.log(err))
+
+
+    }, [])
+
     return (
-        <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            id={props.id}
-            image={props.image}
-            title={props.name}
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {props.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {props.info}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          {/* <Button size="small" color="primary">
-            Share
-          </Button> */}
-          <Button component={RouterLink} to={'/plantdet/:id'} size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
-      </Card>
+        <div>
+            {/* Section with plants already in our database */}
+            {console.log(plantsInDatabase)}
+            {plantsInDatabase.length===0 ? "no plants found":"plants found"}
+            {plantsInDatabase.map(element => {
+                
+                return <PlantSearchCard data={element} key={element.scientific_name} />
+            })}
+            {plantsInTrefle.map(element => {
+                return <PlantSearchCard data={element} key={element.scientific_name} />
+            })}
+
+            {/* Button for more plants */}
+            {/* Upon button being clicked, button for more plants does an api call  */}
+            {/* next and back buttons to get more results from trefle */}
+        </div>
     )
 }
