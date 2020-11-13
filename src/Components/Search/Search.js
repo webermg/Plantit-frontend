@@ -68,7 +68,8 @@ export default function Search() {
                 options={plantArray}
                 getOptionLabel={(option) => option.name}
                 style={{ width: "90%" }}
-                renderInput={(params) => <TextField {...params} label="Plant?" variant="outlined" />}
+                renderInput={(params) => <TextField {...params} label="Plant?" variant="outlined" 
+                />}
               />
             </Box>
             <Box p={1}flexShrink={1}>
