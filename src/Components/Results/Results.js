@@ -32,7 +32,11 @@ export default function Results() {
         API.getDatabasePlants("rosemary")
             .then(result => {
                 console.log(result.data)
-                (Array.isArray(result)) ? setPlantsInDatabase(result.data): setPlantsInDatabase("No plants found")
+                if (!Object.keys(result).length) {
+                  setPlantsInDatabase("No plants found")
+                } else {
+                  setPlantsInDatabase(result.data)
+                }
                 
             }).catch(err => console.log(err));
 
@@ -40,7 +44,7 @@ export default function Results() {
             console.log(result.data);
 
 
-            API.getSearchedPlants("rosemary", result.data.token)
+            API.getSearchedPlants("rosemary", result.data.token, 1)
                 .then(result => {
                     console.log(result.data)
                     setPlantsInTrefle(result.data)
@@ -60,10 +64,11 @@ export default function Results() {
             {/* Section with plants already in our database */}
             {console.log(plantsInDatabase)}
             {plantsInDatabase.length===0 ? "no plants found":"plants found"}
-            {plantsInDatabase.map(element => {
+            {Array.isArray(plantsInDatabase)? plantsInDatabase.map(element => {
                 
                 return <PlantSearchCard data={element} key={element.scientific_name} />
-            })}
+            }): ""
+          }
             {plantsInTrefle.map(element => {
                 return <PlantSearchCard data={element} key={element.scientific_name} />
             })}
