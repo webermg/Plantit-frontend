@@ -32,7 +32,7 @@ class MyPlant extends Component {
         <Grid container spacing={4}>
           <Typography
             component="div"
-            style={{ backgroundColor: "#cfe8fc", height: "100vh" }}
+            style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
           />
           {this.state.plants.map((plant) => (
             <Grid item xs={4}>
