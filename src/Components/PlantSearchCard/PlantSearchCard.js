@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+//A simple card that displays possible results to choose from either our database or trefle API results.
 export default function PlantSearchCard(props) {
     if("data" in props) {
 
