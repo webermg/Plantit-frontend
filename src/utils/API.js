@@ -15,6 +15,9 @@ const API = {
     },
     getSearchedPlants: function (query, userToken, page) {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken + "/" + page)
+    },
+    getNewPlant: function(slug, usertoken) {
+        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+usertoken)
     }
 }
 

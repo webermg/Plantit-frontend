@@ -8,6 +8,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
+import { Redirect } from 'react-router-dom';
 
 
 // import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
@@ -28,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Results() {
     const [plantsInDatabase, setPlantsInDatabase] = useState([])
     const [plantsInTrefle, setPlantsInTrefle] = useState([])
+    const [userToken, setUserToken] = useState("")
+    
     useEffect(() => {
         API.getDatabasePlants("rosemary")
             .then(result => {
@@ -42,7 +45,7 @@ export default function Results() {
 
         API.getToken().then(result => {
             console.log(result.data);
-
+            setUserToken(result.data.token)
 
             API.getSearchedPlants("rosemary", result.data.token, 1)
                 .then(result => {
@@ -54,6 +57,15 @@ export default function Results() {
 
     }, [])
 
+    const newPlantInDatabase = function(slug, token) {
+      API.getNewPlant(slug, token)
+      .then(result => {
+        const newPageUrl = "/" +result.data._id.toString();
+        console.log(newPageUrl)
+         return <Redirect to="http://localhost:3000/plantdet/5faf6b3dd147435ed4e49565" />
+    }, err => console.log(err))
+    }
+
   const classes = useStyles();
 
 
@@ -64,13 +76,13 @@ export default function Results() {
             {/* Section with plants already in our database */}
             {console.log(plantsInDatabase)}
             {plantsInDatabase.length===0 ? "no plants found":"plants found"}
-            {Array.isArray(plantsInDatabase)? plantsInDatabase.map(element => {
+            {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
                 
-                return <PlantSearchCard data={element} key={element.scientific_name} />
+                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} />
             }): ""
           }
             {plantsInTrefle.map(element => {
-                return <PlantSearchCard data={element} key={element.scientific_name} />
+                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} usertoken = {userToken}/>
             })}
             </Box>
             </Box>

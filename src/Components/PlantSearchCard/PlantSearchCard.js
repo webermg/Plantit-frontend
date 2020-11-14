@@ -1,12 +1,19 @@
 import React from 'react'
 
-export default function PlantSearchCard({data}) {
-    // console.log(data)
-    return (
-        <div>
-            <h3>{data.common_name}</h3>
-            <p>{data.scientific_name}</p>
-            <img src={data.image_url} alt={"Identifying image of " + data.common_name}/>
-        </div>
+export default function PlantSearchCard(props) {
+    if("data" in props) {
+
+        return (
+            <div>
+                <h3>{props.data.common_name}</h3>
+                <p>{props.data.scientific_name}</p>
+                <img src={props.data.image_url} alt={"Identifying image of " + props.data.common_name}/>
+                <br/>
+                <button onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}>Choose this plant!</button>
+            </div>
+        )
+    }
+    else return(
+        <div></div>
     )
 }
