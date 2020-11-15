@@ -2,7 +2,7 @@ import React from 'react'
 import { Layer, Line } from 'react-konva'
 import _ from "lodash";
 
-export default function Grid(props) {
+export default function PlanGrid(props) {
   const WIDTH = 50,HEIGHT=50
   const lines = [];
   
