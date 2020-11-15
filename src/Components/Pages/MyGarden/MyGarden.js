@@ -1,10 +1,13 @@
+import { Container } from '@material-ui/core'
 import React from 'react'
+import Scene from '../../Planner/Scene/Scene'
 import '../MyGarden/MyGarden.css'
 
 export default function MyGarden() {
     return (
-        <div>
+        <Container>
             <h2>my Garden</h2>
-        </div>
+            <Scene/>
+        </Container>
     )
 }

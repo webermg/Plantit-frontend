@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Polygon from './Polygon'
+import Polygon from '../Polygon/Polygon'
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
-import DrawPanel from './DrawPanel';
-import Grid from './Grid';
+import DrawPanel from '../DrawPanel/DrawPanel';
+import PlanGrid from '../PlanGrid/PlanGrid';
+import sceneStyle from './sceneStyle';
+import Grid from '@material-ui/core/Grid';
 
 export default function Scene() {
+  const classes = sceneStyle;
+
   const [polygons, setPolygons] = useState([])
   const [selected, setSelected] = useState(null)
   const [drawing, _setDrawing] = useState("")
@@ -211,9 +215,13 @@ export default function Scene() {
   }
   // console.log(temp.points)
     return (
-      <div>
+      <Grid container spacing={3}>
+        <Grid item xs>
+              <DrawPanel active={drawing} onClick={handleDrawBtnClick}/>
+        </Grid>
+        <Grid item xs>
           <Stage className='garden-planner' ref={stageRef} height={800} width={800} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display:'inline-block',background: '#DDDDDD' }}>
-            <Grid height={800} width={800}/>
+            <PlanGrid height={800} width={800}/>
             <Layer>
               {polygons.map((item,i) => <Polygon {...item} 
               selected={i===selected} 
@@ -224,8 +232,8 @@ export default function Scene() {
               {temp.points && <Line closed fillPatternImage={temp.fillPatternImage} points={temp.points} stroke='black' strokeWidth={2}/>}
             </Layer>
           </Stage>
-          <DrawPanel active={drawing} onClick={handleDrawBtnClick}/>
-      </div>
+        </Grid>
+      </Grid>
     )
     // onMouseDown={handleMouseDown}onMouseMove={handleMouseMove}   style={{ background: '#BBBBBB' }}
   }

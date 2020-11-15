@@ -1,4 +1,5 @@
 import React,{useEffect, useRef} from 'react'
+import {Button, ButtonGroup} from '@material-ui/core'
 
 export default function DrawPanel(props) {
   let _grass,_concrete,_mulch,_wood;
@@ -18,11 +19,11 @@ export default function DrawPanel(props) {
   }, [])
 
   return (
-    <div className='draw-panel'>
-      <button color="green" onClick={() => props.onClick(grass.current)}style={props.active===grass.current ? {background:'green'} : {}}>Grass</button>
-      <button color="blue" onClick={() => props.onClick(concrete.current)}style={props.active===concrete.current ? {background:'blue'} : {}}>Concrete</button>
-      <button color="red" onClick={() => props.onClick(mulch.current)}style={props.active===mulch.current ? {background:'red'} : {}}>Mulch</button>
-      <button color="yellow" onClick={() => props.onClick(wood.current)}style={props.active===wood.current ? {background:'yellow'} : {}}>Wood</button>
-    </div>
+    <ButtonGroup orientation='vertical' color="primary" className='draw-panel'>
+      <Button color="green" onClick={() => props.onClick(grass.current)} style={props.active===grass.current ? {background:'green'} : {}}>Grass</Button>
+      <Button color="blue" onClick={() => props.onClick(concrete.current)} style={props.active===concrete.current ? {background:'blue'} : {}}>Concrete</Button>
+      <Button color="red" onClick={() => props.onClick(mulch.current)} style={props.active===mulch.current ? {background:'red'} : {}}>Mulch</Button>
+      <Button color="yellow" onClick={() => props.onClick(wood.current)} style={props.active===wood.current ? {background:'yellow'} : {}}>Wood</Button>
+    </ButtonGroup>
   )
 }
