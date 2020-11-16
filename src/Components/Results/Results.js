@@ -11,7 +11,6 @@ import { Hidden } from "@material-ui/core";
 import { Redirect } from 'react-router-dom';
 
 
-// import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
 
 const useStyles = makeStyles((theme) => ({
 
