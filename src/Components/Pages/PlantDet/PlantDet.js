@@ -23,8 +23,8 @@ export default function PlantDet() {
     const [reset, setReset] = useState(true)
 
     useEffect(() => {
-
-        API.getPlantID(`5faf6fd7d147435ed4e4956a`)
+// ID is now SLUG in the get route, currently hardcoded
+        API.getPlantID(`3`)
                 .then(result => {
                     console.log(result.data)
                     setPlantDetails(result.data.dbPlant)

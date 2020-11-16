@@ -21,7 +21,7 @@ class MyPlant extends Component {
   };
 
   componentDidMount() {
-    API.getUser("5faed8b59db6d40d9ce3fe2d")
+    API.getUser("5fb2c7f2f56d5938a46a710c")
     .then(result => {
       console.log(result.data)
       this.setState({plants: result.data.myPlants})
