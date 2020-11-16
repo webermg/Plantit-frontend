@@ -32,7 +32,7 @@ export default function Results(props) {
     const [userToken, setUserToken] = useState("")
     
     useEffect(() => {
-        API.getDatabasePlants("rosemary")
+        API.getDatabasePlants(`${props.submittedSearch}`)
             .then(result => {
                 console.log(result.data)
                 if (!Object.keys(result).length) {
@@ -43,19 +43,22 @@ export default function Results(props) {
                 
             }).catch(err => console.log(err));
 
-        API.getToken().then(result => {
-            console.log(result.data);
-            setUserToken(result.data.token)
+            if(`${props.submittedSearch}` !== "") {
+              API.getToken().then(result => {
+                  console.log(result.data);
+                  setUserToken(result.data.token)
+      
+                  API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
+                      .then(result => {
+                          console.log(result.data)
+                          setPlantsInTrefle(result.data)
+                      }).catch(err => console.log(err));
+              }, err => console.log(err))
 
-            API.getSearchedPlants("rosemary", result.data.token, 1)
-                .then(result => {
-                    console.log(result.data)
-                    setPlantsInTrefle(result.data)
-                }).catch(err => console.log(err));
-        }, err => console.log(err))
+            }
 
 
-    }, [])
+    }, [props.submittedSearch])
 
     const newPlantInDatabase = function(slug, token) {
       API.getNewPlant(slug, token)
@@ -71,7 +74,6 @@ export default function Results(props) {
 
     return (
         <div className={classes.root}>
-          <p>{props.submittedSearch}</p>
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
           <Box p={1} flexShrink={1}>
             {/* Section with plants already in our database */}

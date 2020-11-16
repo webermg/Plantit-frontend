@@ -56,7 +56,6 @@ class Home extends Component {
         return (
             <React.Fragment>
                 <CssBaseline />
-                <p>{this.state.searchValue}</p>
                 <div className={classes.root} style={{ width: '100%' }} >
                     <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
                         <Container >
