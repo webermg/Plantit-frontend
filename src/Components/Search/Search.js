@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Search() {
+export default function Search(props) {
   const classes = useStyles();
   const plantArray = [
     {
@@ -59,8 +59,9 @@ export default function Search() {
 
   return (
     <div className={classes.root}>
-      <div>
-        <FormControl className={classes.formControl}>
+      <form onSubmit={ props.handleFormSubmit}>
+
+        <FormControl className={classes.formControl} >
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
             <Box p={1} flexShrink={1}>
               <Autocomplete
@@ -68,24 +69,28 @@ export default function Search() {
                 options={plantArray}
                 getOptionLabel={(option) => option.name}
                 style={{ width: "90%" }}
-                renderInput={(params) => <TextField {...params} label="Plant?" variant="outlined" 
+                renderInput={(params) => <TextField {...params} label="Plant?" variant="outlined"
+                  onChange={props.handleInputChange}
+                name="searchValue"
+                value={props.state.searchValue}
                 />}
               />
             </Box>
-            <Box p={1}flexShrink={1}>
+            <Box p={1} flexShrink={1}>
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
                 endIcon={<LocalFloristIcon />}
+                onClick={props.handleFormSubmit}
               ><Hidden only="xs">
-                Search
+                  Search
                 </Hidden>
-            </Button>
+              </Button>
             </Box>
           </Box>
         </FormControl>
-      </div>
+      </form>
     </div>
   );
 }

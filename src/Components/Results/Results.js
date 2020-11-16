@@ -25,13 +25,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Results() {
+export default function Results(props) {
     const [plantsInDatabase, setPlantsInDatabase] = useState([])
     const [plantsInTrefle, setPlantsInTrefle] = useState([])
     const [userToken, setUserToken] = useState("")
     
     useEffect(() => {
-        API.getDatabasePlants("rosemary")
+        API.getDatabasePlants(`${props.submittedSearch}`)
             .then(result => {
                 console.log(result.data)
                 if (!Object.keys(result).length) {
@@ -42,19 +42,22 @@ export default function Results() {
                 
             }).catch(err => console.log(err));
 
-        API.getToken().then(result => {
-            console.log(result.data);
-            setUserToken(result.data.token)
+            if(`${props.submittedSearch}` !== "") {
+              API.getToken().then(result => {
+                  console.log(result.data);
+                  setUserToken(result.data.token)
+      
+                  API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
+                      .then(result => {
+                          console.log(result.data)
+                          setPlantsInTrefle(result.data)
+                      }).catch(err => console.log(err));
+              }, err => console.log(err))
 
-            API.getSearchedPlants("rosemary", result.data.token, 1)
-                .then(result => {
-                    console.log(result.data)
-                    setPlantsInTrefle(result.data)
-                }).catch(err => console.log(err));
-        }, err => console.log(err))
+            }
 
 
-    }, [])
+    }, [props.submittedSearch])
 
     const newPlantInDatabase = function(slug, token) {
       API.getNewPlant(slug, token)
