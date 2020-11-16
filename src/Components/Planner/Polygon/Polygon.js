@@ -2,44 +2,24 @@ import React, { useState, useEffect } from "react";
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
+import useImage from "use-image";
 
 export default function Polygon(props) {
   
-  
   const polyRef = React.useRef();
   const circleRef = React.useRef();
-  // const [circleOrder, setcircleOrder] = useState([])
+  const[image]=useImage(props.fillPatternImage)
+  
   const circleOrder = []
   for(let i = 0; i < props.points.length; i+=2) {
     circleOrder.push(i/2);
   }
-  useEffect(() => {
-    // let cOrder = []
-    // for(let i = 0; i < props.points.length; i+=2) {
-    //   cOrder.push(i/2);
-    // }
-    // setcircleOrder(cOrder)
-  }, []);
-
-  // const handleCircleClick = (circleX,circleY) => {
-  //   let cOrder = [...circleOrder]
-  //   const circleNum = cOrder.filter(c => props.points[c*2] === circleX && props.points[c*2+1] === circleY)[0]
-  //   console.log(circleNum);
-  //   const cnidx = cOrder.indexOf(circleNum)
-  //   cOrder.splice(cnidx,1)
-  //   cOrder.unshift(circleNum)
-  //   // cOrder[cnidx] = cOrder[0];
-  //   // cOrder[0] = circleNum
-  //   console.log(cOrder)
-  //   console.log(props.points)
-  //   setcircleOrder(cOrder)
-  // }
 
   return (
     <React.Fragment>
           <Line
             closed
-            fillPatternImage={props.fillPatternImage}
+            fillPatternImage={image}
             ref={polyRef}
             stroke="black"
             strokeWidth={0}
