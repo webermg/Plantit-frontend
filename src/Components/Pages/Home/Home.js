@@ -27,7 +27,25 @@ const useStyles = makeStyles((theme) => ({
 class Home extends Component {
     state = {
         plants,
+        searchValue:"",
+        submittedSearch:"",
+        seachedPlants:[]
     };
+
+    handleInputChange = event => {
+        let {name, value } = event.target;
+        this.setState({
+            [name]:value
+        })
+    }
+
+    handleFormSubmit = event => {
+        event.preventDefault();
+        this.setState({
+            submittedSearch: this.state.searchValue
+        })
+
+    }
 
     removePLant = id => {
         const plants = this.state.plants.filter(plant => plant.id !== id);
@@ -38,15 +56,17 @@ class Home extends Component {
         return (
             <React.Fragment>
                 <CssBaseline />
+                <p>{this.state.searchValue}</p>
                 <div className={classes.root} style={{ width: '100%' }} >
                     <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
                         <Container >
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
                                 <Box p={1} style={{ width: '65%' }}>
                                     <Paper className={classes.paper}>
-                                        <Search/>
+                                        <Search handleFormSubmit={this.handleFormSubmit}
+                                        handleInputChange={this.handleInputChange} state={this.state}/>
                                         <h2>Search Results</h2>
-                                            <Results/>
+                                            <Results submittedSearch={this.state.submittedSearch}/>
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">

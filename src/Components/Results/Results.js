@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Results() {
+export default function Results(props) {
     const [plantsInDatabase, setPlantsInDatabase] = useState([])
     const [plantsInTrefle, setPlantsInTrefle] = useState([])
     const [userToken, setUserToken] = useState("")
@@ -71,6 +71,7 @@ export default function Results() {
 
     return (
         <div className={classes.root}>
+          <p>{props.submittedSearch}</p>
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
           <Box p={1} flexShrink={1}>
             {/* Section with plants already in our database */}
