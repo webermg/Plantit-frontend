@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/API';
 import { makeStyles } from '@material-ui/core/styles';
-import PlantSearchCard from '../../PlantSearchCard/PlantSearchCard';
 import Comment from '../../Comment/Comment'
 import { useParams } from 'react-router-dom';
 
@@ -21,10 +20,11 @@ export default function PlantDet() {
     const [plantDetails, setPlantDetails] = useState([])
     const [comments, setComments] = useState([])
     const [reset, setReset] = useState(true)
+    const {slug} = useParams();
 
     useEffect(() => {
 // ID is now SLUG in the get route, currently hardcoded
-        API.getPlantID(`3`)
+        API.getPlantID(slug)
                 .then(result => {
                     console.log(result.data)
                     setPlantDetails(result.data.dbPlant)
@@ -34,15 +34,6 @@ export default function PlantDet() {
         // getPlantProfile(id)
        
     }, [reset])
-
-    // const getPlantProfile = (id) => {        
-    //     API.getPlantID(`${id}`)
-    //         .then(result => {
-    //             console.log(result.data)
-    //             setPlantDetails(result.data.dbPlant)
-    //             setComments(result.data.dbComment)
-    //         }).catch(err => console.log(err))
-    // }
 
     //This resets the page when a new comment is added
     const newComment = function () {
