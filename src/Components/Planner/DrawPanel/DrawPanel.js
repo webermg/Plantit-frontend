@@ -2,28 +2,13 @@ import React,{useEffect, useRef} from 'react'
 import {Button, ButtonGroup} from '@material-ui/core'
 
 export default function DrawPanel(props) {
-  let _grass,_concrete,_mulch,_wood;
-  const grass = useRef(_grass)
-  const concrete = useRef(_concrete)
-  const mulch = useRef(_mulch)
-  const wood = useRef(_wood)
-  useEffect(() => {
-    grass.current = new Image();
-    grass.current.src = '/images/grass.jpg'
-    concrete.current = new Image();
-    concrete.current.src = '/images/concrete.jpg'
-    mulch.current = new Image();
-    mulch.current.src = '/images/mulch.jpg'
-    wood.current = new Image();
-    wood.current.src = '/images/wood.jpg'
-  }, [])
-
+  
   return (
     <ButtonGroup orientation='vertical' color="primary" className='draw-panel'>
-      <Button color="green" onClick={() => props.onClick(grass.current)} style={props.active===grass.current ? {background:'green'} : {}}>Grass</Button>
-      <Button color="blue" onClick={() => props.onClick(concrete.current)} style={props.active===concrete.current ? {background:'blue'} : {}}>Concrete</Button>
-      <Button color="red" onClick={() => props.onClick(mulch.current)} style={props.active===mulch.current ? {background:'red'} : {}}>Mulch</Button>
-      <Button color="yellow" onClick={() => props.onClick(wood.current)} style={props.active===wood.current ? {background:'yellow'} : {}}>Wood</Button>
+      <Button color="green" onClick={() => props.onClick('/images/grass.jpg')} style={props.active==='/images/grass.jpg' ? {background:'green'} : {}}>Grass</Button>
+      <Button color="blue" onClick={() => props.onClick('/images/concrete.jpg')} style={props.active==='/images/concrete.jpg' ? {background:'blue'} : {}}>Concrete</Button>
+      <Button color="red" onClick={() => props.onClick('/images/mulch.jpg')} style={props.active==='/images/mulch.jpg' ? {background:'red'} : {}}>Mulch</Button>
+      <Button color="yellow" onClick={() => props.onClick('/images/wood.jpg')} style={props.active==='/images/wood.jpg' ? {background:'yellow'} : {}}>Wood</Button>
     </ButtonGroup>
   )
 }
