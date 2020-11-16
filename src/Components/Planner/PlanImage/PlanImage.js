@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { Stage, Layer, Image, Transformer } from 'react-konva';
+import useImage from 'use-image';
 
-export default function Rectangle({ shapeProps, isSelected, onSelect, onChange }) {
-  const shapeRef = React.useRef();
+export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }) {
+
+  const [image] = useImage(shapeProps.src);
+  const imgRef = React.useRef();
   const trRef = React.useRef();
 
   React.useEffect(() => {
     if (isSelected) {
+      console.log("hi")
       // we need to attach transformer manually
-      trRef.current.nodes([shapeRef.current]);
+      trRef.current.nodes([imgRef.current]);
       trRef.current.getLayer().batchDraw();
     }
   }, [isSelected]);
 
   return (
     <React.Fragment>
-      <Rect
+      <Image
+        image={image}
         onClick={onSelect}
         onTap={onSelect}
-        ref={shapeRef}
+        ref={imgRef}
         {...shapeProps}
         draggable
         onDragEnd={(e) => {
@@ -34,7 +39,7 @@ export default function Rectangle({ shapeProps, isSelected, onSelect, onChange }
           // and NOT its width or height
           // but in the store we have only width and height
           // to match the data better we will reset scale on transform end
-          const node = shapeRef.current;
+          const node = imgRef.current;
           const scaleX = node.scaleX();
           const scaleY = node.scaleY();
 
@@ -65,4 +70,4 @@ export default function Rectangle({ shapeProps, isSelected, onSelect, onChange }
       )}
     </React.Fragment>
   );
-};
+}
