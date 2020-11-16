@@ -21,7 +21,7 @@ class MyPlant extends Component {
   };
 
   componentDidMount() {
-    API.getUser("5faed8b59db6d40d9ce3fe2d")
+    API.getUser("5fb2c7f2f56d5938a46a710c")
     .then(result => {
       console.log(result.data)
       this.setState({plants: result.data.myPlants})
@@ -41,7 +41,7 @@ class MyPlant extends Component {
         <Grid container spacing={4}>
           <Typography
             component="div"
-            style={{ backgroundColor: "#cfe8fc", height: "100vh" }}
+            style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
           />
           {this.state.plants.map((plant) => (
             <Grid item xs={4}>

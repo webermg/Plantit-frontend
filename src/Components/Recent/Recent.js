@@ -22,7 +22,7 @@ export default function RecentCard(props) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} style={{margin: "5vh"}}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -43,7 +43,7 @@ export default function RecentCard(props) {
         {/* <Button size="small" color="primary">
           Share
         </Button> */}
-        <Button component={RouterLink} to={'/plantdet/:id'} size="small" color="primary">
+        <Button component={RouterLink} to={'/plant/:slug'} size="small" color="primary">
           Learn More
         </Button>
       </CardActions>

@@ -10,8 +10,8 @@ const API = {
     getUser: function(query) {
         return axios.get("http://localhost:3001/user/"+query)
     },
-    getPlantID: function (id) {
-        return axios.get("http://localhost:3001/plant/" + id)
+    getPlantID: function (slug) {
+        return axios.get("http://localhost:3001/plant/" + slug)
     },
     getSearchedPlants: function (query, userToken, page) {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken + "/" + page)

@@ -18,7 +18,7 @@ function App() {
       <Route exact path="/" component={Home}/>
       <Route exact path="/mygarden" component={MyGarden}/>
       <Route exact path="/myplant" component={MyPlant}/>
-      <Route exact path="/plantdet/:id" component={PlantDet}/>
+      <Route exact path="/plant/:slug" component={PlantDet}/>
       <Route exact path="/plantsearch" component={Results}/>
       
     </Router>
