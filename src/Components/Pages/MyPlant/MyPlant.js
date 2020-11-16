@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import "../MyPlant/MyPlant.css";
+import API from "../../../utils/API";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,6 +19,14 @@ class MyPlant extends Component {
   state = {
     plants,
   };
+
+  componentDidMount() {
+    API.getUser("5faed8b59db6d40d9ce3fe2d")
+    .then(result => {
+      console.log(result.data)
+      this.setState({plants: result.data.myPlants})
+    })
+  }
 
   removePLant = (id) => {
     const plants = this.state.plants.filter((plant) => plant.id !== id);
@@ -37,10 +46,11 @@ class MyPlant extends Component {
           {this.state.plants.map((plant) => (
             <Grid item xs={4}>
               <RecentCard
-                id={plant.id}
-                name={plant.name}
-                info={plant.info}
-                image={plant.image}
+                _id={plant._id}
+                common_name={plant.common_name}
+                // wateringMin={plant.watering[0]}
+                // wateringMax={plant.watering[1]}
+                image_url={plant.image_url}
               />
             </Grid>
           ))}

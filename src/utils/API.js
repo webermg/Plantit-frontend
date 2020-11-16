@@ -7,11 +7,17 @@ const API = {
     getDatabasePlants: function (query) {
         return axios.get("http://localhost:3001/plants/search/" + query)
     },
+    getUser: function(query) {
+        return axios.get("http://localhost:3001/user/"+query)
+    },
     getPlantID: function (id) {
         return axios.get("http://localhost:3001/plant/" + id)
     },
     getSearchedPlants: function (query, userToken, page) {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken + "/" + page)
+    },
+    getNewPlant: function(slug, usertoken) {
+        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+usertoken)
     }
 }
 

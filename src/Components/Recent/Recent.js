@@ -26,13 +26,13 @@ export default function RecentCard(props) {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          id={props.id}
-          image={props.image}
-          title={props.name}
+          id={props._id}
+          image={props.image_url}
+          title={props.common_name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.name}
+            {props.common_name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {props.info}
