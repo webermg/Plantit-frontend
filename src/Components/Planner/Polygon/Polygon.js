@@ -4,6 +4,8 @@ import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
 
 export default function Polygon(props) {
+  
+  
   const polyRef = React.useRef();
   const circleRef = React.useRef();
   // const [circleOrder, setcircleOrder] = useState([])
@@ -41,10 +43,11 @@ export default function Polygon(props) {
             ref={polyRef}
             stroke="black"
             strokeWidth={0}
+            id={props.id}
             points={props.points}
-            onClick={props.onClick}
+            onClick={props.onSelect}
           />
-          {props.selected && circleOrder.map((circle, i) => (
+          {props.isSelected && circleOrder.map((circle, i) => (
             <Circle
               ref={circleRef}
               x={props.points[circle*2]}
@@ -57,7 +60,7 @@ export default function Polygon(props) {
               rotateEnabled={false}
               draggable
               onDragMove={e => {
-                props.onDragMove(e, circle);
+                props.onDragMove(e, props.num, circle);
               }}
               onClick={props.onClick}
             />
