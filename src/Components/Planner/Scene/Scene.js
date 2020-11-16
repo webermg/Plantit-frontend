@@ -57,8 +57,8 @@ export default function Scene(props) {
   const RADIUS = 8;
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-    setTimeout(loadFromLocalStorage,5000);
-    
+    // setTimeout(loadFromLocalStorage,5000);
+    loadFromLocalStorage()
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     }
@@ -151,7 +151,7 @@ export default function Scene(props) {
         coords.pop()
         console.log("drawing off")
         setTemp({ ...temp, points: coords });
-        setDrawing("")
+        setDrawing(false)
       }
       else {
         coords.push(x)
@@ -172,7 +172,7 @@ export default function Scene(props) {
       }
       if (e.keyCode === 27 || e.keyCode === 13) {
         console.log("drawing off")
-        setDrawing("")
+        setDrawing(false)
       }
     }
     else {
@@ -193,11 +193,11 @@ export default function Scene(props) {
     selectShape(null)
   }
 
-  const handleDrawBtnClick = (image) => {
+  const handleDrawBtnClick = (imageURL) => {
     selectShape(null);
     if (drawing) {
       console.log("drawing off")
-      setDrawing("")
+      setDrawing(false)
       // const polys = getPolygons()
       // polys.push(temp);
       // setPolygons(polys);
@@ -205,8 +205,8 @@ export default function Scene(props) {
     }
     else {
       console.log("drawing on")
-      setDrawing(image);
-      setTemp({ points: [], fillPatternImage: image })
+      setDrawing(true);
+      setTemp({ points: [], fillPatternImage: imageURL })
     }
 
   }
@@ -327,6 +327,9 @@ export default function Scene(props) {
     console.log(e)
   }
 
+  const handleShapeSelect = () => {
+    
+  }
   
   return (
     <Grid container spacing={3}>
@@ -354,7 +357,7 @@ export default function Scene(props) {
               // onClick={e => handleClick(e, i)}
               num={i}
               radius={RADIUS} />)}
-            {temp.points && <Line closed fillPatternImage={temp.fillPatternImage} points={temp.points} stroke='black' strokeWidth={2} />}
+            {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
             {temp.points && temp.points.length>2 && temp.points[0]===temp.points[temp.points.length-2] && temp.points[1]===temp.points[temp.points.length-1] && <Circle
               x={temp.points[0]}
               y={temp.points[1]}
