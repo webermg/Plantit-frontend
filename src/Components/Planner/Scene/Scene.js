@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Polygon from '../Polygon/Polygon'
-import Rectangle from '../Rectangle/Rectangle'
+import PlanImage from '../PlanImage/PlanImage'
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
@@ -9,13 +9,15 @@ import PlanGrid from '../PlanGrid/PlanGrid';
 import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import pics from './util'
+import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
 
 export default function Scene() {
   const classes = sceneStyle;
 
   const [polygons, setPolygons] = useState([])
   
-  const [rectangles, setRectangles] = useState([])
+  const [images, setImages] = useState([])
   const [selectedId, selectShape] = React.useState(null);
   
   const [selected, setSelected] = useState(null)
@@ -34,26 +36,8 @@ export default function Scene() {
   const RADIUS = 8;
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-
-    const initialRectangles = [
-      {
-        x: 10,
-        y: 10,
-        width: 100,
-        height: 100,
-        fill: 'red',
-        id: 'rect1',
-      },
-      {
-        x: 150,
-        y: 150,
-        width: 100,
-        height: 100,
-        fill: 'green',
-        id: 'rect2',
-      },
-    ];
-    setRectangles(initialRectangles)
+    
+    
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     }
@@ -98,8 +82,9 @@ export default function Scene() {
     console.log(e.target)
     if (!drawing) {
       // console.log(e)
-      if (e.target instanceof Konva.Line) return
+      if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
       setSelected(null)
+      selectShape(null)
     }
     else {
 
@@ -188,12 +173,14 @@ export default function Scene() {
     const stageH = 800
     //TODO: make this more efficient
     let newX, newY
-    if (e.evt.clientX < stageX) newX = 0
-    else if (e.evt.clientX > stageX + stageW) newX = stageW
-    else newX = e.evt.layerX;
-    if (e.evt.clientY < stageY) newY = 0
-    else if (e.evt.clientY > stageY + stageH) newY = stageH
-    else newY = e.evt.layerY;
+    // if (e.evt.clientX < stageX) newX = 0
+    // else if (e.evt.clientX > stageX + stageW) newX = stageW
+    // else 
+    newX = e.evt.layerX;
+    // if (e.evt.clientY < stageY) newY = 0
+    // else if (e.evt.clientY > stageY + stageH) newY = stageH
+    // else 
+    newY = e.evt.layerY;
     newPoints[2 * circle] = newX;
     newPoints[2 * circle + 1] = newY;
     console.log(e.evt.clientX + " " + e.evt.clientY)
@@ -241,6 +228,29 @@ export default function Scene() {
     //   }
     // }
   }
+
+  const handleObjectBtnClick = type => {
+    const src = pics[type][Math.floor(Math.random()*pics[type].length)]
+    const newObj = {
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
+      src: src,
+      id: Date.now()+Math.random(),
+    }
+    const imgs = images.slice();
+    imgs.push(newObj)
+    setImages(imgs)
+  }
+
+  const testFunc = (e) => {
+    
+    // e.stopPropagation();
+    // e.preventDefault();
+    console.log(e)
+  }
+
   // console.log(temp.points)
   return (
     <Grid container spacing={3}>
@@ -248,10 +258,12 @@ export default function Scene() {
         <Paper className={classes.paper}>
 
           <DrawPanel active={drawing} onClick={handleDrawBtnClick} />
+          <ForeGroundPanel onClick={handleObjectBtnClick}/>
+          {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
       <Grid item xs>
-        <Stage className='garden-planner' ref={stageRef} height={800} width={800} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+        <Stage className='garden-planner' ref={stageRef} height={800} width={800} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
           <PlanGrid height={800} width={800} />
           <Layer>
             {polygons.map((item, i) => <Polygon {...item}
@@ -263,19 +275,19 @@ export default function Scene() {
             {temp.points && <Line closed fillPatternImage={temp.fillPatternImage} points={temp.points} stroke='black' strokeWidth={2} />}
           </Layer>
           <Layer>
-            {rectangles.map((rect, i) => {
+            {images.map((img, i) => {
               return (
-                <Rectangle
+                <PlanImage
                   key={i}
-                  shapeProps={rect}
-                  isSelected={rect.id === selectedId}
+                  shapeProps={img}
+                  isSelected={img.id === selectedId}
                   onSelect={() => {
-                    selectShape(rect.id);
+                    selectShape(img.id);
                   }}
                   onChange={(newAttrs) => {
-                    const rects = rectangles.slice();
-                    rects[i] = newAttrs;
-                    setRectangles(rects);
+                    const imgs = images.slice();
+                    imgs[i] = newAttrs;
+                    setImages(imgs);
                   }}
                 />
               );
