@@ -75,7 +75,12 @@ export default function PlantDet() {
               <h3>Scientific Name: {plantDetails.scientific_name}</h3>
             </Typography>
             <Typography gutterBottom variant="h5" component="h2">
-              <h4>Native Areas: {plantDetails.native} </h4>
+              <h4>Native Areas: </h4>
+              const nativeLen =
+                {(plantDetails.native).map((element, i) => {
+                  if {element }
+                return <span data={element}>{element},</span>
+              })} 
             </Typography>
             <Typography>
               <img src={"https://placekitten.com/g/200/300"} />
@@ -86,7 +91,7 @@ export default function PlantDet() {
       <div>
         <div className={classes.root} style={{ margin: "5vh" }}>
           <Typography gutterBottom variant="h5" component="h2">
-            <h4>Comments: {plantDetails.native}</h4>
+            <h4>Comments: </h4>
             <p>
               DEFAULT: NO COMMENTS HAVE BEEN MADE
               Lots of words go here isn't that great. Lets do even more words
@@ -95,6 +100,7 @@ export default function PlantDet() {
             </p>
           {comments.map((comment) => {
             return (
+
               <Comment
                 variant="p"
                 comment={comment.commentText}
