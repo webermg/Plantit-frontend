@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import NavBar from "./Components/Navbar/Navbar";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import Home from '../src/Components/Pages/Home/Home';
+import MyGarden from '../src/Components/Pages/MyGarden/MyGarden';
+import MyPlant from '../src/Components/Pages/MyPlant/MyPlant';
+import PlantDet from '../src/Components/Pages/PlantDet/PlantDet';
+import Results from './Components/Results/Results';
+
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <NavBar/>
+      <Switch/>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/mygarden" component={MyGarden}/>
+      <Route exact path="/myplant" component={MyPlant}/>
+      <Route exact path="/plant/:slug" component={PlantDet}/>
+      <Route exact path="/plantsearch" component={Results}/>
+      
+    </Router>
   );
 }
 
