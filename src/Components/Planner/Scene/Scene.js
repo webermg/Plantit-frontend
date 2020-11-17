@@ -11,33 +11,54 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import pics from './util'
 import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
+import OptionsPanel from '../OptionsPanel/OptionsPanel.js'
+import useDidMountEffect from '../Hooks/useDidMountEffect';
 
-export default function Scene() {
+export default function Scene(props) {
   const classes = sceneStyle;
 
-  const [polygons, setPolygons] = useState([])
+  const [polygons, _setPolygons] = useState([])
   
-  const [images, setImages] = useState([])
-  const [selectedId, selectShape] = React.useState(null);
-  
-  const [selected, setSelected] = useState(null)
+  const [images, _setImages] = useState([])
+  const [selectedId, _selectShape] = React.useState(null);
+
   const [drawing, _setDrawing] = useState("")
+  const [temp, setTemp] = useState({
+    points: []
+  })
+
+  const[options, setOptions] = useState({displayGrid: true})
+  
+  //refs
   const drawRef = React.useRef(drawing);
   const setDrawing = data => {
     drawRef.current = data;
     _setDrawing(data);
   };
+  const selectRef = React.useRef(selectedId);
+  const selectShape = data => {
+    selectRef.current = data;
+    _selectShape(data);
+  };
+  const polysRef = React.useRef(polygons);
+  const setPolygons = data => {
+    polysRef.current = data;
+    _setPolygons(data);
+  };
+  const imagesRef = React.useRef(images);
+  const setImages = data => {
+    imagesRef.current = data;
+    _setImages(data);
+  };
+
+
   const stageRef = React.useRef();
-  const [temp, setTemp] = useState({
-    points: [],
-    fill: 'brown'
-  })
 
   const RADIUS = 8;
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-    
-    
+    // setTimeout(loadFromLocalStorage,5000);
+    loadFromLocalStorage()
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     }
@@ -53,11 +74,15 @@ export default function Scene() {
       if (temp.points && temp.points.length > 4) {
         console.log("added")
         console.log(temp.points)
+        const toAdd = {...temp}
+        toAdd.id=Date.now()+Math.random();
+        console.log(toAdd)
         const polys = getPolygons()
-        polys.push(temp);
+        polys.push(toAdd);
         setPolygons(polys);
-        setTemp({})
+        // setTemp({})
       }
+      setTemp({})
     }
     //test temp for completeness
     //if complete then add
@@ -65,17 +90,42 @@ export default function Scene() {
     //
   }, [drawing])
 
+  useDidMountEffect(() => {
+    saveToLocalStorage()
+  },[polygons,images,options])
+
   const getPolygons = () => {
     let res = [];
-    for (let i = 0; i < polygons.length; i++) {
-      res.push({ ...polygons[i] });
+    for (let i = 0; i < polysRef.current.length; i++) {
+      res.push({ ...polysRef.current[i] });
     }
     return res;
   }
 
-  const handleClick = (e, i) => {
-    if (drawing) return;
-    setSelected(i)
+  const saveToLocalStorage = () => {
+    const data = {
+      polygons:polygons,
+      images:images,
+      options:options
+    }
+    window.localStorage.setItem("gardenData",JSON.stringify(data));
+  }
+
+  const loadFromLocalStorage = () => {
+    let data = window.localStorage.getItem("gardenData")
+    if(data !== null) {
+      console.log("loading...")
+      data = JSON.parse(data);
+      console.log(data)
+      setPolygons(data.polygons);
+      setImages(data.images);
+      setOptions(data.options);
+  }
+}
+
+  const handleOptionsChange = (e) => {
+    console.log("hi")
+    setOptions({ ...options, [e.target.name]: e.target.checked });
   }
 
   const handleStageClick = (e) => {
@@ -83,7 +133,7 @@ export default function Scene() {
     if (!drawing) {
       // console.log(e)
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
-      setSelected(null)
+      // setSelected(null)
       selectShape(null)
     }
     else {
@@ -101,7 +151,7 @@ export default function Scene() {
         coords.pop()
         console.log("drawing off")
         setTemp({ ...temp, points: coords });
-        setDrawing("")
+        setDrawing(false)
       }
       else {
         coords.push(x)
@@ -112,8 +162,9 @@ export default function Scene() {
   }
 
   const handleKeyPress = (e) => {
+    console.log(e)
     if (drawRef.current) {
-      console.log(e)
+      
       e.preventDefault();
 
       if (e.keyCode === 27) {
@@ -121,16 +172,32 @@ export default function Scene() {
       }
       if (e.keyCode === 27 || e.keyCode === 13) {
         console.log("drawing off")
-        setDrawing("")
+        setDrawing(false)
+      }
+    }
+    else {
+      if(e.keyCode===46 && selectRef.current) {
+        console.log(selectRef.current)
+        deleteShape(selectRef.current)
       }
     }
   }
 
-  const handleDrawBtnClick = (image) => {
-    setSelected(null);
+  const deleteShape = id => {
+    let polys = getPolygons()
+    console.log(polys)
+    polys = polys.filter(item=>item.id!==id)
+    console.log(polys)
+    setPolygons(polys)
+    setImages(imagesRef.current.filter(item=>item.id!==id))
+    selectShape(null)
+  }
+
+  const handleDrawBtnClick = (imageURL) => {
+    selectShape(null);
     if (drawing) {
       console.log("drawing off")
-      setDrawing("")
+      setDrawing(false)
       // const polys = getPolygons()
       // polys.push(temp);
       // setPolygons(polys);
@@ -138,8 +205,8 @@ export default function Scene() {
     }
     else {
       console.log("drawing on")
-      setDrawing(image);
-      setTemp({ points: [], fillPatternImage: image })
+      setDrawing(true);
+      setTemp({ points: [], fillPatternImage: imageURL })
     }
 
   }
@@ -158,9 +225,9 @@ export default function Scene() {
   //   setPolygons(polys);
   // }
 
-  const handleCircleDrag = (e, circle) => {
+  const handleCircleDrag = (e, index, circle) => {
     // console.log(e)
-    const newPoints = [...polygons[selected].points];
+    const newPoints = [...polygons[index].points];
     // const xidx = newPoints.indexOf(circleX);
     // const yidx = newPoints.indexOf(circleY);
     // console.log(circle)
@@ -183,8 +250,8 @@ export default function Scene() {
     newY = e.evt.layerY;
     newPoints[2 * circle] = newX;
     newPoints[2 * circle + 1] = newY;
-    console.log(e.evt.clientX + " " + e.evt.clientY)
-    console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
+    // console.log(e.evt.clientX + " " + e.evt.clientY)
+    // console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
     // console.log(e.currentTarget.content.offsetX + " " + e.currentTarget.content.offsetY)
 
     // for (let i = 0; i < polygons[selected].points.length; i++) {
@@ -197,7 +264,7 @@ export default function Scene() {
     // }
     // console.log(newPoints)
     const temp = getPolygons()
-    temp[selected].points = newPoints;
+    temp[index].points = newPoints;
     setPolygons(temp);
   }
 
@@ -212,8 +279,17 @@ export default function Scene() {
     }
     // console.log(tempCopy.points)
     const coords = [e.evt.layerX, e.evt.layerY]
-    tempCopy.push(coords[0])
-    tempCopy.push(coords[1])
+    const xFirst = temp.points[0]
+    const yFirst = temp.points[1]
+    const distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
+    if(distToFirst < 150) {
+      tempCopy.push(xFirst)
+      tempCopy.push(yFirst)
+    }
+    else {
+      tempCopy.push(coords[0])
+      tempCopy.push(coords[1])
+    }
     setTemp({ ...temp, points: tempCopy });
 
     // const first = [temp.points[0],temp.points[1]]
@@ -251,7 +327,10 @@ export default function Scene() {
     console.log(e)
   }
 
-  // console.log(temp.points)
+  const handleShapeSelect = () => {
+    
+  }
+  
   return (
     <Grid container spacing={3}>
       <Grid item xs>
@@ -259,20 +338,35 @@ export default function Scene() {
 
           <DrawPanel active={drawing} onClick={handleDrawBtnClick} />
           <ForeGroundPanel onClick={handleObjectBtnClick}/>
+          <OptionsPanel {...options} onChange={handleOptionsChange}/>
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
       <Grid item xs>
         <Stage className='garden-planner' ref={stageRef} height={800} width={800} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
-          <PlanGrid height={800} width={800} />
+          {options.displayGrid && <PlanGrid height={800} width={800} />}
           <Layer>
             {polygons.map((item, i) => <Polygon {...item}
-              selected={i === selected}
+              key={i}
+              isSelected={item.id===selectedId}
+              // selected={i === selected}
               onDragMove={handleCircleDrag}
-              onClick={e => handleClick(e, i)}
+              onSelect={()=>{
+                selectShape(item.id)
+              }}
+              // onClick={e => handleClick(e, i)}
               num={i}
               radius={RADIUS} />)}
-            {temp.points && <Line closed fillPatternImage={temp.fillPatternImage} points={temp.points} stroke='black' strokeWidth={2} />}
+            {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
+            {temp.points && temp.points.length>2 && temp.points[0]===temp.points[temp.points.length-2] && temp.points[1]===temp.points[temp.points.length-1] && <Circle
+              x={temp.points[0]}
+              y={temp.points[1]}
+              radius={8}
+              fill="green"
+              stroke="black"
+              strokeWidth={2}
+              rotateEnabled={false}
+            />}
           </Layer>
           <Layer>
             {images.map((img, i) => {

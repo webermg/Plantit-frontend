@@ -11,8 +11,12 @@ import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
+<<<<<<< HEAD
 import Login from '../../Login/Login'
 import Signup from '../../Signup/Signup'
+=======
+import API from '../../../utils/API';
+>>>>>>> dev
 
 
 const useStyles = makeStyles((theme) => ({
@@ -29,15 +33,25 @@ const useStyles = makeStyles((theme) => ({
 class Home extends Component {
     state = {
         plants,
-        searchValue:"",
-        submittedSearch:"",
-        seachedPlants:[]
+        searchValue: "",
+        submittedSearch: "",
+        seachedPlants: []
     };
 
+    componentDidMount() {
+        API.getFeaturedPlants()
+            .then(result => {
+                console.log(result.data)
+                const featuredPlants = result.data.map(element => {return element.plantInfo[0]})
+                console.log(featuredPlants)
+                this.setState({plants:featuredPlants})
+            })
+    }
+
     handleInputChange = event => {
-        let {name, value } = event.target;
+        let { name, value } = event.target;
         this.setState({
-            [name]:value
+            [name]: value
         })
     }
 
@@ -56,34 +70,35 @@ class Home extends Component {
     render() {
         const classes = useStyles;
         return (
-            <React.Fragment>
-                <CssBaseline />
+            // <React.Fragment>
+                // <CssBaseline />
                 <div className={classes.root} style={{ width: '100%' }} >
-                    <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
+                    <Typography component="div" style={{ backgroundColor: '#cac5b9' }}>
                         <Container >
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
-                                <Box p={1} style={{ width: '65%' }}>
+                                <Box mx="auto" p={1} style={{ width: 'auto' }}>
                                     <Paper className={classes.paper}>
                                         <Login />
                                         <Signup />
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                         handleInputChange={this.handleInputChange} state={this.state}/>
-                                        <h2>Search Results</h2>
+                                        <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2>
                                             <Results submittedSearch={this.state.submittedSearch}/>
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">
-                                    <Box p={1} style={{ width: '35%' }}>
+                                    <Box mx="auto" p={1} style={{ width: '35%' }}>
                                         <Paper className={classes.paper}>
-                                            <h2>Recent Activity</h2>
+                                            <h2 style={{margin: "0em", padding: "1em"}}>Recent Activity</h2>
                                             {this.state.plants.map(plant => (
                                                 <RecentCard
-                                                    id={plant.id}
-                                                    name={plant.name}
-                                                    info={plant.info}
-                                                    image={plant.image}
+                                                    _id={plant._id}
+                                                    slug={plant.slug}
+                                                    common_name={plant.common_name}
+                                                    image_url={plant.image_url}
                                                 />
                                             ))}
+                                            
                                         </Paper>
                                     </Box>
                                 </Hidden>
@@ -91,7 +106,7 @@ class Home extends Component {
                         </Container>
                     </Typography>
                 </div>
-            </React.Fragment>
+            // </React.Fragment>
         )
     }
 

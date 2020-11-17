@@ -17,7 +17,7 @@ const API = {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken + "/" + page)
     },
     getNewPlant: function(slug, usertoken) {
-        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+ usertoken)
+        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/" + usertoken)
     },
 
     login: function(formData) {
@@ -26,8 +26,18 @@ const API = {
 
     signup: function(formData) {
         return axios.post("http://localhost:3001/user", formData)
-    }
+    },
 
+    getFeaturedPlants: function() {
+        return axios.get("http://localhost:3001/findByComments")
+    },
+
+    favoritePlant: function (plantId, userId) {
+        return axios.post("http://localhost:3001/myplants/create", {
+          userId: userId,
+          plantId: plantId,
+        })
+      }
 }
 
 export default API;
