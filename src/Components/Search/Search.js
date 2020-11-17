@@ -30,41 +30,50 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     float: "right",
     position: "relative",
-    backgroundColor: "green"
+    backgroundColor: "#b1bb78"
   }
 }));
 
 export default function Search(props) {
   const classes = useStyles();
-  const plantArray = [
-    {
-      name: "Grapes"
-    },
-    {
-      name: "Strawberry"
-    },
-    {
-      name: "Western Red Cedar"
-    },
-    {
-      name: "Lavendar"
-    },
-    {
-      name: "Squish"
-    },
-    {
-      name: "Hazel"
-    }
-  ]
+  // const plantArray = [
+  //   {
+  //     name: "Grapes"
+  //   },
+  //   {
+  //     name: "Strawberry"
+  //   },
+  //   {
+  //     name: "Western Red Cedar"
+  //   },
+  //   {
+  //     name: "Lavendar"
+  //   },
+  //   {
+  //     name: "Squish"
+  //   },
+  //   {
+  //     name: "Hazel"
+  //   }
+  // ]
 
   return (
     <div className={classes.root}>
-      <form onSubmit={ props.handleFormSubmit}>
+      <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
 
         <FormControl className={classes.formControl} >
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
             <Box p={1} flexShrink={1}>
-              <Autocomplete
+            <TextField 
+              id="outlined-basic" 
+              label="Plant?" 
+              variant="outlined" 
+              name="searchValue"
+              value={props.state.searchValue}
+              onChange={props.handleInputChange}
+              />
+              
+              {/* <Autocomplete
                 id="combo-box-demo"
                 options={plantArray}
                 getOptionLabel={(option) => option.name}
@@ -73,8 +82,8 @@ export default function Search(props) {
                   onChange={props.handleInputChange}
                 name="searchValue"
                 value={props.state.searchValue}
-                />}
-              />
+                />} */}
+              {/* /> */}
             </Box>
             <Box p={1} flexShrink={1}>
               <Button
