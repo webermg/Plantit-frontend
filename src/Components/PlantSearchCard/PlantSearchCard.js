@@ -59,7 +59,7 @@ export default function PlantSearchCard(props) {
                     size="small" color="primary" 
                     endIcon={<FavoriteBorderIcon/>}
                     onClick={() => {
-                        props.addFavorite(props.data.plantId,"5fb364d647d27c39ccd1b7fb")
+                        props.addFavorite(props.data._id,"5fb36adc4008c2516c2068d5")
                     }}
                     ><Hidden only="xs">
                         Save this plant!
