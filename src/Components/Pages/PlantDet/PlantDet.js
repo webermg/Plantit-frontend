@@ -31,7 +31,7 @@ export default function PlantDet() {
 
   useEffect(() => {
     // ID is now SLUG in the get route, currently hardcoded
-    API.getPlantID(`2`)
+    API.getPlantID(`lavandula-latifolia`)
       .then((result) => {
         console.log(result.data);
         setPlantDetails(result.data.dbPlant);
