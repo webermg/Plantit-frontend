@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-""
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
