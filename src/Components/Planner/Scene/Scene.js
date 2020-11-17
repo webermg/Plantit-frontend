@@ -4,12 +4,13 @@ import PlanImage from '../PlanImage/PlanImage'
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
-import DrawPanel from '../DrawPanel/DrawPanel';
 import PlanGrid from '../PlanGrid/PlanGrid';
 import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import pics from './util'
+import TabMenu from '../TabMenu/TabMenu'
+import DrawPanel from '../DrawPanel/DrawPanel';
 import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
 import OptionsPanel from '../OptionsPanel/OptionsPanel.js'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
@@ -212,17 +213,7 @@ export default function Scene(props) {
   }
 
   // const handleBeginCircleDrag = (circleX, circleY) => {
-  //   //reorder points to put circleX and circleY at end
-  //   const polys = getPolygons()
-  //   const poly = {...polys[selected]};
-  //   console.log(poly.points)
-  //   const vertex = poly.points.filter(p => p===circleX || p===circleY);
-  //   poly.points = poly.points.filter(p=>p!==circleX && p!==circleY);
-  //   poly.points.push(vertex[0])
-  //   poly.points.push(vertex[1])
-  //   polys[selected] = poly;
-  //   console.log(poly.points)
-  //   setPolygons(polys);
+  
   // }
 
   const handleCircleDrag = (e, index, circle) => {
@@ -254,14 +245,7 @@ export default function Scene(props) {
     // console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
     // console.log(e.currentTarget.content.offsetX + " " + e.currentTarget.content.offsetY)
 
-    // for (let i = 0; i < polygons[selected].points.length; i++) {
-    //   if (polygons[selected].points[i] >= circleX-RADIUS && polygons[selected].points[i] <= circleX+RADIUS && polygons[selected].points[i + 1] >= circleY-RADIUS && polygons[selected].points[i + 1] <= circleY+RADIUS) {
-
-    //     newPoints[i] = e.target.x();
-    //     newPoints[i + 1] = e.target.y();
-    //     break;
-    //   }
-    // }
+    
     // console.log(newPoints)
     const temp = getPolygons()
     temp[index].points = newPoints;
@@ -291,22 +275,10 @@ export default function Scene(props) {
       tempCopy.push(coords[1])
     }
     setTemp({ ...temp, points: tempCopy });
-
-    // const first = [temp.points[0],temp.points[1]]
-    // const dist = (coords[0]-first[0])**2 + (coords[1]-first[1])**2
-    // if(dist < 100) console.log("true")
-    // for(let i = 0; i < polygons.length; i++) {
-    //   for(let j = 0; j < polygons[i].points.length; j+=2) {
-    //     const x = polygons[i].points[j];
-    //     const y = polygons[i].points[j+1];
-    //     const dist = (coords[0]-x)**2 + (coords[1]-y)**2
-    //     if(dist < 100) console.log('true');
-    //   }
-    // }
   }
 
-  const handleObjectBtnClick = type => {
-    const src = pics[type][Math.floor(Math.random()*pics[type].length)]
+  const handleObjectBtnClick = src => {
+    // const src = pics[type][Math.floor(Math.random()*pics[type].length)]
     const newObj = {
       x: 100,
       y: 100,
@@ -335,10 +307,7 @@ export default function Scene(props) {
     <Grid container spacing={3}>
       <Grid item xs>
         <Paper className={classes.paper}>
-
-          <DrawPanel active={drawing} onClick={handleDrawBtnClick} />
-          <ForeGroundPanel onClick={handleObjectBtnClick}/>
-          <OptionsPanel {...options} onChange={handleOptionsChange}/>
+          <TabMenu onDrawClick={handleDrawBtnClick} onForegroundClick={handleObjectBtnClick} myPlants={props.userData.myPlants} options={options} onOptionChange={handleOptionsChange}/>
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
