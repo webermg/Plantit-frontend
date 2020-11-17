@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Hidden } from "@material-ui/core";
+// import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 
@@ -62,7 +63,7 @@ export default function PlantSearchCard(props) {
                         props.addFavorite(props.data._id,"5fb4071f8bf9f556f0192391")
                     }}
                     ><Hidden only="xs">
-                        Save this plant!
+                        Save
                         </Hidden>
                     </Button>
                     <Button   

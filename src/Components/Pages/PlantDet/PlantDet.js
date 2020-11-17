@@ -9,16 +9,37 @@ import Typography from "@material-ui/core/Typography";
 import { useParams } from 'react-router-dom';
 import { Box, Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import { Hidden } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexWrap: "wrap",
+    
   },
+  root2: {
+      display: "flex",
+      flexWrap: "wrap",
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  
+  root3: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '30ch',
+    },
+  },
+  
   button: {
     margin: theme.spacing(1),
-    backgroundColor: "green",
+    backgroundColor: "#b1bb78",
   },
 }));
 
@@ -27,6 +48,12 @@ export default function PlantDet() {
     const [comments, setComments] = useState([])
     const [reset, setReset] = useState(true)
     const { slug } = useParams();
+    const classes = useStyles();
+    const [value, setValue] = React.useState();
+
+    const handleChange = (event) => {
+      setValue(event.target.value);
+    };
 
     useEffect(() => {
         // ID is now SLUG in the get route, currently hardcoded
@@ -47,7 +74,7 @@ export default function PlantDet() {
         setReset(!reset)
     }
     
-  const classes = useStyles();
+  
   return (
     <Container className={classes.root}>
       <Grid item xs={6}>
@@ -79,6 +106,37 @@ export default function PlantDet() {
       <div>
         <div className={classes.root} style={{ margin: "5vh" }}>
           <Typography gutterBottom variant="h5" component="h2">
+            <div className={classes.root2}>
+            <form  
+              className={classes.root3}
+              // onSubmit={ handleFormSubmit}
+              noValidate autoComplete="off">
+            <FormControl className={classes.formControl}>
+                <TextField
+                   id="outlined-multiline-static"
+                   label="Comment"
+                   multiline
+                   rows={4}
+                   variant="outlined"
+                   value={value}
+                   onChange={handleChange}
+                  />
+                  <Button   
+                    className={classes.button} 
+                    variant="contained" 
+                    size="small" color="primary" 
+                    endIcon={<PostAddIcon/>}
+                    // onClick={props.handleFormSubmit}
+                    >
+                      <Hidden only="xs">
+                        Add Comment
+                      </Hidden>
+                  </Button>
+                  </FormControl>
+                  </form>
+            </div>
+            
+            
             <h4>Comments: </h4>
             <p>
               DEFAULT: NO COMMENTS HAVE BEEN MADE
@@ -92,7 +150,7 @@ export default function PlantDet() {
               <Comment
                 variant="p"
                 comment={comment.commentText}
-                user={comment.userId.email}
+                user={comment.userId.username}
                 key={comment._id}
               />
             );
