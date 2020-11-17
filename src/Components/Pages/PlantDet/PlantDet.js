@@ -92,7 +92,7 @@ export default function PlantDet() {
               <Comment
                 variant="p"
                 comment={comment.commentText}
-                user={comment.userId.email}
+                user={comment.userId.username}
                 key={comment._id}
               />
             );
