@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Hidden } from "@material-ui/core";
+// import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 
@@ -35,8 +36,8 @@ export default function PlantSearchCard(props) {
     if ("data" in props) {
 
         return (
-            <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: '90%' }}>
-            <Card className={classes.root} variant="outlined">
+            <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: '90%', margin: "0.83em" }}>
+            <Card className={classes.root} variant="outlined" style={{margin: "5vh"}}>
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
@@ -59,10 +60,10 @@ export default function PlantSearchCard(props) {
                     size="small" color="primary" 
                     endIcon={<FavoriteBorderIcon/>}
                     onClick={() => {
-                        props.addFavorite(props.data._id,"5fb36adc4008c2516c2068d5")
+                        props.addFavorite(props.data._id,localStorage.getItem("id"))
                     }}
                     ><Hidden only="xs">
-                        Save this plant!
+                        Save
                         </Hidden>
                     </Button>
                     <Button   

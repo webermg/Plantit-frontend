@@ -36,27 +36,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Search(props) {
   const classes = useStyles();
-  // const plantArray = [
-  //   {
-  //     name: "Grapes"
-  //   },
-  //   {
-  //     name: "Strawberry"
-  //   },
-  //   {
-  //     name: "Western Red Cedar"
-  //   },
-  //   {
-  //     name: "Lavendar"
-  //   },
-  //   {
-  //     name: "Squish"
-  //   },
-  //   {
-  //     name: "Hazel"
-  //   }
-  // ]
-
   return (
     <div className={classes.root}>
       <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
