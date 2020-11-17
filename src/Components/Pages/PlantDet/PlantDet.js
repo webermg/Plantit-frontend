@@ -78,8 +78,12 @@ export default function PlantDet() {
 
   //This resets the page when a new comment is added
   const newComment = function () {
+    API.makeComment(plantDetails._id,localStorage.getItem("id"),value)
+    .then(result => {
+      console.log(result)
+      setReset(!reset)
+    })
 
-    setReset(!reset)
   }
 
 
@@ -118,7 +122,7 @@ export default function PlantDet() {
             <div className={classes.root2}>
               <form
                 className={classes.root3}
-                // onSubmit={ handleFormSubmit}
+                onSubmit={ newComment}
                 noValidate autoComplete="off">
                 <FormControl className={classes.formControl}>
                   <TextField
@@ -135,7 +139,7 @@ export default function PlantDet() {
                     variant="contained"
                     size="small" color="primary"
                     endIcon={<PostAddIcon />}
-                  // onClick={props.handleFormSubmit}
+                  onClick={newComment}
                   >
                     <Hidden only="xs">
                       Add Comment
@@ -154,12 +158,13 @@ export default function PlantDet() {
               the words wrap for me this is going on and on. When the time is right the comment map will be here and all will be well.
             </p>
             {comments.map((comment) => {
+              console.log(comment)
               return (
 
                 <Comment
                   variant="p"
                   comment={comment.commentText}
-                  user={comment.username}
+                  user={comment.userId.username}
                   key={comment._id}
                 />
               );
