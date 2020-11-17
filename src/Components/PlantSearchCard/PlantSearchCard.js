@@ -8,6 +8,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Hidden } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles({
@@ -48,8 +51,15 @@ export default function PlantSearchCard(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button   className={classes.button1} variant="contained" size="small" color="primary" onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}>
-                        Choose this plant!
+                    <Button   
+                    className={classes.button1} 
+                    variant="contained" 
+                    size="small" color="primary" 
+                    endIcon={<FavoriteBorderIcon/>}
+                    onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                    ><Hidden only="xs">
+                        Save this plant!
+                        </Hidden>
                     </Button>
                     <Button   className={classes.button} size="small" color="primary">
                         Learn More
