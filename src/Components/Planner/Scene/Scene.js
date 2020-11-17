@@ -4,14 +4,11 @@ import PlanImage from '../PlanImage/PlanImage'
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
 import _ from "lodash";
-import DrawPanel from '../DrawPanel/DrawPanel';
 import PlanGrid from '../PlanGrid/PlanGrid';
 import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import pics from './util'
-import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
-import OptionsPanel from '../OptionsPanel/OptionsPanel.js'
+import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
 
 export default function Scene(props) {
@@ -22,11 +19,12 @@ export default function Scene(props) {
   const [images, _setImages] = useState([])
   const [selectedId, _selectShape] = React.useState(null);
 
-  const [drawing, _setDrawing] = useState("")
+  const [drawing, _setDrawing] = useState(false)
   const [temp, setTemp] = useState({
     points: []
   })
 
+  const[mousePos, setMousePos] = useState();
   const[options, setOptions] = useState({displayGrid: true})
   
   //refs
@@ -54,7 +52,7 @@ export default function Scene(props) {
 
   const stageRef = React.useRef();
 
-  const RADIUS = 8;
+  const RADIUS = 6;
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
     // setTimeout(loadFromLocalStorage,5000);
@@ -212,21 +210,13 @@ export default function Scene(props) {
   }
 
   // const handleBeginCircleDrag = (circleX, circleY) => {
-  //   //reorder points to put circleX and circleY at end
-  //   const polys = getPolygons()
-  //   const poly = {...polys[selected]};
-  //   console.log(poly.points)
-  //   const vertex = poly.points.filter(p => p===circleX || p===circleY);
-  //   poly.points = poly.points.filter(p=>p!==circleX && p!==circleY);
-  //   poly.points.push(vertex[0])
-  //   poly.points.push(vertex[1])
-  //   polys[selected] = poly;
-  //   console.log(poly.points)
-  //   setPolygons(polys);
+  
   // }
 
   const handleCircleDrag = (e, index, circle) => {
-    // console.log(e)
+    console.log(e)
+    const mouseX = e.evt.layerX
+    const mouseY = e.evt.layerY
     const newPoints = [...polygons[index].points];
     // const xidx = newPoints.indexOf(circleX);
     // const yidx = newPoints.indexOf(circleY);
@@ -239,29 +229,22 @@ export default function Scene(props) {
     const stageW = 800
     const stageH = 800
     //TODO: make this more efficient
-    let newX, newY
+    const [newX, newY] = checkGridSnap(mouseX,mouseY,15,50,50);
     // if (e.evt.clientX < stageX) newX = 0
     // else if (e.evt.clientX > stageX + stageW) newX = stageW
     // else 
-    newX = e.evt.layerX;
+    // newX = e.evt.layerX;
     // if (e.evt.clientY < stageY) newY = 0
     // else if (e.evt.clientY > stageY + stageH) newY = stageH
     // else 
-    newY = e.evt.layerY;
+    // newY = e.evt.layerY;
     newPoints[2 * circle] = newX;
     newPoints[2 * circle + 1] = newY;
     // console.log(e.evt.clientX + " " + e.evt.clientY)
     // console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
     // console.log(e.currentTarget.content.offsetX + " " + e.currentTarget.content.offsetY)
 
-    // for (let i = 0; i < polygons[selected].points.length; i++) {
-    //   if (polygons[selected].points[i] >= circleX-RADIUS && polygons[selected].points[i] <= circleX+RADIUS && polygons[selected].points[i + 1] >= circleY-RADIUS && polygons[selected].points[i + 1] <= circleY+RADIUS) {
-
-    //     newPoints[i] = e.target.x();
-    //     newPoints[i + 1] = e.target.y();
-    //     break;
-    //   }
-    // }
+    
     // console.log(newPoints)
     const temp = getPolygons()
     temp[index].points = newPoints;
@@ -269,44 +252,50 @@ export default function Scene(props) {
   }
 
   const handleMouseMove = (e) => {
-    if (!drawing || temp.points.length === 0) return;
+    const coords = [e.evt.layerX, e.evt.layerY]
+    if (!drawing) {
+      
+      return;
+    }
     // console.log("hi")
     const tempCopy = [...temp.points]
     // console.log(temp.points)
-    if (tempCopy.length > 2) {
+    if (tempCopy.length >= 2) {
       tempCopy.pop();
       tempCopy.pop();
     }
     // console.log(tempCopy.points)
-    const coords = [e.evt.layerX, e.evt.layerY]
-    const xFirst = temp.points[0]
-    const yFirst = temp.points[1]
-    const distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
-    if(distToFirst < 150) {
+    
+    let distToFirst = 300;
+    let xFirst,yFirst
+    if(tempCopy.length > 6) {
+      xFirst = temp.points[0]
+      yFirst = temp.points[1]
+      distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
+    }
+
+    if(distToFirst <= 225) {
       tempCopy.push(xFirst)
       tempCopy.push(yFirst)
+      setMousePos({
+        mouseX: xFirst,
+        mouseY: yFirst
+      })
     }
     else {
-      tempCopy.push(coords[0])
-      tempCopy.push(coords[1])
+      const pos = checkGridSnap(coords[0],coords[1], 15, 50,50)
+      setMousePos({
+        mouseX: pos[0],
+        mouseY: pos[1]
+      })
+      tempCopy.push(pos[0])
+      tempCopy.push(pos[1])
     }
     setTemp({ ...temp, points: tempCopy });
-
-    // const first = [temp.points[0],temp.points[1]]
-    // const dist = (coords[0]-first[0])**2 + (coords[1]-first[1])**2
-    // if(dist < 100) console.log("true")
-    // for(let i = 0; i < polygons.length; i++) {
-    //   for(let j = 0; j < polygons[i].points.length; j+=2) {
-    //     const x = polygons[i].points[j];
-    //     const y = polygons[i].points[j+1];
-    //     const dist = (coords[0]-x)**2 + (coords[1]-y)**2
-    //     if(dist < 100) console.log('true');
-    //   }
-    // }
   }
 
-  const handleObjectBtnClick = type => {
-    const src = pics[type][Math.floor(Math.random()*pics[type].length)]
+  const handleObjectBtnClick = src => {
+    // const src = pics[type][Math.floor(Math.random()*pics[type].length)]
     const newObj = {
       x: 100,
       y: 100,
@@ -318,6 +307,44 @@ export default function Scene(props) {
     const imgs = images.slice();
     imgs.push(newObj)
     setImages(imgs)
+  }
+
+  const checkGridSnap = (x,y,snapDist,gridHeight,gridWidth) => {
+    //determine grid box
+    const gridCoordX = Math.floor(x/gridWidth);
+    const gridCoordY = Math.floor(y/gridHeight);
+    //check four corners
+    const gridCornerUL = [gridCoordX * gridWidth, gridCoordY * gridHeight]
+    const gridCornerUR = [(gridCoordX+1) * gridWidth, gridCoordY * gridHeight]
+    const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY+1) * gridHeight]
+    const gridCornerLR = [(gridCoordX+1) * gridWidth, (gridCoordY+1) * gridHeight]
+    // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
+    let min = Number.MAX_SAFE_INTEGER;
+    let closest;
+    const distToUL = (x-gridCornerUL[0])**2 + (y-gridCornerUL[1])**2
+    if(distToUL < min) {
+      min=distToUL
+      closest=gridCornerUL
+    }
+    const distToUR = (x-gridCornerUR[0])**2 + (y-gridCornerUR[1])**2
+    if(distToUR < min) {
+      min=distToUR
+      closest=gridCornerUR
+    }
+    const distToLL = (x-gridCornerLL[0])**2 + (y-gridCornerLL[1])**2
+    if(distToLL < min) {
+      min=distToLL
+      closest=gridCornerLL
+    }
+    const distToLR = (x-gridCornerLR[0])**2 + (y-gridCornerLR[1])**2
+    if(distToLR < min) {
+      min=distToLR
+      closest=gridCornerLR
+    }
+    
+    return min <= snapDist**2 ? closest : [x,y]
+    //return corner point if distance from x,y to corner < snapDist
+    //else return x,y
   }
 
   const testFunc = (e) => {
@@ -335,16 +362,13 @@ export default function Scene(props) {
     <Grid container spacing={3}>
       <Grid item xs>
         <Paper className={classes.paper}>
-
-          <DrawPanel active={drawing} onClick={handleDrawBtnClick} />
-          <ForeGroundPanel onClick={handleObjectBtnClick}/>
-          <OptionsPanel {...options} onChange={handleOptionsChange}/>
+          <TabMenu onDrawClick={handleDrawBtnClick} onForegroundClick={handleObjectBtnClick} myPlants={props.userData.myPlants} options={options} onOptionChange={handleOptionsChange}/>
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
       <Grid item xs>
         <Stage className='garden-planner' ref={stageRef} height={800} width={800} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
-          {options.displayGrid && <PlanGrid height={800} width={800} />}
+          {/* {options.displayGrid && <PlanGrid height={800} width={800} />} */}
           <Layer>
             {polygons.map((item, i) => <Polygon {...item}
               key={i}
@@ -358,15 +382,7 @@ export default function Scene(props) {
               num={i}
               radius={RADIUS} />)}
             {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
-            {temp.points && temp.points.length>2 && temp.points[0]===temp.points[temp.points.length-2] && temp.points[1]===temp.points[temp.points.length-1] && <Circle
-              x={temp.points[0]}
-              y={temp.points[1]}
-              radius={8}
-              fill="green"
-              stroke="black"
-              strokeWidth={2}
-              rotateEnabled={false}
-            />}
+            
           </Layer>
           <Layer>
             {images.map((img, i) => {
@@ -386,6 +402,19 @@ export default function Scene(props) {
                 />
               );
             })}
+          </Layer>
+          {options.displayGrid && <PlanGrid height={800} width={800} />}
+          <Layer>
+            {drawing && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black'/>}
+            {temp.points && temp.points.length>2 && temp.points[0]===temp.points[temp.points.length-2] && temp.points[1]===temp.points[temp.points.length-1] && <Circle
+              x={temp.points[0]}
+              y={temp.points[1]}
+              radius={8}
+              fill="green"
+              stroke="black"
+              strokeWidth={1}
+              rotateEnabled={false}
+            />}
           </Layer>
         </Stage>
       </Grid>

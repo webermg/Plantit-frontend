@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Stage, Layer, Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
+import { Tooltip } from '@material-ui/core'
 
 export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }) {
 
@@ -19,6 +20,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }
   }, [isSelected]);
 
   return (
+    // <Tooltip title="add" arrow>
     <React.Fragment>
       <Image
         image={image}
@@ -69,5 +71,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }
         />
       )}
     </React.Fragment>
+    // </Tooltip>
+
   );
 }

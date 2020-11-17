@@ -3,7 +3,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-export default function SwitchLabels(props) {
+export default function OptionsPanel(props) {
   // const [state, setState] = React.useState({
   //   checkedA: true,
   //   checkedB: true,
@@ -12,7 +12,6 @@ export default function SwitchLabels(props) {
   // const handleChange = (event) => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
-  
   return (
     <FormGroup row>
       <FormControlLabel
