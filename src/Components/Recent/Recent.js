@@ -45,7 +45,7 @@ export default function RecentCard(props) {
         {/* <Button size="small" color="primary">
           Share
         </Button> */}
-        <Button component={RouterLink} to={'/plant/:slug'} size="small" color="primary">
+        <Button component={RouterLink} to={'/plant/'+props.slug} size="small" color="primary">
           Learn More
         </Button>
       </CardActions>
