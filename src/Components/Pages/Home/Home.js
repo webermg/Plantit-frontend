@@ -82,7 +82,7 @@ class Home extends Component {
                                 <Hidden only="xs">
                                     <Box mx="auto" p={1} style={{ width: '35%' }}>
                                         <Paper className={classes.paper}>
-                                            <h2 style={{margin: "0em", padding: "1em"}}>Popular Plants</h2>
+                                            <h2 style={{margin: "0em", padding: "1em"}}>Featured Plants</h2>
                                             {this.state.plants.map(plant => (
                                                 <RecentCard
                                                     _id={plant._id}
