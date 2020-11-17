@@ -36,7 +36,7 @@ export default function Polygon(props) {
               radius={props.radius}
               fill="white"
               stroke="black"
-              strokeWidth={3}
+              strokeWidth={1}
               rotateEnabled={false}
               draggable
               onDragMove={e => {

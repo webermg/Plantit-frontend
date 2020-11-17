@@ -2,7 +2,7 @@ import React,{useEffect, useRef} from 'react'
 import {Button, ButtonGroup} from '@material-ui/core'
 
 export default function DrawPanel(props) {
-  console.log(props.active)
+  // console.log(props.active)
   return (
     <ButtonGroup orientation='vertical' className='draw-panel'>
       <Button variant='contained' color={props.active==='/images/grass.jpg' ? 'primary' : ''} onClick={() => props.onClick('/images/grass.jpg')}>Grass</Button>

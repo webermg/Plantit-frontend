@@ -54,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
   tabPanel: {
-    overflow: 'scroll'
+    overflow: 'scroll',
+    width: '70%'
   }
 }));
 
