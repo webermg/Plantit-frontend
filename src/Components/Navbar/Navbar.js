@@ -173,7 +173,7 @@ export default function NavBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static"style={{ background: '#894f62' }}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             <IconButton component={RouterLink} to={"/"}>

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
-    backgroundColor: "green"
+    backgroundColor: "#b1bb78"
   }
 }));
 
@@ -34,8 +34,8 @@ export default function Results(props) {
         API.getDatabasePlants(`${props.submittedSearch}`)
             .then(result => {
                 console.log(result.data)
-                if (!Object.keys(result).length) {
-                  setPlantsInDatabase("No plants found")
+                if (result.data.name === "MongoError") {
+                  setPlantsInDatabase([])
                 } else {
                   setPlantsInDatabase(result.data)
                 }
@@ -44,7 +44,7 @@ export default function Results(props) {
 
             if(`${props.submittedSearch}` !== "") {
               API.getToken().then(result => {
-                  console.log(result.data);
+                  // console.log(result.data);
                   setUserToken(result.data.token)
       
                   API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
@@ -55,7 +55,6 @@ export default function Results(props) {
               }, err => console.log(err))
 
             }
-
 
     }, [props.submittedSearch])
 
@@ -73,8 +72,8 @@ export default function Results(props) {
 
     return (
         <div className={classes.root}>
-          <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
-          <Box p={1} flexShrink={1}>
+          <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
+          <Box p={1} m={1} flexShrink={1}>
             {/* Section with plants already in our database */}
             {console.log(plantsInDatabase)}
             {plantsInDatabase.length===0 ? "no plants found":"plants found"}
