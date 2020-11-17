@@ -48,12 +48,18 @@ export default function PlantSearchCard(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button   className={classes.button1} variant="contained" size="small" color="primary" onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}>
+                    <Button   
+                    className={classes.button1} 
+                    variant="contained" 
+                    size="small" 
+                    color="primary" 
+                    // {}
+                    onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}>
                         Choose this plant!
                     </Button>
-                    <Button   className={classes.button} size="small" color="primary">
+                    {/* <Button   className={classes.button} size="small" color="primary">
                         Learn More
-                    </Button>
+                    </Button> */}
                 </CardActions>
             </Card>
             </Box>
