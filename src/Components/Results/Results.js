@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
 import { Redirect, useHistory } from 'react-router-dom';
 import Axios from 'axios';
+import { result } from 'lodash';
 
 
 
@@ -35,6 +36,8 @@ export default function Results(props) {
   const history = useHistory();
 
   useEffect(() => {
+    
+
     API.getDatabasePlants(`${props.submittedSearch}`)
       .then(result => {
         console.log(result.data)
@@ -70,6 +73,7 @@ export default function Results(props) {
       }, err => console.log(err))
 
     }
+
 
   }, [props.submittedSearch, page])
 
