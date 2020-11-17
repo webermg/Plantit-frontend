@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { Hidden } from "@material-ui/core";
+
 
 
 const useStyles = makeStyles({
@@ -33,36 +36,45 @@ export default function PlantSearchCard(props) {
 
         return (
             <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: '90%' }}>
-                <Card className={classes.root} variant="outlined">
-                    <CardActionArea>
-                        <CardMedia
-                            className={classes.media}
-                            image={props.data.image_url}
-                            title={"Identifying image of " + props.data.common_name}
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                {props.data.common_name}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                                {props.data.scientific_name}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                        <Button
-                            className={classes.button1}
-                            variant="contained"
-                            size="small"
-                            color="primary"
-                            onClick={() => props.inDatabase ?         history.push("/plant/"+props.data.slug): props.newPlantInDatabase(props.data.slug, props.usertoken)}>
-                            Choose this plant!
-                        </Button>
-                        <Button className={classes.button} size="small" color="primary">
-                            Learn More
-                        </Button>
-                    </CardActions>
-                </Card>
+            <Card className={classes.root} variant="outlined">
+                <CardActionArea>
+                    <CardMedia
+                        className={classes.media}
+                        image={props.data.image_url}
+                        title={"Identifying image of " + props.data.common_name}
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {props.data.common_name}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                           {props.data.scientific_name}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
+                    <Button   
+                    className={classes.button1} 
+                    variant="contained" 
+                    size="small" color="primary" 
+                    endIcon={<FavoriteBorderIcon/>}
+                    onClick={() => {
+                        props.addFavorite(props.data.plantId,"5fb364d647d27c39ccd1b7fb")
+                    }}
+                    ><Hidden only="xs">
+                        Save this plant!
+                        </Hidden>
+                    </Button>
+                    <Button   
+                    className={classes.button} 
+                    size="small" 
+                    color="primary"
+                    onClick={() => props.inDatabase ? history.push("/plant/"+props.data.slug): props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                    >
+                        Learn More
+                    </Button>
+                </CardActions>
+            </Card>
             </Box>
         )
     }
