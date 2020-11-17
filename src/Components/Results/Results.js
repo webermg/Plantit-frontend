@@ -8,7 +8,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 
 
@@ -29,6 +29,9 @@ export default function Results(props) {
     const [plantsInDatabase, setPlantsInDatabase] = useState([])
     const [plantsInTrefle, setPlantsInTrefle] = useState([])
     const [userToken, setUserToken] = useState("")
+    let [page, setPage] = useState(1)
+
+    const history = useHistory();
     
     useEffect(() => {
         API.getDatabasePlants(`${props.submittedSearch}`)
@@ -47,23 +50,40 @@ export default function Results(props) {
                   // console.log(result.data);
                   setUserToken(result.data.token)
       
-                  API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
+                  API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page)
                       .then(result => {
-                          console.log(result.data)
-                          setPlantsInTrefle(result.data)
-                      }).catch(err => console.log(err));
+                        
+                          if(page > 1 && result.data.name === "Error") {
+                            setPlantsInTrefle([]);
+                            console.log("No more plants to be found")
+                          }else {
+                            setPlantsInTrefle(result.data)
+                          }
+                      }).catch(err => {
+                        console.log(err)
+                        if(page > 1 && err.error === true) {
+                          setPlantsInTrefle([]);
+                          console.log("No more plants to be found")
+                        }
+                      });
               }, err => console.log(err))
 
             }
 
-    }, [props.submittedSearch])
+    }, [props.submittedSearch,page])
+
+    //Filters out from Trefle all the plants currently in the database.  Needs some complicated promise stuff to make it happen in a way that isn't an infinite loop
+    function filterTrefle () {
+      let databaseSlugs = plantsInDatabase.map(element => element.slug)
+      console.log(databaseSlugs)
+      const newPlants = plantsInTrefle.filter(element => !(databaseSlugs.includes(element.slug)))
+      setPlantsInTrefle(newPlants)
+    }
 
     const newPlantInDatabase = function(slug, token) {
       API.getNewPlant(slug, token)
       .then(result => {
-        const newPageUrl = "/" +result.data._id.toString();
-        console.log(newPageUrl)
-         return <Redirect to="http://localhost:3000/plantdet/5faf6b3dd147435ed4e49565" />
+        history.push("/plant/" +result.data.slug)
     }, err => console.log(err))
     }
 
@@ -79,11 +99,20 @@ export default function Results(props) {
             {plantsInDatabase.length===0 ? "no plants found":"plants found"}
             {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
                 
-                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} />
+                return <PlantSearchCard 
+                data={element} 
+                key={element.slug} 
+                newPlantInDatabase={newPlantInDatabase}
+                inDatabase={true} />
             }): ""
           }
-            {plantsInTrefle.map(element => {
-                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} usertoken = {userToken}/>
+            {plantsInTrefle.length===0 && page >1 ? <p> No more plants, please return to previous </p> : plantsInTrefle.map(element => {
+                return <PlantSearchCard 
+                data={element} 
+                key={element.slug} 
+                newPlantInDatabase={newPlantInDatabase} 
+                usertoken = {userToken}
+                inDatabase={false} />
             })}
             </Box>
             </Box>
@@ -109,6 +138,7 @@ export default function Results(props) {
                 color="primary"
                 className={classes.button}
                 endIcon={<ArrowBackIcon />}
+                onClick={()=> page > 1 ? setPage(page -1) : null}
               ><Hidden only="xs">
                 LEFT
                 </Hidden>
@@ -120,6 +150,7 @@ export default function Results(props) {
                 color="primary"
                 className={classes.button}
                 endIcon={<ArrowForwardIcon />}
+                onClick={()=> plantsInTrefle.length===0 ? null : setPage(page++)}
               ><Hidden only="xs">
                 RIGHT
                 </Hidden>
