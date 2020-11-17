@@ -66,7 +66,7 @@ export default function Signup() {
     
     return (
         <div>
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
             Sign Up
           </Button>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
