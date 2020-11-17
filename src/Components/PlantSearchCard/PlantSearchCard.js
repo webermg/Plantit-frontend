@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { useHistory } from 'react-router-dom';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Hidden } from "@material-ui/core";
 
@@ -22,13 +23,14 @@ const useStyles = makeStyles({
     },
     button1: {
         backgroundColor: '#b1bb78'
-      }
+    }
 });
 
 
 
 //A simple card that displays possible results to choose from either our database or trefle API results.
 export default function PlantSearchCard(props) {
+    const history = useHistory();
     const classes = useStyles();
     if ("data" in props) {
 
@@ -56,12 +58,19 @@ export default function PlantSearchCard(props) {
                     variant="contained" 
                     size="small" color="primary" 
                     endIcon={<FavoriteBorderIcon/>}
-                    onClick={() => props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                    onClick={() => {
+                        props.addFavorite(props.data._id,"5fb36adc4008c2516c2068d5")
+                    }}
                     ><Hidden only="xs">
                         Save this plant!
                         </Hidden>
                     </Button>
-                    <Button   className={classes.button} size="small" color="primary">
+                    <Button   
+                    className={classes.button} 
+                    size="small" 
+                    color="primary"
+                    onClick={() => props.inDatabase ? history.push("/plant/"+props.data.slug): props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                    >
                         Learn More
                     </Button>
                 </CardActions>

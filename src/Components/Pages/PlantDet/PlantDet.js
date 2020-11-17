@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../../utils/API';
 import { makeStyles } from '@material-ui/core/styles';
-import PlantSearchCard from '../../PlantSearchCard/PlantSearchCard';
 import Comment from '../../Comment/Comment'
 import { useParams } from 'react-router-dom';
+import { Box, Container } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -21,28 +23,20 @@ export default function PlantDet() {
     const [plantDetails, setPlantDetails] = useState([])
     const [comments, setComments] = useState([])
     const [reset, setReset] = useState(true)
+    const { slug } = useParams();
 
     useEffect(() => {
-// ID is now SLUG in the get route, currently hardcoded
-        API.getPlantID(`3`)
-                .then(result => {
-                    console.log(result.data)
-                    setPlantDetails(result.data.dbPlant)
-                    setComments(result.data.dbComment)
-                }).catch(err => console.log(err))
+        // ID is now SLUG in the get route, currently hardcoded
+        API.getPlantID(slug)
+            .then(result => {
+                console.log(result.data)
+                setPlantDetails(result.data.dbPlant)
+                setComments(result.data.dbComment)
+            }).catch(err => console.log(err))
 
         // getPlantProfile(id)
-       
-    }, [reset])
 
-    // const getPlantProfile = (id) => {        
-    //     API.getPlantID(`${id}`)
-    //         .then(result => {
-    //             console.log(result.data)
-    //             setPlantDetails(result.data.dbPlant)
-    //             setComments(result.data.dbComment)
-    //         }).catch(err => console.log(err))
-    // }
+    }, [reset])
 
     //This resets the page when a new comment is added
     const newComment = function () {
@@ -50,32 +44,44 @@ export default function PlantDet() {
         setReset(!reset)
     }
 
+    const classes = useStyles();
+
     return (
         <div className='classes.root'>
-            {/* AMG- Plant search card is for displaying "quick results"--just name, slug, image etc--and meant for the search page.  Still pretty good for testing purposes here! I had to change a lot of stuff in the plantsearchcard due to actually getting data from trefle, so what you had here broke :(*/}
-            {/* <PlantSearchCard
-            data={plantDetails}
-            /> */}
+            <Container>
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <h1>{plantDetails.common_name}</h1>
+                        <h3>{plantDetails.scientific_name} </h3>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <img src={plantDetails.image_url} />
+                    </Grid>
+                    <Grid item xs={6}>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <h4>Native in: {plantDetails.native ? plantDetails.native.join(', ') : ""}</h4>
 
-            <h1>{plantDetails.common_name}</h1>
-            <h3>{plantDetails.scientific_name} </h3>
-            <img src={plantDetails.image_url} />
-            <br />
-            <h4>Native in: {plantDetails.native}</h4>
+                    </Grid>
+
+                </Grid>
+            </Container>
+
+            <Container maxWidth="sm">
+
             <h2>Comments</h2>
 
             {comments.map(comment => {
                 return <Comment
                     comment={comment.commentText}
                     user={comment.userId.email}
-                    key= {comment._id}
+                    key={comment._id}
                 />
 
             })}
-
-
-
-
+      </Container>
         </div>
+
+
     )
 }

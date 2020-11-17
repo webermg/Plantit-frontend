@@ -18,7 +18,13 @@ const API = {
     },
     getNewPlant: function(slug, usertoken) {
         return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+usertoken)
-    }
+    },
+    favoritePlant: function (plantId, userId) {
+        return axios.post("http://localhost:3001/myplants/create", {
+          userId: userId,
+          plantId: plantId,
+        })
+      }
 }
 
 export default API;
