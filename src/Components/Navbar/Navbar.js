@@ -14,6 +14,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import Login from '../Login/Login.js'
+import Signup from '../Signup/Signup'
 // import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -119,8 +121,8 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+     <MenuItem onClick={handleMenuClose}><Login/></MenuItem>
+      <MenuItem onClick={handleMenuClose}><Signup/></MenuItem>
     </Menu>
   );
 

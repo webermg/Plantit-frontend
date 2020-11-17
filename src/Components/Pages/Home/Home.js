@@ -11,8 +11,6 @@ import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
-import Login from '../../Login/Login'
-import Signup from '../../Signup/Signup'
 import API from '../../../utils/API';
 
 
@@ -75,8 +73,6 @@ class Home extends Component {
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
                                 <Box mx="auto" p={1} style={{ width: 'auto' }}>
                                     <Paper className={classes.paper}>
-                                        <Login />
-                                        <Signup />
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                         handleInputChange={this.handleInputChange} state={this.state}/>
                                         <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2>
