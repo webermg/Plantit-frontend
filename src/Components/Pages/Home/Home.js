@@ -11,12 +11,9 @@ import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
-<<<<<<< HEAD
 import Login from '../../Login/Login'
 import Signup from '../../Signup/Signup'
-=======
 import API from '../../../utils/API';
->>>>>>> dev
 
 
 const useStyles = makeStyles((theme) => ({
