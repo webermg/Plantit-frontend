@@ -8,7 +8,8 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
+import Axios from 'axios';
 
 
 
@@ -26,106 +27,145 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Results(props) {
-    const [plantsInDatabase, setPlantsInDatabase] = useState([])
-    const [plantsInTrefle, setPlantsInTrefle] = useState([])
-    const [userToken, setUserToken] = useState("")
-    
-    useEffect(() => {
-        API.getDatabasePlants(`${props.submittedSearch}`)
-            .then(result => {
-                console.log(result.data)
-                if (result.data.name === "MongoError") {
-                  setPlantsInDatabase([])
-                } else {
-                  setPlantsInDatabase(result.data)
-                }
-                
-            }).catch(err => console.log(err));
+  const [plantsInDatabase, setPlantsInDatabase] = useState([])
+  const [plantsInTrefle, setPlantsInTrefle] = useState([])
+  const [userToken, setUserToken] = useState("")
+  let [page, setPage] = useState(1)
 
-            if(`${props.submittedSearch}` !== "") {
-              API.getToken().then(result => {
-                  // console.log(result.data);
-                  setUserToken(result.data.token)
-      
-                  API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
-                      .then(result => {
-                          console.log(result.data)
-                          setPlantsInTrefle(result.data)
-                      }).catch(err => console.log(err));
-              }, err => console.log(err))
+  const history = useHistory();
 
-            }
-
-    }, [props.submittedSearch])
-
-    const newPlantInDatabase = function(slug, token) {
-      API.getNewPlant(slug, token)
+  useEffect(() => {
+    API.getDatabasePlants(`${props.submittedSearch}`)
       .then(result => {
-        const newPageUrl = "/" +result.data._id.toString();
-        console.log(newPageUrl)
-         return <Redirect to="http://localhost:3000/plantdet/5faf6b3dd147435ed4e49565" />
-    }, err => console.log(err))
+        console.log(result.data)
+        if (result.data.name === "MongoError") {
+          setPlantsInDatabase([])
+        } else {
+          setPlantsInDatabase(result.data)
+        }
+
+      }).catch(err => console.log(err));
+
+    if (`${props.submittedSearch}` !== "") {
+      API.getToken().then(result => {
+        // console.log(result.data);
+        setUserToken(result.data.token)
+
+        API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page)
+          .then(result => {
+
+            if (page > 1 && result.data.name === "Error") {
+              setPlantsInTrefle([]);
+              console.log("No more plants to be found")
+            } else {
+              // setPlantsInTrefle(result.data)
+            }
+          }).catch(err => {
+            console.log(err)
+            if (page > 1 && err.error === true) {
+              setPlantsInTrefle([]);
+              console.log("No more plants to be found")
+            }
+          });
+      }, err => console.log(err))
+
     }
+
+  }, [props.submittedSearch, page])
+
+  function addFavorite (plantId, userId) {
+    API.favoritePlant(plantId,userId)
+    .then(result => console.log(result), 
+      err => console.log(err))
+  }
+
+  //Filters out from Trefle all the plants currently in the database.  Needs some complicated promise stuff to make it happen in a way that isn't an infinite loop
+  function filterTrefle() {
+    let databaseSlugs = plantsInDatabase.map(element => element.slug)
+    console.log(databaseSlugs)
+    const newPlants = plantsInTrefle.filter(element => !(databaseSlugs.includes(element.slug)))
+    setPlantsInTrefle(newPlants)
+  }
+
+  const newPlantInDatabase = function (slug, token) {
+    API.getNewPlant(slug, token)
+      .then(result => {
+        history.push("/plant/" + result.data.slug)
+      }, err => console.log(err))
+  }
 
   const classes = useStyles();
 
 
-    return (
-        <div className={classes.root}>
-          <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
-          <Box p={1} m={1} flexShrink={1}>
-            {/* Section with plants already in our database */}
-            {console.log(plantsInDatabase)}
-            {plantsInDatabase.length===0 ? "no plants found":"plants found"}
-            {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
-                
-                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} />
-            }): ""
-          }
-            {plantsInTrefle.map(element => {
-                return <PlantSearchCard data={element} key={element.slug} newPlantInDatabase={newPlantInDatabase} usertoken = {userToken}/>
-            })}
-            </Box>
-            </Box>
-            <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
+  return (
+    <div className={classes.root}>
+      <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
+        <Box p={1} m={1} flexShrink={1}>
+          {/* Section with plants already in our database */}
+          {console.log(plantsInDatabase)}
+          {plantsInDatabase.length === 0 ? "no plants found" : "plants found"}
+          {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
 
-            {/* Button for more plants */}
-            <Box p={1}flexShrink={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<MoreHorizIcon />}
-              ><Hidden only ="xs">
-                MORE
+            return <PlantSearchCard
+              data={element}
+              key={element.slug}
+              newPlantInDatabase={newPlantInDatabase}
+              inDatabase={true}
+              addFavorite={addFavorite} />
+          }) : ""
+          }
+          {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : plantsInTrefle.map(element => {
+            return <PlantSearchCard
+              data={element}
+              key={element.slug}
+              newPlantInDatabase={newPlantInDatabase}
+              usertoken={userToken}
+              inDatabase={false}
+              addFavorite={addFavorite} />
+          })}
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
+
+        {/* Button for more plants */}
+        <Box p={1} flexShrink={1}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            endIcon={<MoreHorizIcon />}
+          ><Hidden only="xs">
+              MORE
                 </Hidden>
-            </Button>
-            </Box>
-            {/* Upon button being clicked, button for more plants does an api call  */}
-            {/* next and back buttons to get more results from trefle */}
-            <Box p={1}flexShrink={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<ArrowBackIcon />}
-              ><Hidden only="xs">
-                LEFT
+          </Button>
+        </Box>
+        {/* Upon button being clicked, button for more plants does an api call  */}
+        {/* next and back buttons to get more results from trefle */}
+        <Box p={1} flexShrink={1}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            endIcon={<ArrowBackIcon />}
+            onClick={() => page > 1 ? setPage(page - 1) : null}
+          ><Hidden only="xs">
+              LEFT
                 </Hidden>
-            </Button>
-            </Box>
-            <Box p={1}flexShrink={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<ArrowForwardIcon />}
-              ><Hidden only="xs">
-                RIGHT
+          </Button>
+        </Box>
+        <Box p={1} flexShrink={1}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            endIcon={<ArrowForwardIcon />}
+            onClick={() => plantsInTrefle.length === 0 ? null : setPage(page++)}
+          ><Hidden only="xs">
+              RIGHT
                 </Hidden>
-            </Button>
-            </Box>
-            </Box>
-        </div>
-    )
+          </Button>
+        </Box>
+      </Box>
+    </div>
+  )
 }
