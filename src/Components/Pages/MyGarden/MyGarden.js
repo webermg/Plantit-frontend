@@ -8,10 +8,13 @@ export default function MyGarden() {
     const [userData, setUserData] = React.useState(null)
 
     React.useEffect(() => {
-        API.getUser('5fb293ce08c420f0f92a628c').then(res => {
-            setUserData(res.data);
-            console.log(res.data)
-        });
+        const id = localStorage.getItem("id");
+        if(id) {
+            API.getUser(id).then(res => {
+                setUserData(res.data);
+                console.log(res.data)
+            });
+        }
     }, [])
 
     if(!userData) return <h1>loading...</h1>
