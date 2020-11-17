@@ -85,6 +85,7 @@ export default function PlantDet() {
 
   return (
     <Container className={classes.root}>
+      {console.log(comments)}
       <Grid item s={12} md={6}>
         <Card className={classes.root} style={{ margin: "5vh" }}>
           <CardActionArea>
@@ -158,7 +159,7 @@ export default function PlantDet() {
                 <Comment
                   variant="p"
                   comment={comment.commentText}
-                  user={comment.userId.username}
+                  user={comment.username}
                   key={comment._id}
                 />
               );

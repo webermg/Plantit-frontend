@@ -61,7 +61,7 @@ export default function Results(props) {
               setPlantsInTrefle([]);
               console.log("No more plants to be found")
             } else {
-              // setPlantsInTrefle(result.data)
+              setPlantsInTrefle(result.data)
             }
           }).catch(err => {
             console.log(err)
