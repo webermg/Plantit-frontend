@@ -34,8 +34,8 @@ export default function Results(props) {
         API.getDatabasePlants(`${props.submittedSearch}`)
             .then(result => {
                 console.log(result.data)
-                if (!Object.keys(result).length) {
-                  setPlantsInDatabase("No plants found")
+                if (result.data.name === "MongoError") {
+                  setPlantsInDatabase([])
                 } else {
                   setPlantsInDatabase(result.data)
                 }
@@ -44,7 +44,7 @@ export default function Results(props) {
 
             if(`${props.submittedSearch}` !== "") {
               API.getToken().then(result => {
-                  console.log(result.data);
+                  // console.log(result.data);
                   setUserToken(result.data.token)
       
                   API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, 1)
@@ -55,7 +55,6 @@ export default function Results(props) {
               }, err => console.log(err))
 
             }
-
 
     }, [props.submittedSearch])
 
