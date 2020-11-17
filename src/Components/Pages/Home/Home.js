@@ -57,10 +57,10 @@ class Home extends Component {
             <React.Fragment>
                 <CssBaseline />
                 <div className={classes.root} style={{ width: '100%' }} >
-                    <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
+                    <Typography component="div" style={{ backgroundColor: '#cac5b9' }}>
                         <Container >
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
-                                <Box p={1} style={{ width: '65%' }}>
+                                <Box  mx="auto" p={1} style={{ width: 'auto' }}>
                                     <Paper className={classes.paper}>
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                         handleInputChange={this.handleInputChange} state={this.state}/>
@@ -69,7 +69,7 @@ class Home extends Component {
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">
-                                    <Box p={1} style={{ width: '35%' }}>
+                                    <Box mx="auto" p={1} style={{ width: '35%' }}>
                                         <Paper className={classes.paper}>
                                             <h2>Recent Activity</h2>
                                             {this.state.plants.map(plant => (
