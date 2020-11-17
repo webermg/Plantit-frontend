@@ -17,12 +17,16 @@ const API = {
         return axios.get("http://localhost:3001/api/search/"+query+"/"+ userToken + "/" + page)
     },
     getNewPlant: function(slug, usertoken) {
-        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+usertoken)
+        return axios.post("http://localhost:3001/api/slug/"+ slug+ "/"+ usertoken)
     },
 
     login: function(formData) {
         return axios.post("http://localhost:3001/login", formData)
     },
+
+    signup: function(formData) {
+        return axios.post("http://localhost:3001/user", formData)
+    }
 
 }
 

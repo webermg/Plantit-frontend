@@ -58,13 +58,13 @@ export default function Login() {
       ...loginFormState,
       [name]: value
     })
-    console.log(loginFormState)
   }
 
   const formSubmit = event => {
     event.preventDefault();
     API.login(loginFormState).then(newToken => {
       localStorage.setItem("token", newToken.data.token)
+      localStorage.setItem("id", newToken.data.userInfo.id)
       API.getUser(newToken.data.userInfo.id)
       .then (profileData => {
         console.log(profileData)
