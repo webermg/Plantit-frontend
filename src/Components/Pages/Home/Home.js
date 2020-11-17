@@ -11,6 +11,7 @@ import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
+import Login from '../../Login/Login'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +60,7 @@ class Home extends Component {
                 <div className={classes.root} style={{ width: '100%' }} >
                     <Typography component="div" style={{ backgroundColor: '#cac5b9', height: '100vh' }}>
                         <Container >
+                            <Login />
                             <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
                                 <Box p={1} style={{ width: '65%' }}>
                                     <Paper className={classes.paper}>
