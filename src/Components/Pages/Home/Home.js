@@ -54,8 +54,8 @@ class Home extends Component {
     render() {
         const classes = useStyles;
         return (
-            <React.Fragment>
-                <CssBaseline />
+            // <React.Fragment>
+                // <CssBaseline />
                 <div className={classes.root} style={{ width: '100%' }} >
                     <Typography component="div" style={{ backgroundColor: '#cac5b9' }}>
                         <Container >
@@ -64,14 +64,14 @@ class Home extends Component {
                                     <Paper className={classes.paper}>
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                         handleInputChange={this.handleInputChange} state={this.state}/>
-                                        <h2>Search Results</h2>
+                                        <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2>
                                             <Results submittedSearch={this.state.submittedSearch}/>
                                     </Paper>
                                 </Box>
                                 <Hidden only="xs">
                                     <Box mx="auto" p={1} style={{ width: '35%' }}>
                                         <Paper className={classes.paper}>
-                                            <h2>Recent Activity</h2>
+                                            <h2 style={{margin: "0em", padding: "1em"}}>Recent Activity</h2>
                                             {this.state.plants.map(plant => (
                                                 <RecentCard
                                                     id={plant.id}
@@ -80,6 +80,7 @@ class Home extends Component {
                                                     image={plant.image}
                                                 />
                                             ))}
+                                            
                                         </Paper>
                                     </Box>
                                 </Hidden>
@@ -87,7 +88,7 @@ class Home extends Component {
                         </Container>
                     </Typography>
                 </div>
-            </React.Fragment>
+            // </React.Fragment>
         )
     }
 
