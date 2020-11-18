@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PinDropSharp } from "@material-ui/icons";
+import Typography from '@material-ui/core/Typography'
 
 export default function Login(props) {
   const [open, setOpen] = useState(false);
@@ -22,6 +23,10 @@ export default function Login(props) {
     myGarden: "",
     token: "",
     isLoggedIn: false
+  })
+  const [errorState, setErrorState] = useState({
+    emailError: "",
+    passwordError: ""
   })
 
   useEffect(fetchUserData, [])
@@ -60,10 +65,19 @@ export default function Login(props) {
       ...loginFormState,
       [name]: value
     })
+    setErrorState({
+      emailError: "",
+      passwordError: ""
+    })
   }
 
   const formSubmit = event => {
     event.preventDefault();
+    if (!loginFormState.email) {
+      setErrorState({emailError: "Please enter an e-mail address."})
+    } else if (!loginFormState.password) {
+      setErrorState({passwordError: "Please enter a password."})
+    } else {
     API.login(loginFormState).then(newToken => {
       localStorage.setItem("token", newToken.data.token)
       localStorage.setItem("id", newToken.data.userInfo.id)
@@ -97,6 +111,7 @@ export default function Login(props) {
       })
     })
   }
+}
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -111,7 +126,7 @@ export default function Login(props) {
       <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
         Log In
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -127,6 +142,9 @@ export default function Login(props) {
             name = "email"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.emailError}
+          </Typography>
           <TextField
             autoFocus
             margin="dense"
@@ -137,6 +155,9 @@ export default function Login(props) {
             name = "password"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.passwordError}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
