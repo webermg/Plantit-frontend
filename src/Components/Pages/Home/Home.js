@@ -34,6 +34,8 @@ class Home extends Component {
     };
 
     componentDidMount() {
+        // if(!)
+
         API.getFeaturedPlants()
             .then(result => {
                 console.log(result.data)
@@ -86,6 +88,7 @@ class Home extends Component {
                                             {this.state.plants.map(plant => (
                                                 <RecentCard
                                                     _id={plant._id}
+                                                    key={plant.slug}
                                                     slug={plant.slug}
                                                     common_name={plant.common_name}
                                                     image_url={plant.image_url}

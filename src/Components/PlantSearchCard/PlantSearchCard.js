@@ -9,9 +9,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { useHistory } from 'react-router-dom';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { Hidden } from "@material-ui/core";
-// import FavoriteIcon from '@material-ui/icons/Favorite';
+import TokenExpiry from '../../utils/TokenExpiry';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 
@@ -33,6 +34,7 @@ const useStyles = makeStyles({
 export default function PlantSearchCard(props) {
     const history = useHistory();
     const classes = useStyles();
+    const trefleToken = TokenExpiry.getLocalExpiry("trefleToken")
     if ("data" in props) {
 
         return (
@@ -58,10 +60,10 @@ export default function PlantSearchCard(props) {
                     className={classes.button1} 
                     variant="contained" 
                     size="small" color="primary" 
-                    endIcon={<FavoriteBorderIcon/>}
-                    onClick={() => {
+                    endIcon={ props.data.favorite ? <FavoriteIcon/> :<FavoriteBorderIcon/>}
+                    onClick={ props.data.favorite ? (()=>console.log("already favorite")):(() => {
                         props.addFavorite(props.data._id,localStorage.getItem("id"))
-                    }}
+                    })}
                     ><Hidden only="xs">
                         Save
                         </Hidden>
@@ -70,7 +72,7 @@ export default function PlantSearchCard(props) {
                     className={classes.button} 
                     size="small" 
                     color="primary"
-                    onClick={() => props.inDatabase ? history.push("/plant/"+props.data.slug): props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                    onClick={() => props.inDatabase ? history.push("/plant/"+props.data.slug): props.newPlantInDatabase(props.data.slug, trefleToken)}
                     >
                         Learn More
                     </Button>
