@@ -32,15 +32,16 @@ export default function Signup() {
         API.getUser(id).then(profileData => {
           if (profileData) {
             setProfileState({
-              username: profileData.username,
-              email: profileData.email,
-              myPlants: profileData.myPlants,
-              myGarden: profileData.myGarden,
+              username: profileData.data.username,
+              email: profileData.data.email,
+              myPlants: profileData.data.myPlants,
+              myGarden: profileData.data.myGarden,
               token: token,
               isLoggedIn: true
             })
+            localStorage.setItem("isLoggedIn", true)
           } else {
-            console.log("somehting happened")
+            console.log("someting happened")
             }
           }
         )
@@ -79,6 +80,7 @@ export default function Signup() {
                     myGarden: profileData.data.myGarden,
                     isLoggedIn: true
                   })
+                  localStorage.setItem("isLoggedIn", true)
                   handleClose();
             })
         })}
