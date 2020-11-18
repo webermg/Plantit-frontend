@@ -7,8 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { PinDropSharp } from "@material-ui/icons";
 
-export default function Login() {
+export default function Login(props) {
   const [open, setOpen] = useState(false);
   const [loginFormState, setLoginFormState] = useState({
     email: "",
@@ -26,8 +27,9 @@ export default function Login() {
   useEffect(fetchUserData, [])
 
   function fetchUserData() {
+    const id = localStorage.getItem("id")
     const token = localStorage.getItem("token");
-    API.getUser(token).then(profileData => {
+    API.getUser(id).then(profileData => {
       if (profileData) {
         setProfileState({
           username: profileData.username,
@@ -77,6 +79,8 @@ export default function Login() {
             token: profileData.data.token,
             isLoggedIn: true
           })
+          localStorage.setItem("isLoggedIn", true);
+          props.setLoginState(true)
           handleClose();
         } else {
           localStorage.removeItem("token");
