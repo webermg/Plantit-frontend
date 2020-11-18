@@ -24,7 +24,10 @@ export default function Scene(props) {
     points: []
   })
 
-  const[mousePos, setMousePos] = useState();
+  const[mousePos, setMousePos] = useState({
+    mouseX:0,
+    mouseY:0
+  });
   const[options, setOptions] = useState({displayGrid: true})
   
   //refs
