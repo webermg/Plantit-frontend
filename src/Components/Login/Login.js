@@ -26,14 +26,16 @@ export default function Login() {
   useEffect(fetchUserData, [])
 
   function fetchUserData() {
+    const id = localStorage.getItem("id")
     const token = localStorage.getItem("token");
-    API.getUser(token).then(profileData => {
+    API.getUser(id).then(profileData => {
       if (profileData) {
+        console.log(profileData)
         setProfileState({
-          username: profileData.username,
-          email: profileData.email,
-          myPlants: profileData.myPlants,
-          myGarden: profileData.myGarden,
+          username: profileData.data.username,
+          email: profileData.data.email,
+          myPlants: profileData.data.myPlants,
+          myGarden: profileData.data.myGarden,
           token: token,
           isLoggedIn: true
         })

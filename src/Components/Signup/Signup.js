@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -23,7 +23,28 @@ export default function Signup() {
         token: "",
         isLoggedIn: false
       })
-    
+  
+      useEffect(fetchUserData, [])
+
+      function fetchUserData() {
+        const id = localStorage.getItem("id");
+        const token = localStorage.getItem("token");
+        API.getUser(id).then(profileData => {
+          if (profileData) {
+            setProfileState({
+              username: profileData.username,
+              email: profileData.email,
+              myPlants: profileData.myPlants,
+              myGarden: profileData.myGarden,
+              token: token,
+              isLoggedIn: true
+            })
+          } else {
+            console.log("somehting happened")
+            }
+          }
+        )
+      }
 
     const inputChange = event => {
         event.preventDefault()
@@ -39,6 +60,7 @@ export default function Signup() {
       };
     
     const handleClose = () => {
+        console.log(profileState)
         setOpen(false);
       };
 
@@ -55,10 +77,8 @@ export default function Signup() {
                     email: profileData.data.email,
                     myPlants: profileData.data.myPlants,
                     myGarden: profileData.data.myGarden,
-                    token: profileData.data.token,
                     isLoggedIn: true
                   })
-                  console.log(profileState)
                   handleClose();
             })
         })}
