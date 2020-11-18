@@ -32,6 +32,8 @@ const useStyles = makeStyles({
 
 //A simple card that displays possible results to choose from either our database or trefle API results.
 export default function PlantSearchCard(props) {
+    console.log(props)
+
     const history = useHistory();
     const classes = useStyles();
     const trefleToken = TokenExpiry.getLocalExpiry("trefleToken")
@@ -62,7 +64,7 @@ export default function PlantSearchCard(props) {
                     size="small" color="primary" 
                     endIcon={ props.data.favorite ? <FavoriteIcon/> :<FavoriteBorderIcon/>}
                     onClick={ props.data.favorite ? (()=>console.log("already favorite")):(() => {
-                        props.addFavorite(props.data._id,localStorage.getItem("id"))
+                        props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"))
                     })}
                     ><Hidden only="xs">
                         Save

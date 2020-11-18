@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Results(props) {
   const [plantsInDatabase, setPlantsInDatabase] = useState([])
   const [plantsInTrefle, setPlantsInTrefle] = useState([])
-  const [favoritePlants, setFavoritePlants] = useState([])
   let [page, setPage] = useState(1)
+  const [update, setUpdate] = useState(true)
 
   const history = useHistory();
 
@@ -44,7 +44,6 @@ export default function Results(props) {
             setPlantsInDatabase([])
             resolve([])
           } else {
-            setPlantsInDatabase(result.data)
             resolve(result.data);
           }
         }).catch(err => reject(err));
@@ -103,24 +102,18 @@ export default function Results(props) {
 
       Promise.all([databasePromise, treflePromise, userPromise])
         .then(result => {
-          console.log("all done!")
           filterTrefle(databasePromise, treflePromise, userPromise)
         })
     }
-  }, [props.submittedSearch, page])
+  }, [props.submittedSearch, page, update])
 
-  function addFavorite(plantId, userId) {
-    API.favoritePlant(plantId, userId)
-      .then(result => console.log(result),
-        err => console.log(err))
-  }
-
+  
   //Filters out from Trefle all the plants currently in the database.  Needs some complicated promise stuff to make it happen in a way that isn't an infinite loop
   function filterTrefle(database, trefle, user) {
     database.then(databaseData => {
       trefle.then(trefleData => {
         if(databaseData) {
-
+          
           let databaseSlugs = databaseData.map(element => element.slug);
           console.log(databaseSlugs);
           const newPlants = trefleData.filter(element => !(databaseSlugs.includes(element.slug)))
@@ -137,24 +130,39 @@ export default function Results(props) {
               }
             }
             setPlantsInDatabase(databaseData)
+            console.log("all done!")
+
           })
         }
       })
     })
-
+    
   }
 
+  function addFavorite(slug, plantId, userId) {
+    API.favoritePlant(plantId, userId)
+      .then(result => {
+        const index = plantsInDatabase.findIndex(element=> element.slug===slug);
+        const updatedFavorite = plantsInDatabase[index];
+        updatedFavorite.favorite=true;
+        const updated = plantsInDatabase.splice(index,1,updatedFavorite)
+        console.log(updatedFavorite)
+        setPlantsInDatabase(updated)
+      },
+        err => console.log(err))
+  }
+  
   const newPlantInDatabase = function (slug, token) {
     API.getNewPlant(slug, token)
       .then(result => {
         history.push("/plant/" + result.data.slug)
       }, err => console.log(err))
-  }
+    }
+    
+    const classes = useStyles();
+    
 
-  const classes = useStyles();
-
-
-  return (
+    return (
     <div className={classes.root}>
       <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
         <Box p={1} m={1} flexShrink={1}>
@@ -165,7 +173,6 @@ export default function Results(props) {
 
             return <PlantSearchCard
               data={element}
-              
               key={element.slug}
               newPlantInDatabase={newPlantInDatabase}
               inDatabase={true}
