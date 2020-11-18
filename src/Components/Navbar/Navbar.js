@@ -230,11 +230,6 @@ export default function NavBar() {
               </IconButton> : <p></p>}
               </Typography>
             </MenuItem>
-            <MenuItem>
-              <Typography>
-                  {isLoggedIn? <p>hi</p>: <p>hello</p>}
-              </Typography>
-            </MenuItem>
             
             <IconButton
               edge="end"
