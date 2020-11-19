@@ -10,12 +10,13 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
+import API from '../../../utils/API';
 
 export default function Scene(props) {
   const classes = sceneStyle;
 
   const [polygons, _setPolygons] = useState([])
-  
+
   const [images, _setImages] = useState([])
   const [selectedId, _selectShape] = React.useState(null);
 
@@ -24,9 +25,12 @@ export default function Scene(props) {
     points: []
   })
 
-  const[mousePos, setMousePos] = useState();
-  const[options, setOptions] = useState({displayGrid: true})
-  
+  const [mousePos, setMousePos] = useState({
+    mouseX: 0,
+    mouseY: 0
+  });
+  const [options, setOptions] = useState({ displayGrid: true })
+
   //refs
   const drawRef = React.useRef(drawing);
   const setDrawing = data => {
@@ -56,7 +60,8 @@ export default function Scene(props) {
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
     // setTimeout(loadFromLocalStorage,5000);
-    loadFromLocalStorage()
+    if(props.userData.myGarden) loadFromUser()
+    else loadFromLocalStorage()
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     }
@@ -72,8 +77,8 @@ export default function Scene(props) {
       if (temp.points && temp.points.length > 4) {
         console.log("added")
         console.log(temp.points)
-        const toAdd = {...temp}
-        toAdd.id=Date.now()+Math.random();
+        const toAdd = { ...temp }
+        toAdd.id = Date.now() + Math.random();
         console.log(toAdd)
         const polys = getPolygons()
         polys.push(toAdd);
@@ -89,8 +94,9 @@ export default function Scene(props) {
   }, [drawing])
 
   useDidMountEffect(() => {
-    saveToLocalStorage()
-  },[polygons,images,options])
+    if(props.userData.username) saveToUser()
+    else saveToLocalStorage()
+  }, [polygons, images, options])
 
   const getPolygons = () => {
     let res = [];
@@ -102,24 +108,43 @@ export default function Scene(props) {
 
   const saveToLocalStorage = () => {
     const data = {
-      polygons:polygons,
-      images:images,
-      options:options
+      polygons: polygons,
+      images: images,
+      options: options
     }
-    window.localStorage.setItem("gardenData",JSON.stringify(data));
+    window.localStorage.setItem("gardenData", JSON.stringify(data));
   }
 
   const loadFromLocalStorage = () => {
-    let data = window.localStorage.getItem("gardenData")
-    if(data !== null) {
-      console.log("loading...")
-      data = JSON.parse(data);
-      console.log(data)
-      setPolygons(data.polygons);
-      setImages(data.images);
-      setOptions(data.options);
+    let dataStr = window.localStorage.getItem("gardenData")
+    if (dataStr !== null) {
+      processLoadedData(dataStr)
+    }
   }
-}
+
+  const saveToUser = () => {
+    const data = {
+      polygons: polygons,
+      images: images,
+      options: options
+    }
+    API.updateUserGarden(props.userData._id, {
+      myGarden:JSON.stringify(data),
+      myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.1})
+    });
+  }
+
+  const loadFromUser = () => {
+    let dataStr = props.userData.myGarden;
+    if(dataStr !== null) processLoadedData(dataStr)
+  }
+
+  const processLoadedData = (str) => {
+    const data = JSON.parse(str);
+    setPolygons(data.polygons);
+    setImages(data.images);
+    setOptions(data.options);
+  }
 
   const handleOptionsChange = (e) => {
     console.log("hi")
@@ -162,7 +187,7 @@ export default function Scene(props) {
   const handleKeyPress = (e) => {
     console.log(e)
     if (drawRef.current) {
-      
+
       e.preventDefault();
 
       if (e.keyCode === 27) {
@@ -174,7 +199,7 @@ export default function Scene(props) {
       }
     }
     else {
-      if(e.keyCode===46 && selectRef.current) {
+      if (e.keyCode === 46 && selectRef.current) {
         console.log(selectRef.current)
         deleteShape(selectRef.current)
       }
@@ -184,10 +209,10 @@ export default function Scene(props) {
   const deleteShape = id => {
     let polys = getPolygons()
     console.log(polys)
-    polys = polys.filter(item=>item.id!==id)
+    polys = polys.filter(item => item.id !== id)
     console.log(polys)
     setPolygons(polys)
-    setImages(imagesRef.current.filter(item=>item.id!==id))
+    setImages(imagesRef.current.filter(item => item.id !== id))
     selectShape(null)
   }
 
@@ -210,7 +235,7 @@ export default function Scene(props) {
   }
 
   // const handleBeginCircleDrag = (circleX, circleY) => {
-  
+
   // }
 
   const handleCircleDrag = (e, index, circle) => {
@@ -229,7 +254,7 @@ export default function Scene(props) {
     const stageW = 800
     const stageH = 800
     //TODO: make this more efficient
-    const [newX, newY] = checkGridSnap(mouseX,mouseY,15,50,50);
+    const [newX, newY] = checkGridSnap(mouseX, mouseY, 15, 50, 50);
     // if (e.evt.clientX < stageX) newX = 0
     // else if (e.evt.clientX > stageX + stageW) newX = stageW
     // else 
@@ -244,7 +269,7 @@ export default function Scene(props) {
     // console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
     // console.log(e.currentTarget.content.offsetX + " " + e.currentTarget.content.offsetY)
 
-    
+
     // console.log(newPoints)
     const temp = getPolygons()
     temp[index].points = newPoints;
@@ -254,7 +279,7 @@ export default function Scene(props) {
   const handleMouseMove = (e) => {
     const coords = [e.evt.layerX, e.evt.layerY]
     if (!drawing) {
-      
+
       return;
     }
     // console.log("hi")
@@ -265,16 +290,16 @@ export default function Scene(props) {
       tempCopy.pop();
     }
     // console.log(tempCopy.points)
-    
+
     let distToFirst = 300;
-    let xFirst,yFirst
-    if(tempCopy.length > 6) {
+    let xFirst, yFirst
+    if (tempCopy.length > 6) {
       xFirst = temp.points[0]
       yFirst = temp.points[1]
       distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
     }
 
-    if(distToFirst <= 225) {
+    if (distToFirst <= 225) {
       tempCopy.push(xFirst)
       tempCopy.push(yFirst)
       setMousePos({
@@ -283,7 +308,7 @@ export default function Scene(props) {
       })
     }
     else {
-      const pos = checkGridSnap(coords[0],coords[1], 15, 50,50)
+      const pos = checkGridSnap(coords[0], coords[1], 15, 50, 50)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
@@ -294,75 +319,73 @@ export default function Scene(props) {
     setTemp({ ...temp, points: tempCopy });
   }
 
-  const handleObjectBtnClick = src => {
-    // const src = pics[type][Math.floor(Math.random()*pics[type].length)]
+  const handleObjectBtnClick = data => {
     const newObj = {
       x: 100,
       y: 100,
       width: 50,
       height: 50,
-      src: src,
-      id: Date.now()+Math.random(),
+      src: data.src,
+      tooltip_text: data.text,
+      id: Date.now() + Math.random(),
     }
     const imgs = images.slice();
     imgs.push(newObj)
     setImages(imgs)
   }
 
-  const checkGridSnap = (x,y,snapDist,gridHeight,gridWidth) => {
+  const checkGridSnap = (x, y, snapDist, gridHeight, gridWidth) => {
     //determine grid box
-    const gridCoordX = Math.floor(x/gridWidth);
-    const gridCoordY = Math.floor(y/gridHeight);
+    const gridCoordX = Math.floor(x / gridWidth);
+    const gridCoordY = Math.floor(y / gridHeight);
     //check four corners
     const gridCornerUL = [gridCoordX * gridWidth, gridCoordY * gridHeight]
-    const gridCornerUR = [(gridCoordX+1) * gridWidth, gridCoordY * gridHeight]
-    const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY+1) * gridHeight]
-    const gridCornerLR = [(gridCoordX+1) * gridWidth, (gridCoordY+1) * gridHeight]
+    const gridCornerUR = [(gridCoordX + 1) * gridWidth, gridCoordY * gridHeight]
+    const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY + 1) * gridHeight]
+    const gridCornerLR = [(gridCoordX + 1) * gridWidth, (gridCoordY + 1) * gridHeight]
     // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
     let min = Number.MAX_SAFE_INTEGER;
     let closest;
-    const distToUL = (x-gridCornerUL[0])**2 + (y-gridCornerUL[1])**2
-    if(distToUL < min) {
-      min=distToUL
-      closest=gridCornerUL
+    const distToUL = (x - gridCornerUL[0]) ** 2 + (y - gridCornerUL[1]) ** 2
+    if (distToUL < min) {
+      min = distToUL
+      closest = gridCornerUL
     }
-    const distToUR = (x-gridCornerUR[0])**2 + (y-gridCornerUR[1])**2
-    if(distToUR < min) {
-      min=distToUR
-      closest=gridCornerUR
+    const distToUR = (x - gridCornerUR[0]) ** 2 + (y - gridCornerUR[1]) ** 2
+    if (distToUR < min) {
+      min = distToUR
+      closest = gridCornerUR
     }
-    const distToLL = (x-gridCornerLL[0])**2 + (y-gridCornerLL[1])**2
-    if(distToLL < min) {
-      min=distToLL
-      closest=gridCornerLL
+    const distToLL = (x - gridCornerLL[0]) ** 2 + (y - gridCornerLL[1]) ** 2
+    if (distToLL < min) {
+      min = distToLL
+      closest = gridCornerLL
     }
-    const distToLR = (x-gridCornerLR[0])**2 + (y-gridCornerLR[1])**2
-    if(distToLR < min) {
-      min=distToLR
-      closest=gridCornerLR
+    const distToLR = (x - gridCornerLR[0]) ** 2 + (y - gridCornerLR[1]) ** 2
+    if (distToLR < min) {
+      min = distToLR
+      closest = gridCornerLR
     }
-    
-    return min <= snapDist**2 ? closest : [x,y]
+
+    return min <= snapDist ** 2 ? closest : [x, y]
     //return corner point if distance from x,y to corner < snapDist
     //else return x,y
   }
 
   const testFunc = (e) => {
-    
+
     // e.stopPropagation();
     // e.preventDefault();
     console.log(e)
   }
 
-  const handleShapeSelect = () => {
-    
-  }
   
+
   return (
     <Grid container spacing={3}>
       <Grid item xs>
         <Paper className={classes.paper}>
-          <TabMenu onDrawClick={handleDrawBtnClick} onForegroundClick={handleObjectBtnClick} myPlants={props.userData.myPlants} options={options} onOptionChange={handleOptionsChange}/>
+          <TabMenu onDrawClick={handleDrawBtnClick} onForegroundClick={handleObjectBtnClick} myPlants={props.userData.myPlants} options={options} onOptionChange={handleOptionsChange} />
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
@@ -372,17 +395,17 @@ export default function Scene(props) {
           <Layer>
             {polygons.map((item, i) => <Polygon {...item}
               key={i}
-              isSelected={item.id===selectedId}
+              isSelected={item.id === selectedId}
               // selected={i === selected}
               onDragMove={handleCircleDrag}
-              onSelect={()=>{
+              onSelect={() => {
                 selectShape(item.id)
               }}
               // onClick={e => handleClick(e, i)}
               num={i}
               radius={RADIUS} />)}
             {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
-            
+
           </Layer>
           <Layer>
             {images.map((img, i) => {
@@ -405,8 +428,8 @@ export default function Scene(props) {
           </Layer>
           {options.displayGrid && <PlanGrid height={800} width={800} />}
           <Layer>
-            {drawing && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black'/>}
-            {temp.points && temp.points.length>2 && temp.points[0]===temp.points[temp.points.length-2] && temp.points[1]===temp.points[temp.points.length-1] && <Circle
+            {drawing && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
+            {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
               x={temp.points[0]}
               y={temp.points[1]}
               radius={8}
