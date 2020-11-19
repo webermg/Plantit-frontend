@@ -114,7 +114,7 @@ export default function Login(props) {
       if (err.response.status === 403) {
         setErrorState({passwordError: "Your password was incorrect."})
       } else if (err.response.status === 404) {
-        setErrorState({emailError: "We can't find a user with that e-mail."})
+        setErrorState({emailError: "We can't find a user with that e-mail address."})
       }
       
     })
@@ -145,6 +145,7 @@ export default function Login(props) {
             margin="dense"
             label="Email Address"
             type="email"
+            required
             onChange= {inputChange}
             value = {loginFormState.email}
             name = "email"
@@ -158,6 +159,7 @@ export default function Login(props) {
             margin="dense"
             label="Password"
             type="password"
+            required
             onChange= {inputChange}
             value = {loginFormState.password}
             name = "password"
@@ -171,7 +173,7 @@ export default function Login(props) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={formSubmit} color="primary">
+          <Button onClick={formSubmit} disabled={!loginFormState.email || !loginFormState.password} color="primary">
             Submit
           </Button>
         </DialogActions>

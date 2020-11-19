@@ -35,8 +35,10 @@ class MyPlant extends Component {
     } else if (userID != null) {
       API.getMyPlants(userID)
       .then(result => {
-        console.log(result.data)
-        this.setState({plants: result.data})
+        if (result.data) {
+          console.log(result.data)
+          this.setState({plants: result.data})
+        }
     }).catch(err => {
       console.log(err)
     })

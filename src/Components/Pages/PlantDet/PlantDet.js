@@ -102,14 +102,20 @@ export default function PlantDet() {
               <Typography
                 fontWeight="bold"
                 gutterBottom
-                variant="h5"
-                component="h2"
+                variant="h3"
+                component="h1"
               >
-                <h1>{plantDetails.common_name}</h1>
-                <h3>Scientific Name: {plantDetails.scientific_name}</h3>
+              {plantDetails.common_name}
               </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
-                <h4>Native Areas: </h4>
+              <Typography
+              fontWeight="bold"
+              gutterBottom
+              variant= "h4"
+              component="h2">
+                Scientific Name: {plantDetails.scientific_name}
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h3">
+                <strong>Native Areas: </strong>
                 <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
@@ -139,7 +145,7 @@ export default function PlantDet() {
       </Grid>
       <div>
         <div className={classes.root} style={{ margin: "5vh" }}>
-          <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
+          <Typography gutterBottom variant="h5" component="h3" style={{background: '#cac5b9'}}>
             <div className={classes.root2}>
               <form
                 className={classes.root3}
@@ -172,9 +178,13 @@ export default function PlantDet() {
                 </FormControl>
               </form>
             </div >
-
-
-            <h4>Comments: </h4>
+            <div>
+            <Typography
+            gutterBottom
+            variant="h4"
+            component= "h3">
+               Comments: 
+            </Typography>
             <p>
               DEFAULT: NO COMMENTS HAVE BEEN MADE
               Lots of words go here isn't that great. Lets do even more words
@@ -193,6 +203,7 @@ export default function PlantDet() {
                 />
               );
             })}
+            </div>
           </Typography>
         </div>
       </div>
