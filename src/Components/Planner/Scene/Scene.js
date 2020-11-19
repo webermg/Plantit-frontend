@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Polygon from '../Polygon/Polygon'
 import PlanImage from '../PlanImage/PlanImage'
+import Tooltip from '../Tooltip/Tooltip'
 import Konva from "konva";
-import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
+import { Stage, Layer, Line, Circle, Transformer, Rect } from "react-konva";
 import _ from "lodash";
 import PlanGrid from '../PlanGrid/PlanGrid';
 import sceneStyle from './sceneStyle';
@@ -11,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
+import util from './util'
 
 const STAGE_HEIGHT = 800;
 const STAGE_WIDTH = 800;
@@ -22,6 +24,8 @@ export default function Scene(props) {
   const [polygons, _setPolygons] = useState([])
 
   const [images, _setImages] = useState([])
+  const [hoveredImage, setHoveredImage] = useState(null)
+
   const [selectedId, _selectShape] = React.useState(null);
 
   const [drawing, _setDrawing] = useState(false)
@@ -239,12 +243,15 @@ export default function Scene(props) {
       setDrawing(true);
       setTemp({ points: [], fillPatternImage: imageURL })
     }
-
   }
 
-  // const handleBeginCircleDrag = (circleX, circleY) => {
+  const handleImageMouseover = (props) => {
+    if(props.tooltip_text) setHoveredImage(props)
+  }
 
-  // }
+  const handleImageMouseout = () => {
+    setHoveredImage(null)
+  }
 
   const handleCircleDrag = (e, index, circle) => {
     console.log(e)
@@ -262,7 +269,7 @@ export default function Scene(props) {
     // const stageW = 800
     // const stageH = 800
     //TODO: make this more efficient
-    const [newX, newY] = checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
+    const [newX, newY] = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
     // if (e.evt.clientX < stageX) newX = 0
     // else if (e.evt.clientX > stageX + stageW) newX = stageW
     // else 
@@ -430,6 +437,8 @@ export default function Scene(props) {
                     imgs[i] = newAttrs;
                     setImages(imgs);
                   }}
+                  onMouseEnter={handleImageMouseover}
+                  onMouseLeave={handleImageMouseout}
                 />
               );
             })}
@@ -446,6 +455,9 @@ export default function Scene(props) {
               strokeWidth={1}
               rotateEnabled={false}
             />}
+            {hoveredImage && (
+              <Tooltip {...hoveredImage}/>
+            )}
           </Layer>
         </Stage>
       </Grid>

@@ -4,10 +4,9 @@ import { Stage, Layer, Image, Transformer, Text } from 'react-konva';
 import useImage from 'use-image';
 import { Tooltip } from '@material-ui/core'
 
-export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }) {
+export default function PlanImage({ shapeProps, isSelected, onSelect, onChange, onMouseEnter, onMouseLeave }) {
 
   const [image] = useImage(shapeProps.src, 'Anonymous');
-  const [mousedOver, setMousedOver] = useState(false)
   const imgRef = React.useRef();
   const trRef = React.useRef();
 
@@ -20,16 +19,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }
     }
   }, [isSelected]);
 
-  const handleMouseMove = () => {
-    setMousedOver(true)
-  }
-
-  const handleMouseOut = () => {
-    setMousedOver(false)
-  }
-
   return (
-    // <Tooltip title="add" arrow>
     <React.Fragment>
       <Image
         image={image}
@@ -37,9 +27,18 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }
         onTap={onSelect}
         ref={imgRef}
         {...shapeProps}
-        onMouseEnter={handleMouseMove}
-        onMouseLeave={handleMouseOut}
+        onMouseEnter={()=>{
+          onMouseEnter({
+            x:shapeProps.x,
+            y:shapeProps.y,
+            width:shapeProps.width,
+            height:shapeProps.height,
+            tooltip_text:shapeProps.tooltip_text
+          })
+        }}
+        onMouseLeave={onMouseLeave}
         draggable
+        onDragStart={onMouseLeave}
         onDragEnd={(e) => {
           onChange({
             ...shapeProps,
@@ -81,9 +80,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange }
           }}
         />
       )}
-      {mousedOver && <Text x={shapeProps.x+Math.floor(shapeProps.width/2)} y={shapeProps.y+shapeProps.height+20} text={shapeProps.tooltip_text}/>}
     </React.Fragment>
-    // </Tooltip>
 
   );
 }
