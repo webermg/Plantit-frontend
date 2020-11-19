@@ -1,6 +1,6 @@
 import React,{useEffect, useRef} from 'react'
 import {Button, ButtonGroup} from '@material-ui/core'
-import pics from '../Scene/util'
+import pics from './pics'
 
 export default function ForeGroundPanel(props) {
   
