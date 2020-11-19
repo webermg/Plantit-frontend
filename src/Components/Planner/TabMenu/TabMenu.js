@@ -89,13 +89,13 @@ export default function TabMenu(props) {
         <DrawPanel onClick={props.onDrawClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
-        {props.myPlants ? <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/> : "You aren't logged in"}
+        {props.myPlants ? <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/> : "Log in to add plants"}
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={2}>
         <ForeGroundPanel onClick={props.onForegroundClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={3}>
-        <OptionsPanel {...props.options} onChange={props.onOptionChange}/>
+        <OptionsPanel {...props.options} onChange={props.onOptionChange} onSliderChange={props.onSliderChange}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={4}>
         Item Five

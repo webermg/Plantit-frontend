@@ -6,7 +6,7 @@ import MyGarden from '../src/Components/Pages/MyGarden/MyGarden';
 import MyPlant from '../src/Components/Pages/MyPlant/MyPlant';
 import PlantDet from '../src/Components/Pages/PlantDet/PlantDet';
 import Results from './Components/Results/Results';
-
+import Profile from '../src/Components/Pages/Profile/Profile'
 
 
 
@@ -20,7 +20,7 @@ function App() {
       <Route exact path="/myplant" component={MyPlant}/>
       <Route exact path="/plant/:slug" component={PlantDet}/>
       <Route exact path="/plantsearch" component={Results}/>
-      
+      <Route exact path="/profile" component={Profile}/>
     </Router>
   );
 }
