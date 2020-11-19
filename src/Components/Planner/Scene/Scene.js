@@ -12,6 +12,10 @@ import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
 
+const STAGE_HEIGHT = 800;
+const STAGE_WIDTH = 800;
+const RADIUS = 6;
+
 export default function Scene(props) {
   const classes = sceneStyle;
 
@@ -29,7 +33,13 @@ export default function Scene(props) {
     mouseX: 0,
     mouseY: 0
   });
-  const [options, setOptions] = useState({ displayGrid: true })
+  const [options, setOptions] = useState({ 
+    displayGrid: true,
+    gridSize: 50,
+    snapDist: 20,
+    lockBackground: false,
+    lockForeground: false,
+  })
 
   //refs
   const drawRef = React.useRef(drawing);
@@ -56,7 +66,7 @@ export default function Scene(props) {
 
   const stageRef = React.useRef();
 
-  const RADIUS = 6;
+  
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
     // setTimeout(loadFromLocalStorage,5000);
@@ -94,7 +104,7 @@ export default function Scene(props) {
   }, [drawing])
 
   useDidMountEffect(() => {
-    if(props.userData.username) saveToUser()
+    if(props.userData._id) saveToUser()
     else saveToLocalStorage()
   }, [polygons, images, options])
 
@@ -208,9 +218,7 @@ export default function Scene(props) {
 
   const deleteShape = id => {
     let polys = getPolygons()
-    console.log(polys)
     polys = polys.filter(item => item.id !== id)
-    console.log(polys)
     setPolygons(polys)
     setImages(imagesRef.current.filter(item => item.id !== id))
     selectShape(null)
@@ -249,12 +257,12 @@ export default function Scene(props) {
     // console.log(newPoints)
     // console.log(circleX + " " + circleY)
     // Changing the points state with new points while dragging the circle
-    const stageX = stageRef.current.content.offsetLeft
-    const stageY = stageRef.current.content.offsetTop
-    const stageW = 800
-    const stageH = 800
+    // const stageX = stageRef.current.content.offsetLeft
+    // const stageY = stageRef.current.content.offsetTop
+    // const stageW = 800
+    // const stageH = 800
     //TODO: make this more efficient
-    const [newX, newY] = checkGridSnap(mouseX, mouseY, 15, 50, 50);
+    const [newX, newY] = checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
     // if (e.evt.clientX < stageX) newX = 0
     // else if (e.evt.clientX > stageX + stageW) newX = stageW
     // else 
@@ -291,7 +299,7 @@ export default function Scene(props) {
     }
     // console.log(tempCopy.points)
 
-    let distToFirst = 300;
+    let distToFirst = 1000;
     let xFirst, yFirst
     if (tempCopy.length > 6) {
       xFirst = temp.points[0]
@@ -308,7 +316,7 @@ export default function Scene(props) {
       })
     }
     else {
-      const pos = checkGridSnap(coords[0], coords[1], 15, 50, 50)
+      const pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
@@ -334,43 +342,43 @@ export default function Scene(props) {
     setImages(imgs)
   }
 
-  const checkGridSnap = (x, y, snapDist, gridHeight, gridWidth) => {
-    //determine grid box
-    const gridCoordX = Math.floor(x / gridWidth);
-    const gridCoordY = Math.floor(y / gridHeight);
-    //check four corners
-    const gridCornerUL = [gridCoordX * gridWidth, gridCoordY * gridHeight]
-    const gridCornerUR = [(gridCoordX + 1) * gridWidth, gridCoordY * gridHeight]
-    const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY + 1) * gridHeight]
-    const gridCornerLR = [(gridCoordX + 1) * gridWidth, (gridCoordY + 1) * gridHeight]
-    // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
-    let min = Number.MAX_SAFE_INTEGER;
-    let closest;
-    const distToUL = (x - gridCornerUL[0]) ** 2 + (y - gridCornerUL[1]) ** 2
-    if (distToUL < min) {
-      min = distToUL
-      closest = gridCornerUL
-    }
-    const distToUR = (x - gridCornerUR[0]) ** 2 + (y - gridCornerUR[1]) ** 2
-    if (distToUR < min) {
-      min = distToUR
-      closest = gridCornerUR
-    }
-    const distToLL = (x - gridCornerLL[0]) ** 2 + (y - gridCornerLL[1]) ** 2
-    if (distToLL < min) {
-      min = distToLL
-      closest = gridCornerLL
-    }
-    const distToLR = (x - gridCornerLR[0]) ** 2 + (y - gridCornerLR[1]) ** 2
-    if (distToLR < min) {
-      min = distToLR
-      closest = gridCornerLR
-    }
+  // const checkGridSnap = (x, y, snapDist, gridHeight, gridWidth) => {
+  //   //determine grid box
+  //   const gridCoordX = Math.floor(x / gridWidth);
+  //   const gridCoordY = Math.floor(y / gridHeight);
+  //   //check four corners
+  //   const gridCornerUL = [gridCoordX * gridWidth, gridCoordY * gridHeight]
+  //   const gridCornerUR = [(gridCoordX + 1) * gridWidth, gridCoordY * gridHeight]
+  //   const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY + 1) * gridHeight]
+  //   const gridCornerLR = [(gridCoordX + 1) * gridWidth, (gridCoordY + 1) * gridHeight]
+  //   // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
+  //   let min = Number.MAX_SAFE_INTEGER;
+  //   let closest;
+  //   const distToUL = (x - gridCornerUL[0]) ** 2 + (y - gridCornerUL[1]) ** 2
+  //   if (distToUL < min) {
+  //     min = distToUL
+  //     closest = gridCornerUL
+  //   }
+  //   const distToUR = (x - gridCornerUR[0]) ** 2 + (y - gridCornerUR[1]) ** 2
+  //   if (distToUR < min) {
+  //     min = distToUR
+  //     closest = gridCornerUR
+  //   }
+  //   const distToLL = (x - gridCornerLL[0]) ** 2 + (y - gridCornerLL[1]) ** 2
+  //   if (distToLL < min) {
+  //     min = distToLL
+  //     closest = gridCornerLL
+  //   }
+  //   const distToLR = (x - gridCornerLR[0]) ** 2 + (y - gridCornerLR[1]) ** 2
+  //   if (distToLR < min) {
+  //     min = distToLR
+  //     closest = gridCornerLR
+  //   }
 
-    return min <= snapDist ** 2 ? closest : [x, y]
-    //return corner point if distance from x,y to corner < snapDist
-    //else return x,y
-  }
+  //   return min <= snapDist ** 2 ? closest : [x, y]
+  //   //return corner point if distance from x,y to corner < snapDist
+  //   //else return x,y
+  // }
 
   const testFunc = (e) => {
 
@@ -390,7 +398,7 @@ export default function Scene(props) {
         </Paper>
       </Grid>
       <Grid item xs>
-        <Stage className='garden-planner' ref={stageRef} height={800} width={800} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+        <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
           {/* {options.displayGrid && <PlanGrid height={800} width={800} />} */}
           <Layer>
             {polygons.map((item, i) => <Polygon {...item}
@@ -426,7 +434,7 @@ export default function Scene(props) {
               );
             })}
           </Layer>
-          {options.displayGrid && <PlanGrid height={800} width={800} />}
+          {options.displayGrid && <PlanGrid height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
           <Layer>
             {drawing && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
             {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
