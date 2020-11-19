@@ -8,9 +8,12 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
-// import { reject, result } from 'lodash';
+import { Redirect, useHistory } from 'react-router-dom';
+import Axios from 'axios';
+import { result } from 'lodash';
+import Grid from "@material-ui/core/Grid";
 import TokenExpiry from '../../utils/TokenExpiry';
+
 
 
 
@@ -181,9 +184,15 @@ export default function Results(props) {
 
 
   return (
-    <div className={classes.root}>
-      <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
-        <Box p={1} m={1} flexShrink={1}>
+    <React.Fragment className={classes.root}>
+    {/* <div className={classes.root}> */}
+      <Grid container display="flex" alignContent="center"
+      // flexDirection="row" 
+      // flexWrap="wrap" 
+      // alignContent="flex-start" 
+      // p={1} m={1}
+      >
+        <Grid item flexShrink={1} xs={12} style={{height:500, overflowY:'auto'}}>
           {/* Section with plants already in our database */}
           {/* {console.log(plantsInDatabase)} */}
           {plantsInDatabase.length === 0 ? "no plants found" : "plants found"}
@@ -205,12 +214,12 @@ export default function Results(props) {
               inDatabase={false}
               addFavorite={addFavorite} />
           })}
-        </Box>
-      </Box>
-      <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
+        </Grid>
+      </Grid>
+      {/* <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}> */}
 
         {/* Button for more plants */}
-        <Box p={1} flexShrink={1}>
+        {/* <Box p={1} flexShrink={1}>
           <Button
             variant="contained"
             color="primary"
@@ -220,10 +229,10 @@ export default function Results(props) {
               MORE
                 </Hidden>
           </Button>
-        </Box>
+        </Box> */}
         {/* Upon button being clicked, button for more plants does an api call  */}
         {/* next and back buttons to get more results from trefle */}
-        <Box p={1} flexShrink={1}>
+        {/* <Box p={1} flexShrink={1}>
           <Button
             variant="contained"
             color="primary"
@@ -246,8 +255,9 @@ export default function Results(props) {
               RIGHT
                 </Hidden>
           </Button>
-        </Box>
-      </Box>
-    </div>
+        </Box> */}
+      {/* </Box> */}
+    {/* </div> */}
+    </React.Fragment>
   )
 }

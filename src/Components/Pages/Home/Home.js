@@ -12,9 +12,35 @@ import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
 import API from '../../../utils/API';
+import { createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import { Transition, animated } from 'react-spring/renderprops';
+import Hero from '../../Hero/Hero';
 
+
+
+const theme = createMuiTheme({
+    palette: {
+        background: {
+            default: '#005254',
+        }
+    },
+    textField: {
+        width: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        paddingBottom: 0,
+        marginTop: 0,
+        fontWeight: 500
+    },
+    input: {
+        color: 'white'
+    }
+});
 
 const useStyles = makeStyles((theme) => ({
+
     root: {
         flexGrow: 1,
     },
@@ -22,7 +48,8 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        margin: theme.spacing(2)
+        margin: theme.spacing(2),
+        background: '#cac5b9'
     },
 }));
 class Home extends Component {
@@ -30,7 +57,8 @@ class Home extends Component {
         plants,
         searchValue: "",
         submittedSearch: "",
-        seachedPlants: []
+        seachedPlants: [],
+        toggleHero: true,
     };
 
     componentDidMount() {
@@ -39,9 +67,9 @@ class Home extends Component {
         API.getFeaturedPlants()
             .then(result => {
                 console.log(result.data)
-                const featuredPlants = result.data.map(element => {return element.plantInfo[0]})
+                const featuredPlants = result.data.map(element => { return element.plantInfo[0] })
                 console.log(featuredPlants)
-                this.setState({plants:featuredPlants})
+                this.setState({ plants: featuredPlants })
             })
     }
 
@@ -57,34 +85,46 @@ class Home extends Component {
         this.setState({
             submittedSearch: this.state.searchValue
         })
-
     }
 
     removePLant = id => {
         const plants = this.state.plants.filter(plant => plant.id !== id);
         this.setState({ plants })
     };
+
+    toggle = e => this.setState( {toggleHero: false})
+    
     render() {
         const classes = useStyles;
         return (
-            // <React.Fragment>
-                // <CssBaseline />
-                <div className={classes.root} style={{ width: '100%' }} >
-                    <Typography component="div" style={{ backgroundColor: '#cac5b9' }}>
-                        <Container >
-                            <Box display="flex" flexDirection="row-reverse" p={1} m={1} >
-                                <Box mx="auto" p={1} style={{ width: 'auto' }}>
-                                    <Paper className={classes.paper}>
-                                        <Search handleFormSubmit={this.handleFormSubmit}
-                                        handleInputChange={this.handleInputChange} state={this.state}/>
-                                        <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2>
-                                            <Results submittedSearch={this.state.submittedSearch}/>
-                                    </Paper>
-                                </Box>
-                                <Hidden only="xs">
-                                    <Box mx="auto" p={1} style={{ width: '35%' }}>
-                                        <Paper className={classes.paper}>
-                                            <h2 style={{margin: "0em", padding: "1em"}}>Featured Plants</h2>
+            <MuiThemeProvider theme={theme}>
+                <React.Fragment>
+                    <CssBaseline />
+                    <div className={classes.root} >
+                        {/* <Typography component="div"> */}
+                        <Grid container >
+                            <Transition
+                                native
+                                items={this.state.toggleHero}
+                                from={{opacity: 1}}
+                                enter={{opacity:1}}
+                                leave={{opacity:0}}
+                            >{show => show && (props =>(
+                               <animated.div style={props}>
+                                   <Hero  
+                                    toggle={this.toggle}
+                                />
+                                </animated.div> 
+                            ))}
+                            </Transition>
+                            {/* <Box display="flex" flexDirection="row-reverse" p={1} m={1} > */}
+                            <Hidden only="xs">
+                                <Grid item mx="auto" p={1} m={1} style={{ width: '30%', margin: '2%' }}>
+                                    <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                        <Typography>
+                                            <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
+                                        </Typography>
+                                        <Grid item style={{ height: 535, overflowY: 'auto' }}>
                                             {this.state.plants.map(plant => (
                                                 <RecentCard
                                                     _id={plant._id}
@@ -94,15 +134,25 @@ class Home extends Component {
                                                     image_url={plant.image_url}
                                                 />
                                             ))}
-                                            
-                                        </Paper>
-                                    </Box>
-                                </Hidden>
-                            </Box>
-                        </Container>
-                    </Typography>
-                </div>
-            // </React.Fragment>
+                                        </Grid>
+                                    </Paper>
+                                </Grid>
+                            </Hidden>
+
+                            <Grid item mx="auto" style={{ width: '60%', margin: '2%' }}>
+                                <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                    <Search handleFormSubmit={this.handleFormSubmit}
+                                        handleInputChange={this.handleInputChange} state={this.state} />
+                                    {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
+                                    <Results submittedSearch={this.state.submittedSearch} />
+                                </Paper>
+                            </Grid>
+                            {/* </Box> */}
+                        </Grid>
+                        {/* </Typography> */}
+                    </div>
+                </React.Fragment>
+            </MuiThemeProvider>
         )
     }
 

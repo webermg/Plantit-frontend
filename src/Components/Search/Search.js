@@ -11,7 +11,6 @@ import { Hidden } from "@material-ui/core";
 
 
 
-
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -26,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: '25ch',
   },
+  input: {
+    background: 'white'
+},
   button: {
     margin: theme.spacing(1),
     float: "right",
@@ -39,15 +41,17 @@ export default function Search(props) {
   return (
     <div className={classes.root}>
       <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
-
         <FormControl className={classes.formControl} >
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
             <Box p={1} flexShrink={1}>
             <TextField 
               id="outlined-basic" 
+              background="white"
               label="Plant?" 
               variant="outlined" 
               name="searchValue"
+              InputProps={{
+                className: classes.input}}
               value={props.state.searchValue}
               onChange={props.handleInputChange}
               />
@@ -80,6 +84,7 @@ export default function Search(props) {
         </FormControl>
       </form>
     </div>
+   
   );
 }
 

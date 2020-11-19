@@ -7,8 +7,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { PinDropSharp } from "@material-ui/icons";
+import Typography from '@material-ui/core/Typography'
 
-export default function Login() {
+export default function Login(props) {
   const [open, setOpen] = useState(false);
   const [loginFormState, setLoginFormState] = useState({
     email: "",
@@ -22,12 +24,17 @@ export default function Login() {
     token: "",
     isLoggedIn: false
   })
+  const [errorState, setErrorState] = useState({
+    emailError: "",
+    passwordError: ""
+  })
 
   useEffect(fetchUserData, [])
 
   function fetchUserData() {
+    const id = localStorage.getItem("id")
     const token = localStorage.getItem("token");
-    API.getUser(token).then(profileData => {
+    API.getUser(id).then(profileData => {
       if (profileData) {
         setProfileState({
           username: profileData.username,
@@ -58,14 +65,23 @@ export default function Login() {
       ...loginFormState,
       [name]: value
     })
+    setErrorState({
+      emailError: "",
+      passwordError: ""
+    })
   }
 
   const formSubmit = event => {
     event.preventDefault();
-    API.login(loginFormState).then(newToken => {
-      localStorage.setItem("token", newToken.data.token)
-      localStorage.setItem("id", newToken.data.userInfo.id)
-      API.getUser(newToken.data.userInfo.id)
+    if (!loginFormState.email) {
+      setErrorState({emailError: "Please enter an e-mail address."})
+    } else if (!loginFormState.password) {
+      setErrorState({passwordError: "Please enter a password."})
+    } else {
+    API.login(loginFormState).then(userLogin => {
+      localStorage.setItem("token", userLogin.data.token)
+      localStorage.setItem("id", userLogin.data.userInfo.id)
+      API.getUser(userLogin.data.userInfo.id)
       .then (profileData => {
         console.log(profileData)
         if(profileData) {
@@ -77,6 +93,8 @@ export default function Login() {
             token: profileData.data.token,
             isLoggedIn: true
           })
+          localStorage.setItem("isLoggedIn", true);
+          props.setLoginState(true)
           handleClose();
         } else {
           localStorage.removeItem("token");
@@ -91,8 +109,12 @@ export default function Login() {
           handleClose();
         }
       })
+    }).catch(err => {
+      console.log(err)
+      setErrorState({passwordError: "E-mail address or password was incorrect."})
     })
   }
+}
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -107,7 +129,7 @@ export default function Login() {
       <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
         Log In
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -123,6 +145,9 @@ export default function Login() {
             name = "email"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.emailError}
+          </Typography>
           <TextField
             autoFocus
             margin="dense"
@@ -133,6 +158,9 @@ export default function Login() {
             name = "password"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.passwordError}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

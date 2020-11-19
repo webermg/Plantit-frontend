@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,9 +13,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import Login from '../Login/Login.js'
-import Signup from '../Signup/Signup'
+import { Link as RouterLink, useLocation, Redirect } from "react-router-dom";
+import Login from '../Login/Login.js';
+import Signup from '../Signup/Signup';
+import API from '../../utils/API';
 // import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -87,8 +88,15 @@ const useStyles = makeStyles((theme) => ({
 export default function NavBar() {
   const location = useLocation();
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [LoginState, setLoginState] = useState()
+
+  let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"))
+
+  useEffect(() => {
+    setLoginState(isLoggedIn)
+  }, [isLoggedIn])
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -110,6 +118,13 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const Logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.setItem("isLoggedIn", false)
+    handleMenuClose()
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -121,8 +136,11 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-     <MenuItem onClick={handleMenuClose}><Login/></MenuItem>
-      <MenuItem onClick={handleMenuClose}><Signup/></MenuItem>
+      {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
+         <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState}/></MenuItem>}
+         {isLoggedIn? <MenuItem href='/'>My Profile</MenuItem> : 
+         <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState}/></MenuItem>  }
+    
     </Menu>
   );
 
@@ -170,12 +188,13 @@ export default function NavBar() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      
     </Menu>
   );
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static"style={{ background: '#894f62' }}>
+      <AppBar position="static"style={{ background: '#614051' }}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             <IconButton component={RouterLink} to={"/"}>
@@ -199,18 +218,19 @@ export default function NavBar() {
           <div className={classes.sectionDesktop}>
             <MenuItem>
               <Typography />
-              <IconButton component={RouterLink} to={"/myplant"}>
+              {isLoggedIn? <IconButton component={RouterLink} to={"/myplant"}>
                 My Plants
-              </IconButton>
+              </IconButton> : <p></p>}
               <Typography />
             </MenuItem>
             <MenuItem>
               <Typography>
-                <IconButton component={RouterLink} to={"/mygarden"}>
-                  My Garden
-                </IconButton>
+              {isLoggedIn? <IconButton component={RouterLink} to={"/mygarden"}>
+                My Garden
+              </IconButton> : <p></p>}
               </Typography>
             </MenuItem>
+            
             <IconButton
               edge="end"
               aria-label="account of current user"
