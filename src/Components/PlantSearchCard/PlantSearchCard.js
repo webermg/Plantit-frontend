@@ -43,7 +43,7 @@ export default function PlantSearchCard(props) {
     function makeFavorite() {
         
         if(!favorite) {
-setFavorite(true);
+        setFavorite(true);
         props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"),trefleToken)
         }
         
@@ -89,7 +89,7 @@ useEffect(()=>{
                                 className={classes.button}
                                 size="small"
                                 color="primary"
-                                onClick={() => props.inDatabase ? history.push("/plant/" + props.data.slug) : props.newPlantInDatabase(props.data.slug, props.usertoken)}
+                                onClick={() => props.inDatabase ? history.push("/plant/" + props.data.slug) : props.newPlantInDatabase(props.data.slug, trefleToken)}
                                 endIcon={<MoreHorizIcon />}
                             >
                                 <Hidden only="xs">

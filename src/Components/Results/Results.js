@@ -174,8 +174,10 @@ export default function Results(props) {
   }
 
   const newPlantInDatabase = function (slug, token) {
+    console.log(token)
     API.getNewPlant(slug, token)
       .then(result => {
+        console.log(result)
         history.push("/plant/" + result.data.slug)
       }, err => console.log(err))
   }
