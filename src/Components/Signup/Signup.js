@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography'
 
-export default function Signup() {
+export default function Signup(props) {
     const [open, setOpen] = useState(false);
     const [signupFormState, setSignupFormState] = useState({
         username: "",
@@ -99,6 +99,7 @@ export default function Signup() {
                     isLoggedIn: true
                   })
                   localStorage.setItem("isLoggedIn", true)
+                  props.setLoginState(true)
                   handleClose();
             })
             
