@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const URL_BASE = "http://localhost:3001/"
-const URL_BASE = "https://plantit-server.herokuapp.com/"
+const URL_BASE = "http://localhost:3001/"
+// const URL_BASE = "https://plantit-server.herokuapp.com/"
 
 const API = {
     getToken: function () {
@@ -12,6 +12,12 @@ const API = {
     },
     getUser: function (query) {
         return axios.get(URL_BASE + "user/" + query)
+    },
+    updateUserGarden: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/garden',{
+            myGarden:data.myGarden,
+            myGardenImg:data.myGardenImg
+        })
     },
     getPlantID: function (slug) {
         return axios.get(URL_BASE + "plant/" + slug)
