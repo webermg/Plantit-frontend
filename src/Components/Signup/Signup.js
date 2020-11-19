@@ -128,6 +128,7 @@ export default function Signup(props) {
                 margin="dense"
                 label="Username"
                 type="text"
+                required
                 onChange= {inputChange}
                 value = {signupFormState.username}
                 name = "username"
@@ -141,6 +142,7 @@ export default function Signup(props) {
                 margin="dense"
                 label="Email Address"
                 type="email"
+                required
                 onChange= {inputChange}
                 value = {signupFormState.email}
                 name = "email"
@@ -154,6 +156,7 @@ export default function Signup(props) {
                 margin="dense"
                 label="Password"
                 type="password"
+                required
                 onChange= {inputChange}
                 value = {signupFormState.password}
                 name = "password"
