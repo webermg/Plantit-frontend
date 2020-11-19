@@ -78,10 +78,10 @@ export default function Login(props) {
     } else if (!loginFormState.password) {
       setErrorState({passwordError: "Please enter a password."})
     } else {
-    API.login(loginFormState).then(newToken => {
-      localStorage.setItem("token", newToken.data.token)
-      localStorage.setItem("id", newToken.data.userInfo.id)
-      API.getUser(newToken.data.userInfo.id)
+    API.login(loginFormState).then(userLogin => {
+      localStorage.setItem("token", userLogin.data.token)
+      localStorage.setItem("id", userLogin.data.userInfo.id)
+      API.getUser(userLogin.data.userInfo.id)
       .then (profileData => {
         console.log(profileData)
         if(profileData) {
@@ -109,6 +109,9 @@ export default function Login(props) {
           handleClose();
         }
       })
+    }).catch(err => {
+      console.log(err)
+      setErrorState({passwordError: "E-mail address or password was incorrect."})
     })
   }
 }
