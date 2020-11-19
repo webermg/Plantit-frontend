@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Polygon from '../Polygon/Polygon'
 import PlanImage from '../PlanImage/PlanImage'
+import Tooltip from '../Tooltip/Tooltip'
 import Konva from "konva";
-import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
+import { Stage, Layer, Line, Circle, Transformer, Rect } from "react-konva";
 import _ from "lodash";
 import PlanGrid from '../PlanGrid/PlanGrid';
 import sceneStyle from './sceneStyle';
@@ -11,6 +12,11 @@ import Grid from '@material-ui/core/Grid';
 import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
+import util from './util'
+
+const STAGE_HEIGHT = 800;
+const STAGE_WIDTH = 800;
+const RADIUS = 6;
 
 export default function Scene(props) {
   const classes = sceneStyle;
@@ -18,6 +24,8 @@ export default function Scene(props) {
   const [polygons, _setPolygons] = useState([])
 
   const [images, _setImages] = useState([])
+  const [hoveredImage, setHoveredImage] = useState(null)
+
   const [selectedId, _selectShape] = React.useState(null);
 
   const [drawing, _setDrawing] = useState(false)
@@ -29,8 +37,15 @@ export default function Scene(props) {
     mouseX: 0,
     mouseY: 0
   });
-  const [options, setOptions] = useState({ displayGrid: true })
-
+  const [options, setOptions] = useState({ 
+    displayGrid: true,
+    gridSize: 50,
+    snapDist: 20,
+    gridSnap: true,
+    lockBackground: false,
+    lockForeground: false,
+  })
+  
   //refs
   const drawRef = React.useRef(drawing);
   const setDrawing = data => {
@@ -56,7 +71,7 @@ export default function Scene(props) {
 
   const stageRef = React.useRef();
 
-  const RADIUS = 6;
+  
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
     // setTimeout(loadFromLocalStorage,5000);
@@ -94,7 +109,7 @@ export default function Scene(props) {
   }, [drawing])
 
   useDidMountEffect(() => {
-    if(props.userData.username) saveToUser()
+    if(props.userData._id) saveToUser()
     else saveToLocalStorage()
   }, [polygons, images, options])
 
@@ -131,7 +146,7 @@ export default function Scene(props) {
     API.updateUserGarden(props.userData._id, {
       myGarden:JSON.stringify(data),
       myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.1})
-    });
+    }).then(res=>console.log("saved"));
   }
 
   const loadFromUser = () => {
@@ -147,8 +162,11 @@ export default function Scene(props) {
   }
 
   const handleOptionsChange = (e) => {
-    console.log("hi")
     setOptions({ ...options, [e.target.name]: e.target.checked });
+  }
+  
+  const handleOptionsSliderChange = (e,v) => {
+    if(v !== options[e.target.ariaLabel]) setOptions({ ...options, [e.target.ariaLabel]: v });
   }
 
   const handleStageClick = (e) => {
@@ -156,7 +174,6 @@ export default function Scene(props) {
     if (!drawing) {
       // console.log(e)
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
-      // setSelected(null)
       selectShape(null)
     }
     else {
@@ -164,12 +181,13 @@ export default function Scene(props) {
       const x = e.evt.layerX
       const y = e.evt.layerY
       const coords = [...temp.points]
-      let distToFirst = 200
-      if (temp.points && temp.points.length >= 3) {
+      let distToFirst = 1000
+      if (temp.points && temp.points.length > 2) {
         console.log(x + " " + y + " " + coords[0] + " " + coords[1])
         distToFirst = (x - coords[0]) ** 2 + (y - coords[1]) ** 2
       }
-      if (distToFirst <= 150) {
+      console.log(options.snapDist)
+      if (distToFirst <= options.snapDist**2) {
         coords.pop()
         coords.pop()
         console.log("drawing off")
@@ -187,9 +205,7 @@ export default function Scene(props) {
   const handleKeyPress = (e) => {
     console.log(e)
     if (drawRef.current) {
-
       e.preventDefault();
-
       if (e.keyCode === 27) {
         setTemp({})
       }
@@ -208,9 +224,7 @@ export default function Scene(props) {
 
   const deleteShape = id => {
     let polys = getPolygons()
-    console.log(polys)
     polys = polys.filter(item => item.id !== id)
-    console.log(polys)
     setPolygons(polys)
     setImages(imagesRef.current.filter(item => item.id !== id))
     selectShape(null)
@@ -221,9 +235,6 @@ export default function Scene(props) {
     if (drawing) {
       console.log("drawing off")
       setDrawing(false)
-      // const polys = getPolygons()
-      // polys.push(temp);
-      // setPolygons(polys);
       setTemp({});
     }
     else {
@@ -231,12 +242,15 @@ export default function Scene(props) {
       setDrawing(true);
       setTemp({ points: [], fillPatternImage: imageURL })
     }
-
   }
 
-  // const handleBeginCircleDrag = (circleX, circleY) => {
+  const handleImageMouseover = (props) => {
+    if(props.tooltip_text) setHoveredImage(props)
+  }
 
-  // }
+  const handleImageMouseout = () => {
+    setHoveredImage(null)
+  }
 
   const handleCircleDrag = (e, index, circle) => {
     console.log(e)
@@ -249,12 +263,12 @@ export default function Scene(props) {
     // console.log(newPoints)
     // console.log(circleX + " " + circleY)
     // Changing the points state with new points while dragging the circle
-    const stageX = stageRef.current.content.offsetLeft
-    const stageY = stageRef.current.content.offsetTop
-    const stageW = 800
-    const stageH = 800
+    // const stageX = stageRef.current.content.offsetLeft
+    // const stageY = stageRef.current.content.offsetTop
+    // const stageW = 800
+    // const stageH = 800
     //TODO: make this more efficient
-    const [newX, newY] = checkGridSnap(mouseX, mouseY, 15, 50, 50);
+    const [newX, newY] = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
     // if (e.evt.clientX < stageX) newX = 0
     // else if (e.evt.clientX > stageX + stageW) newX = stageW
     // else 
@@ -291,15 +305,16 @@ export default function Scene(props) {
     }
     // console.log(tempCopy.points)
 
-    let distToFirst = 300;
+    let distToFirst = 1000;
     let xFirst, yFirst
-    if (tempCopy.length > 6) {
+    if (tempCopy.length >= 6) {
       xFirst = temp.points[0]
       yFirst = temp.points[1]
       distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
+      // console.log(distToFirst)
     }
 
-    if (distToFirst <= 225) {
+    if (distToFirst <= 400) {
       tempCopy.push(xFirst)
       tempCopy.push(yFirst)
       setMousePos({
@@ -308,7 +323,8 @@ export default function Scene(props) {
       })
     }
     else {
-      const pos = checkGridSnap(coords[0], coords[1], 15, 50, 50)
+      const pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
+      // console.log(pos)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
@@ -334,44 +350,6 @@ export default function Scene(props) {
     setImages(imgs)
   }
 
-  const checkGridSnap = (x, y, snapDist, gridHeight, gridWidth) => {
-    //determine grid box
-    const gridCoordX = Math.floor(x / gridWidth);
-    const gridCoordY = Math.floor(y / gridHeight);
-    //check four corners
-    const gridCornerUL = [gridCoordX * gridWidth, gridCoordY * gridHeight]
-    const gridCornerUR = [(gridCoordX + 1) * gridWidth, gridCoordY * gridHeight]
-    const gridCornerLL = [gridCoordX * gridWidth, (gridCoordY + 1) * gridHeight]
-    const gridCornerLR = [(gridCoordX + 1) * gridWidth, (gridCoordY + 1) * gridHeight]
-    // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
-    let min = Number.MAX_SAFE_INTEGER;
-    let closest;
-    const distToUL = (x - gridCornerUL[0]) ** 2 + (y - gridCornerUL[1]) ** 2
-    if (distToUL < min) {
-      min = distToUL
-      closest = gridCornerUL
-    }
-    const distToUR = (x - gridCornerUR[0]) ** 2 + (y - gridCornerUR[1]) ** 2
-    if (distToUR < min) {
-      min = distToUR
-      closest = gridCornerUR
-    }
-    const distToLL = (x - gridCornerLL[0]) ** 2 + (y - gridCornerLL[1]) ** 2
-    if (distToLL < min) {
-      min = distToLL
-      closest = gridCornerLL
-    }
-    const distToLR = (x - gridCornerLR[0]) ** 2 + (y - gridCornerLR[1]) ** 2
-    if (distToLR < min) {
-      min = distToLR
-      closest = gridCornerLR
-    }
-
-    return min <= snapDist ** 2 ? closest : [x, y]
-    //return corner point if distance from x,y to corner < snapDist
-    //else return x,y
-  }
-
   const testFunc = (e) => {
 
     // e.stopPropagation();
@@ -385,18 +363,22 @@ export default function Scene(props) {
     <Grid container spacing={3}>
       <Grid item xs>
         <Paper className={classes.paper}>
-          <TabMenu onDrawClick={handleDrawBtnClick} onForegroundClick={handleObjectBtnClick} myPlants={props.userData.myPlants} options={options} onOptionChange={handleOptionsChange} />
+          <TabMenu 
+            onDrawClick={handleDrawBtnClick} 
+            onForegroundClick={handleObjectBtnClick} 
+            myPlants={props.userData.myPlants} 
+            options={options} 
+            onOptionChange={handleOptionsChange}
+            onSliderChange={handleOptionsSliderChange}/>
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         </Paper>
       </Grid>
       <Grid item xs>
-        <Stage className='garden-planner' ref={stageRef} height={800} width={800} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
-          {/* {options.displayGrid && <PlanGrid height={800} width={800} />} */}
-          <Layer>
+        <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+          <Layer listening={!options.lockBackground}>
             {polygons.map((item, i) => <Polygon {...item}
               key={i}
               isSelected={item.id === selectedId}
-              // selected={i === selected}
               onDragMove={handleCircleDrag}
               onSelect={() => {
                 selectShape(item.id)
@@ -404,10 +386,10 @@ export default function Scene(props) {
               // onClick={e => handleClick(e, i)}
               num={i}
               radius={RADIUS} />)}
-            {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
+            
 
           </Layer>
-          <Layer>
+          <Layer listening={!options.lockForeground}>
             {images.map((img, i) => {
               return (
                 <PlanImage
@@ -422,12 +404,15 @@ export default function Scene(props) {
                     imgs[i] = newAttrs;
                     setImages(imgs);
                   }}
+                  onMouseEnter={handleImageMouseover}
+                  onMouseLeave={handleImageMouseout}
                 />
               );
             })}
           </Layer>
-          {options.displayGrid && <PlanGrid height={800} width={800} />}
+          {options.displayGrid && <PlanGrid gridSize={options.gridSize} height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
           <Layer>
+            {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
             {drawing && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
             {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
               x={temp.points[0]}
@@ -438,10 +423,12 @@ export default function Scene(props) {
               strokeWidth={1}
               rotateEnabled={false}
             />}
+            {hoveredImage && (
+              <Tooltip {...hoveredImage}/>
+            )}
           </Layer>
         </Stage>
       </Grid>
     </Grid>
   )
-  // onMouseDown={handleMouseDown}onMouseMove={handleMouseMove}   style={{ background: '#BBBBBB' }}
 }

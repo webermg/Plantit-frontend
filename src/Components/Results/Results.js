@@ -99,7 +99,7 @@ export default function Results(props) {
         if(!userID) resolve(null)
         API.getUser(userID).then(result => {
           // console.log("user promise")
-          if (userID) {
+          if (userID && result.data.myPlants.length !==0) {
             const myPlantSlugs = result.data.myPlants.map(element => element.slug);
             // console.log(myPlantSlugs)
             resolve(myPlantSlugs);
