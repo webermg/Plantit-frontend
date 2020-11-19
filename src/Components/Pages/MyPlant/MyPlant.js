@@ -46,8 +46,8 @@ class MyPlant extends Component {
 
 
 
-  removePLant = (id) => {
-    const plants = this.state.plants.filter((plant) => plant.id !== id);
+  removePlant = (id) => {
+    const plants = this.state.plants.filter((plant) => plant._id !== id);
     this.setState({ plants });
   };
 
@@ -64,6 +64,7 @@ class MyPlant extends Component {
           {this.state.plants.map((plant) => (
             <Grid item xs={4}>
               <RecentCard
+               removePlant = {this.removePlant}
                 _id={plant._id}
                 common_name={plant.common_name}
                 slug={plant.slug}

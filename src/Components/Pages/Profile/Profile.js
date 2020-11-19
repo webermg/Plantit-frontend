@@ -54,7 +54,7 @@ export default class profile extends Component {
             </Grid>
           </Typography>
           {this.state.user.myGardenImg}
-          {this.state.user.myPlants.map((plant) => (
+          {/* {this.state.user.myPlants.map((plant) => (
             <Grid item xs={4}>
               <RecentCard
                 _id={plant._id}
@@ -63,7 +63,7 @@ export default class profile extends Component {
                 image_url={plant.image_url}
               />
             </Grid>
-          ))}
+          ))} */}
         </Container>
       </React.Fragment>
     );
