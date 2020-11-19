@@ -92,12 +92,50 @@ export default function NavBar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [LoginState, setLoginState] = useState()
+  const [userState, setUserState] = useState({
+    username: "",
+    email: "",
+    myPlants: [],
+    myGarden: "",
+    token: "",
+    isLoggedIn: false
+  })
 
   let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn"))
 
   useEffect(() => {
+    fetchUserData();
     setLoginState(isLoggedIn)
   }, [isLoggedIn])
+
+  function fetchUserData() {
+    const id = localStorage.getItem("id")
+    const token = localStorage.getItem("token");
+    if (id != null) {
+      API.getUser(id).then(profileData => {
+        if (profileData) {
+          setUserState({
+            username: profileData.data.username,
+            email: profileData.data.email,
+            myPlants: profileData.data.myPlants,
+            myGarden: profileData.data.myGarden,
+            id: profileData.data.id,
+            token: token,
+            isLoggedIn: true
+          })
+        } else {
+          localStorage.removeItem("token");
+          setUserState({
+            username: "",
+            email: "",
+            myPlants: [],
+            myGarden: "",
+            isLoggedIn: false
+          })
+        }
+      })
+  }}
+
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -141,9 +179,9 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
-         <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState}/></MenuItem>}
+         <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState} setProfileState={setUserState}/></MenuItem>}
          {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
-         <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState}/></MenuItem>  }
+         <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState} setProfileState={setUserState}/></MenuItem>  }
     
     </Menu>
   );
@@ -233,6 +271,10 @@ export default function NavBar() {
                 My Garden
               </IconButton> : <p></p>}
               </Typography>
+            </MenuItem>
+
+            <MenuItem>
+            {isLoggedIn? <IconButton>Welcome {userState.username} </IconButton> : null}
             </MenuItem>
             
             <IconButton

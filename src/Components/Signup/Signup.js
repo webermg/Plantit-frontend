@@ -16,42 +16,11 @@ export default function Signup(props) {
         email: "",
         password: ""
       });
-    const [profileState, setProfileState] = useState({
-        username: "",
-        email: "",
-        myPlants: [],
-        myGarden: "",
-        token: "",
-        isLoggedIn: false
-      })
       const [errorState, setErrorState] = useState({
         usernameError: "",
         emailError: "",
         passwordError: ""
       })
-  
-      useEffect(fetchUserData, [])
-
-      function fetchUserData() {
-        const id = localStorage.getItem("id");
-        const token = localStorage.getItem("token");
-        API.getUser(id).then(profileData => {
-          if (profileData) {
-            setProfileState({
-              username: profileData.data.username,
-              email: profileData.data.email,
-              myPlants: profileData.data.myPlants,
-              myGarden: profileData.data.myGarden,
-              token: token,
-              isLoggedIn: true
-            })
-            localStorage.setItem("isLoggedIn", true)
-          } else {
-            console.log("someting happened")
-            }
-          }
-        )
-      }
 
     const inputChange = event => {
         event.preventDefault()
@@ -72,7 +41,6 @@ export default function Signup(props) {
       };
     
     const handleClose = () => {
-        console.log(profileState)
         setOpen(false);
       };
 
@@ -91,7 +59,7 @@ export default function Signup(props) {
             API.getUser(newUser.data.userInfo.id)
                 .then (profileData => {
                 console.log(profileData)
-                setProfileState({
+                props.setProfileState({
                     username: profileData.data.username,
                     email: profileData.data.email,
                     myPlants: profileData.data.myPlants,
