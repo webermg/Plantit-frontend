@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     background: 'white'
-},
+  },
   button: {
     margin: theme.spacing(1),
     backgroundColor: "#b1bb78",
@@ -81,11 +81,11 @@ export default function PlantDet() {
 
   //This resets the page when a new comment is added
   const newComment = function () {
-    API.makeComment(plantDetails._id,localStorage.getItem("id"),value)
-    .then(result => {
-      console.log(result)
-      setReset(!reset)
-    })
+    API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
+      .then(result => {
+        console.log(result)
+        setReset(!reset)
+      })
 
   }
 
@@ -95,7 +95,7 @@ export default function PlantDet() {
       {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
-      <Grid item sm={12} md={6} style={{background: '#cac5b9'}}>
+      <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
         <Card className={classes.root} style={{ margin: "5vh" }}>
           <CardActionArea >
             <CardContent>
@@ -112,22 +112,38 @@ export default function PlantDet() {
                 <h4>Native Areas: </h4>
                 <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
               </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Form: {plantDetails.growth_habit} </p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>How to grow: {plantDetails.growth} </p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Growing months: {plantDetails.growth_months} </p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Soil preferences:</p>
+                <ul>
+                  <li>PH restrictions:{plantDetails.ph ? plantDetails.ph[0]+"-"+plantDetails.ph[1] : "unknown"}</li>
+                  {/* <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] :} </li> */}
+                </ul>
+              </Typography>
             </CardContent>
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item sm={12} md={6} style={{background: '#cac5b9'}}>
-        <Card mx="auto" className={classes.root} style={{ width: 500, margin: "5vh" }}>
-          <img src={plantDetails.image_url} style={{ height: 500, width:'100%', objectfit:'cover' }}/>
+      <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
+        <Card mx="auto" className={classes.root} style={{ width: 500, margin: "5vh", maxWidth: 450 }}>
+          <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
         </Card>
       </Grid>
       <div>
         <div className={classes.root} style={{ margin: "5vh" }}>
-          <Typography gutterBottom variant="h5" component="h2" style={{background: '#cac5b9'}}>
+          <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
             <div className={classes.root2}>
               <form
                 className={classes.root3}
-                onSubmit={ newComment}
+                onSubmit={newComment}
                 noValidate autoComplete="off">
                 <FormControl className={classes.formControl}>
                   <TextField
@@ -137,7 +153,8 @@ export default function PlantDet() {
                     rows={4}
                     variant="outlined"
                     InputProps={{
-                      className: classes.input}}
+                      className: classes.input
+                    }}
                     value={value}
                     onChange={handleChange}
                   />
@@ -146,7 +163,7 @@ export default function PlantDet() {
                     variant="contained"
                     size="small" color="primary"
                     endIcon={<PostAddIcon />}
-                  onClick={newComment}
+                    onClick={newComment}
                   >
                     <Hidden only="xs">
                       Add Comment
