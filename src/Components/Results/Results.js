@@ -145,8 +145,8 @@ export default function Results(props) {
         const index = plantsInDatabase.findIndex(element=> element.slug===slug);
         const updatedFavorite = plantsInDatabase[index];
         updatedFavorite.favorite=true;
-        const updated = plantsInDatabase.splice(index,1,updatedFavorite)
-        console.log(updatedFavorite)
+        const updated = plantsInDatabase;
+        updated.splice(index,1,updatedFavorite)
         setPlantsInDatabase(updated)
       },
         err => console.log(err))

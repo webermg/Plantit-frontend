@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -32,11 +32,15 @@ const useStyles = makeStyles({
 
 //A simple card that displays possible results to choose from either our database or trefle API results.
 export default function PlantSearchCard(props) {
-    console.log(props)
-
+    
     const history = useHistory();
     const classes = useStyles();
     const trefleToken = TokenExpiry.getLocalExpiry("trefleToken")
+    
+useEffect(()=>{
+    console.log("updated")
+},[props.data.favorite])
+
     if ("data" in props) {
 
         return (
