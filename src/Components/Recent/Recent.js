@@ -23,34 +23,36 @@ export default function RecentCard(props) {
   const classes = useStyles();
 
   return (
-    <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: '90%' }}>
-    <Card className={classes.root} style={{margin: "5vh"}}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          id={props._id}
-          image={props.image_url}
-          title={props.common_name}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.common_name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {props.info}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        {/* <Button size="small" color="primary">
+    <React.Fragment>
+      <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: '90%' }}>
+        <Card className={classes.root} style={{ margin: "5vh" }}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              id={props._id}
+              image={props.image_url}
+              title={props.common_name}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {props.common_name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {props.info}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            {/* <Button size="small" color="primary">
           Share
         </Button> */}
-        <Button component={RouterLink} to={'/plant/'+props.slug} size="small" color="primary">
-          Learn More
+            <Button component={RouterLink} to={'/plant/' + props.slug} size="small" color="primary">
+              Learn More
         </Button>
-      </CardActions>
-    </Card>
-    </Box>
+          </CardActions>
+        </Card>
+      </Box>
+    </React.Fragment>
   );
 }
 
