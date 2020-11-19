@@ -10,11 +10,6 @@ export default function Tooltip(props) {
     padding:5,
     text:props.tooltip_text,
   })
-  // React.useEffect(() => {
-  //   textRef.current = new Konva.Text({
-  //     text:props.tooltip_text
-  //   })
-  // },[])
 
   return (
     <Group>

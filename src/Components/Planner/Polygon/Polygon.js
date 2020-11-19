@@ -45,10 +45,6 @@ export default function Polygon(props) {
               onClick={props.onClick}
             />
           ))}
-
-          
     </React.Fragment>
   );
 }
-
-//_.chunk(props.points, 2)

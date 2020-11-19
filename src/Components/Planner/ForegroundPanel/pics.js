@@ -1,5 +1,3 @@
-
-
 const pics = {
   tree: [
   '/images/imageonline-co-split-image (3).png',
