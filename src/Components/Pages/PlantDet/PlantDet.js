@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Hidden } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
 
 
 
@@ -36,7 +37,9 @@ const useStyles = makeStyles((theme) => ({
       width: '30ch',
     },
   },
-
+  input: {
+    background: 'white'
+},
   button: {
     margin: theme.spacing(1),
     backgroundColor: "#b1bb78",
@@ -90,9 +93,11 @@ export default function PlantDet() {
   return (
     <Container className={classes.root}>
       {console.log(comments)}
-      <Grid item s={12} md={6}>
+      {/* <Grid style ={{background:'#cac5b9'}}> */}
+      {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
+      <Grid item sm={12} md={6} style={{background: '#cac5b9'}}>
         <Card className={classes.root} style={{ margin: "5vh" }}>
-          <CardActionArea>
+          <CardActionArea >
             <CardContent>
               <Typography
                 fontWeight="bold"
@@ -111,14 +116,14 @@ export default function PlantDet() {
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item s={12} md={6}>
-        <Card className={classes.root} style={{ width: 400, margin: "5vh" }}>
-          <img src={plantDetails.image_url} style={{ height: 400, width:'100%', objectfit:'cover' }}/>
+      <Grid item sm={12} md={6} style={{background: '#cac5b9'}}>
+        <Card mx="auto" className={classes.root} style={{ width: 500, margin: "5vh" }}>
+          <img src={plantDetails.image_url} style={{ height: 500, width:'100%', objectfit:'cover' }}/>
         </Card>
       </Grid>
       <div>
         <div className={classes.root} style={{ margin: "5vh" }}>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h5" component="h2" style={{background: '#cac5b9'}}>
             <div className={classes.root2}>
               <form
                 className={classes.root3}
@@ -131,6 +136,8 @@ export default function PlantDet() {
                     multiline
                     rows={4}
                     variant="outlined"
+                    InputProps={{
+                      className: classes.input}}
                     value={value}
                     onChange={handleChange}
                   />
@@ -147,7 +154,7 @@ export default function PlantDet() {
                   </Button>
                 </FormControl>
               </form>
-            </div>
+            </div >
 
 
             <h4>Comments: </h4>
@@ -172,6 +179,8 @@ export default function PlantDet() {
           </Typography>
         </div>
       </div>
+      {/* </Grid> */}
+      {/* </Paper> */}
     </Container>
   );
 }
