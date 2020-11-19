@@ -123,6 +123,7 @@ export default function NavBar() {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     localStorage.setItem("isLoggedIn", false)
+    // redirect to home pageA
     handleMenuClose()
     history.push("/")
 
@@ -141,7 +142,7 @@ export default function NavBar() {
     >
       {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
          <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState}/></MenuItem>}
-         {isLoggedIn? <MenuItem href='/'>My Profile</MenuItem> : 
+         {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
          <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState}/></MenuItem>  }
     
     </Menu>
