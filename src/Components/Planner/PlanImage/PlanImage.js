@@ -23,7 +23,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange, 
     <React.Fragment>
       <Image
         image={image}
-        onClick={onSelect}
+        onMouseDown={onSelect}
         onTap={onSelect}
         ref={imgRef}
         {...shapeProps}
