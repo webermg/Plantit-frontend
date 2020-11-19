@@ -89,7 +89,7 @@ export default function TabMenu(props) {
         <DrawPanel onClick={props.onDrawClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
-        <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/>
+        {props.myPlants ? <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/> : "You aren't logged in"}
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={2}>
         <ForeGroundPanel onClick={props.onForegroundClick}/>
