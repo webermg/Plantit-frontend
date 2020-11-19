@@ -12,12 +12,13 @@ export default function MyGarden() {
         if(id) {
             API.getUser(id).then(res => {
                 setUserData(res.data);
-                console.log(res.data)
+                console.log(res)
             });
         }
+        else setUserData({})
     }, [])
 
-    if(!userData) return <h1>loading...</h1>
+    if(userData===null) return <h1>loading...</h1>
 
     return (
     <Container>
