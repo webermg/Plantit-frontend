@@ -53,7 +53,12 @@ const API = {
             userId: userId,
             commentText: commentText
         })
+    },
+
+    getMyPlants: function(userId) {
+        return axios.get(URL_BASE + "myplants/" + userId)
     }
+
 }
 
 export default API;

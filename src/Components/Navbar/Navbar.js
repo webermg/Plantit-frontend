@@ -13,7 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { Link as RouterLink, useLocation, Redirect } from "react-router-dom";
+import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import Login from '../Login/Login.js';
 import Signup from '../Signup/Signup';
 import API from '../../utils/API';
@@ -87,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavBar() {
   const location = useLocation();
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -124,6 +125,8 @@ export default function NavBar() {
     localStorage.setItem("isLoggedIn", false)
     // redirect to home pageA
     handleMenuClose()
+    history.push("/")
+
   }
 
   const menuId = "primary-search-account-menu";
@@ -140,7 +143,7 @@ export default function NavBar() {
       {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
          <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState}/></MenuItem>}
          {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
-         <MenuItem onClick={handleMenuClose}><Signup/></MenuItem>  }
+         <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState}/></MenuItem>  }
     
     </Menu>
   );

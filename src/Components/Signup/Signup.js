@@ -7,8 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography'
 
-export default function Signup() {
+export default function Signup(props) {
     const [open, setOpen] = useState(false);
     const [signupFormState, setSignupFormState] = useState({
         username: "",
@@ -22,6 +23,11 @@ export default function Signup() {
         myGarden: "",
         token: "",
         isLoggedIn: false
+      })
+      const [errorState, setErrorState] = useState({
+        usernameError: "",
+        emailError: "",
+        passwordError: ""
       })
   
       useEffect(fetchUserData, [])
@@ -54,6 +60,11 @@ export default function Signup() {
           ...signupFormState,
           [name]: value
         })
+        setErrorState({
+          usernameError: "",
+          emailError: "",
+          passwordError: ""
+        })
       }
 
     const handleClickOpen = () => {
@@ -67,6 +78,13 @@ export default function Signup() {
 
     const formSubmit = event => {
         event.preventDefault();
+        if (!signupFormState.username) {
+          setErrorState({usernameError: "Please enter a username for your account."})
+        } else if (!signupFormState.email) {
+          setErrorState({emailError: "Please enter an e-mail address for your account."})
+        } else if (!signupFormState.password) {
+          setErrorState({passwordError: "Please enter a password for your account."})
+        } else {
         API.signup(signupFormState).then(newUser => {
             localStorage.setItem("token", newUser.data.token)
             localStorage.setItem("id", newUser.data.userInfo.id)
@@ -81,9 +99,17 @@ export default function Signup() {
                     isLoggedIn: true
                   })
                   localStorage.setItem("isLoggedIn", true)
+                  props.setLoginState(true)
                   handleClose();
             })
+            
+
+        })
+        .catch(err => {
+          console.log(err)
+          setErrorState({passwordError: "A user with this username or e-mail already exists."})
         })}
+      }
 
     
     return (
@@ -91,7 +117,7 @@ export default function Signup() {
           <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
             Sign Up
           </Button>
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
             <DialogContent>
               <DialogContentText>
@@ -107,6 +133,9 @@ export default function Signup() {
                 name = "username"
                 fullWidth
               />
+                <Typography variant="caption">
+                {errorState.usernameError}
+          </Typography>
               <TextField
                 autoFocus
                 margin="dense"
@@ -117,6 +146,9 @@ export default function Signup() {
                 name = "email"
                 fullWidth
               />
+                <Typography variant="caption">
+                {errorState.emailError}
+                </Typography>
               <TextField
                 autoFocus
                 margin="dense"
@@ -127,12 +159,15 @@ export default function Signup() {
                 name = "password"
                 fullWidth
               />
+              <Typography variant="caption">
+                {errorState.passwordError}
+              </Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={formSubmit} color="primary">
+              <Button onClick={formSubmit} disabled={!signupFormState.email || !signupFormState.password || !signupFormState.username} color="primary">
                 Submit
               </Button>
             </DialogActions>
