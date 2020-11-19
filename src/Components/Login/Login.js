@@ -16,47 +16,10 @@ export default function Login(props) {
     email: "",
     password: ""
   });
-  const [profileState, setProfileState] = useState({
-    username: "",
-    email: "",
-    myPlants: [],
-    myGarden: "",
-    token: "",
-    isLoggedIn: false
-  })
   const [errorState, setErrorState] = useState({
     emailError: "",
     passwordError: ""
   })
-
-  useEffect(fetchUserData, [])
-
-  function fetchUserData() {
-    const id = localStorage.getItem("id")
-    const token = localStorage.getItem("token");
-    API.getUser(id).then(profileData => {
-      if (profileData) {
-        setProfileState({
-          username: profileData.username,
-          email: profileData.email,
-          myPlants: profileData.myPlants,
-          myGarden: profileData.myGarden,
-          token: token,
-          isLoggedIn: true
-        })
-      } else {
-        localStorage.removeItem("token");
-        setProfileState({
-          username: "",
-          email: "",
-          myPlants: [],
-          myGarden: "",
-          isLoggedIn: false
-        })
-      }
-    }
-    )
-  }
 
   const inputChange = event => {
     event.preventDefault()
@@ -85,7 +48,7 @@ export default function Login(props) {
       .then (profileData => {
         console.log(profileData)
         if(profileData) {
-          setProfileState({
+          props.setProfileState({
             username: profileData.data.username,
             email: profileData.data.email,
             myPlants: profileData.data.myPlants,
@@ -98,7 +61,7 @@ export default function Login(props) {
           handleClose();
         } else {
           localStorage.removeItem("token");
-          setProfileState({
+          props.setProfileState({
             name: "",
             email: "",
             tanks: [],
