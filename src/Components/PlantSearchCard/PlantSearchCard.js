@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -36,10 +36,20 @@ export default function PlantSearchCard(props) {
     const history = useHistory();
     const classes = useStyles();
     const trefleToken = TokenExpiry.getLocalExpiry("trefleToken")
+    const [favorite,setFavorite]=useState(false);
+
+    function makeFavorite() {
+        
+        if(!favorite) {
+setFavorite(true);
+        props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"),trefleToken)
+        }
+        
+    }
     
 useEffect(()=>{
-    console.log("updated")
-},[props.data.favorite])
+    if(props.data.favorite) setFavorite(true)
+},[])
 
     if ("data" in props) {
 
@@ -66,10 +76,8 @@ useEffect(()=>{
                     className={classes.button1} 
                     variant="contained" 
                     size="small" color="primary" 
-                    endIcon={ props.data.favorite ? <FavoriteIcon/> :<FavoriteBorderIcon/>}
-                    onClick={ props.data.favorite ? (()=>console.log("already favorite")):(() => {
-                        props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"),trefleToken)
-                    })}
+                    endIcon={ favorite ? <FavoriteIcon/> :<FavoriteBorderIcon/>}
+                    onClick={makeFavorite}
                     ><Hidden only="xs">
                         Save
                         </Hidden>

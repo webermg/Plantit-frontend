@@ -31,7 +31,6 @@ export default function Results(props) {
   const [plantsInDatabase, setPlantsInDatabase] = useState([])
   const [plantsInTrefle, setPlantsInTrefle] = useState([])
   let [page, setPage] = useState(1)
-  const [update, setUpdate] = useState(true)
 
   const history = useHistory();
 
@@ -113,7 +112,7 @@ export default function Results(props) {
         }, err => console.log(err)).catch(err=>{
           console.log(err)})
     }
-  }, [props.submittedSearch, page, update])
+  }, [props.submittedSearch, page])
 
 
   //Filters out from Trefle all the plants currently in the database.  Needs some complicated promise stuff to make it happen in a way that isn't an infinite loop
@@ -155,19 +154,16 @@ export default function Results(props) {
     if (plantId) {
       API.favoritePlant(plantId, userId)
         .then(result => {
-          // const index = plantsInDatabase.findIndex(element=> element.slug===slug);
-          // const updatedFavorite = plantsInDatabase[index];
-          // updatedFavorite.favorite=true;
-          // const updated = plantsInDatabase;
-          // updated.splice(index,1,updatedFavorite)
-          // setPlantsInDatabase(updated)
+          console.log(result)
         },
           err => console.log(err))
     } else {
       API.getNewPlant(slug, token)
         .then(result => {
-          // console.log(result.data)
           API.favoritePlant(result.data._id,userId)
+          .then(result => {
+            console.log(result)
+          })
         }, err => console.log(err))
 
     }
