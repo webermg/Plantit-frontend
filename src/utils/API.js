@@ -53,7 +53,8 @@ const API = {
             userId: userId,
             commentText: commentText
         })
-    }
+    },
+
 }
 
 export default API;

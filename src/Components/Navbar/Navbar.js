@@ -139,7 +139,7 @@ export default function NavBar() {
       {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
          <MenuItem onClick={handleMenuClose}><Login setLoginState={setLoginState}/></MenuItem>}
          {isLoggedIn? <MenuItem href='/'>My Profile</MenuItem> : 
-         <MenuItem onClick={handleMenuClose}><Signup/></MenuItem>  }
+         <MenuItem onClick={handleMenuClose}><Signup setLoginState={setLoginState}/></MenuItem>  }
     
     </Menu>
   );

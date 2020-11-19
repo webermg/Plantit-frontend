@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,12 +23,17 @@ class MyPlant extends Component {
 
   componentDidMount() {
     const userID = localStorage.getItem("id")
+    const token = localStorage.getItem("token")
     API.getUser(userID)
-    .then(result => {
-      console.log(result.data)
-      this.setState({plants: result.data.myPlants})
-    })
-  }
+      .then(result => {
+        console.log(result.data)
+        this.setState({plants: result.data.myPlants})
+    }).catch(err => {
+      console.log(err)
+    })}
+  
+
+
 
   removePLant = (id) => {
     const plants = this.state.plants.filter((plant) => plant.id !== id);
