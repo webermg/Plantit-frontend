@@ -9,7 +9,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
 import { Hidden } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
-import { reject, result } from 'lodash';
+// import { reject, result } from 'lodash';
 import TokenExpiry from '../../utils/TokenExpiry';
 
 
@@ -40,10 +40,13 @@ export default function Results(props) {
       const databasePromise = new Promise((resolve, reject) => {
         API.getDatabasePlants(`${props.submittedSearch}`).then(result => {
           console.log("database promise")
+          console.log(result)
+
           if (result.data.name === "MongoError") {
             setPlantsInDatabase([])
             resolve([])
           } else {
+            setPlantsInDatabase([])
             resolve(result.data);
           }
         }).catch(err => reject(err));
@@ -52,122 +55,141 @@ export default function Results(props) {
 
 
       const treflePromise = new Promise((resolve, reject) => {
-        let trefleResults;
         const trefleToken = TokenExpiry.getLocalExpiry("trefleToken");
-        if (!trefleToken) {
+
+        const trefleResults = new Promise((resolve, reject) =>{
+          if (!trefleToken) {
           API.getToken().then(result => {
-            console.log("double api")
+            // console.log("double api")
             TokenExpiry.setLocalExpiry("trefleToken", result.data.token)
-            trefleResults = API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page)
+            resolve(API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page))
           }, err => reject(err))
         } else {
-          trefleResults = API.getSearchedPlants(`${props.submittedSearch}`, trefleToken, page)
+          resolve(API.getSearchedPlants(`${props.submittedSearch}`, trefleToken, page))
         }
+        })
+        
 
         trefleResults.then(result => {
-          console.log("trefle promise")
+          // console.log("trefle promise")
           if (page > 1 && result.data.name === "Error") {
             setPlantsInTrefle([]);
             resolve([]);
-            console.log("No more plants to be found")
+            // console.log("No more plants to be found")
           } else {
             setPlantsInTrefle(result.data);
             resolve(result.data);
           }
         }).catch(err => {
-          console.log(err)
+          // console.log(err)
           if (page > 1 && err.error === true) {
             setPlantsInTrefle([]);
             resolve([])
-            console.log("No more plants to be found")
+            // console.log("No more plants to be found")
+          }else {
+            reject(err)
           }
         });
       })
 
-
-
       const userPromise = new Promise((resolve, reject) => {
         const userID = localStorage.getItem("id");
+        if(!userID) resolve(null)
         API.getUser(userID).then(result => {
-          console.log("user promise")
+          // console.log("user promise")
           if (userID) {
             const myPlantSlugs = result.data.myPlants.map(element => element.slug);
-            console.log(myPlantSlugs)
+            // console.log(myPlantSlugs)
             resolve(myPlantSlugs);
           } else resolve([]);
 
-        }, err => reject(err))
+        }, err => resolve([]))
       })
 
 
-      Promise.all([databasePromise, treflePromise, userPromise])
-        .then(result => {
+      Promise.all([databasePromise, treflePromise, userPromise]).then(result => {
+          console.log(result)
           filterTrefle(databasePromise, treflePromise, userPromise)
-        })
+        }, err => console.log(err)).catch(err=>{
+          console.log(err)})
     }
   }, [props.submittedSearch, page, update])
 
-  
+
   //Filters out from Trefle all the plants currently in the database.  Needs some complicated promise stuff to make it happen in a way that isn't an infinite loop
   function filterTrefle(database, trefle, user) {
     database.then(databaseData => {
       trefle.then(trefleData => {
-        if(databaseData) {
-          
+        if (databaseData) {
+          console.log(databaseData)
           let databaseSlugs = databaseData.map(element => element.slug);
           console.log(databaseSlugs);
           const newPlants = trefleData.filter(element => !(databaseSlugs.includes(element.slug)))
           console.log(newPlants)
           setPlantsInTrefle(newPlants)
-          
+
           user.then(userData => {
-            for(let i = 0; i < databaseData.length; i++) {
-              const element = databaseData[i];
-              if(userData.includes(element.slug)){
-                element.favorite=true;
-              }else {
-                element.favorite=false;
+            if(userData) {
+
+              for (let i = 0; i < databaseData.length; i++) {
+                const element = databaseData[i];
+                if (userData.includes(element.slug)) {
+                  element.favorite = true;
+                } else {
+                  element.favorite = false;
+                }
               }
             }
             setPlantsInDatabase(databaseData)
             console.log("all done!")
-
+          }, err =>{
+            console.log(err)
           })
         }
       })
     })
-    
+
   }
 
-  function addFavorite(slug, plantId, userId) {
-    API.favoritePlant(plantId, userId)
-      .then(result => {
-        const index = plantsInDatabase.findIndex(element=> element.slug===slug);
-        const updatedFavorite = plantsInDatabase[index];
-        updatedFavorite.favorite=true;
-        const updated = plantsInDatabase;
-        updated.splice(index,1,updatedFavorite)
-        setPlantsInDatabase(updated)
-      },
-        err => console.log(err))
+  function addFavorite(slug, plantId, userId, token) {
+    if (plantId) {
+      API.favoritePlant(plantId, userId)
+        .then(result => {
+          // const index = plantsInDatabase.findIndex(element=> element.slug===slug);
+          // const updatedFavorite = plantsInDatabase[index];
+          // updatedFavorite.favorite=true;
+          // const updated = plantsInDatabase;
+          // updated.splice(index,1,updatedFavorite)
+          // setPlantsInDatabase(updated)
+        },
+          err => console.log(err))
+    } else {
+      API.getNewPlant(slug, token)
+        .then(result => {
+          // console.log(result.data)
+          API.favoritePlant(result.data._id,userId)
+        }, err => console.log(err))
+
+    }
+
   }
-  
+
   const newPlantInDatabase = function (slug, token) {
     API.getNewPlant(slug, token)
       .then(result => {
         history.push("/plant/" + result.data.slug)
       }, err => console.log(err))
-    }
-    
-    const classes = useStyles();
-    
+  }
 
-    return (
+  const classes = useStyles();
+
+
+  return (
     <div className={classes.root}>
       <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={4} m={4}>
         <Box p={1} m={1} flexShrink={1}>
           {/* Section with plants already in our database */}
-          {console.log(plantsInDatabase)}
+          {/* {console.log(plantsInDatabase)} */}
           {plantsInDatabase.length === 0 ? "no plants found" : "plants found"}
           {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
 

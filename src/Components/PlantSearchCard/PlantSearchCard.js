@@ -68,7 +68,7 @@ useEffect(()=>{
                     size="small" color="primary" 
                     endIcon={ props.data.favorite ? <FavoriteIcon/> :<FavoriteBorderIcon/>}
                     onClick={ props.data.favorite ? (()=>console.log("already favorite")):(() => {
-                        props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"))
+                        props.addFavorite(props.data.slug,props.data._id,localStorage.getItem("id"),trefleToken)
                     })}
                     ><Hidden only="xs">
                         Save
