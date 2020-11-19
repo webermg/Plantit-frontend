@@ -125,7 +125,7 @@ export default function PlantDet() {
                 <p>Soil preferences:</p>
                 <ul>
                   <li>PH restrictions:{plantDetails.ph ? plantDetails.ph[0]+"-"+plantDetails.ph[1] : "unknown"}</li>
-                  <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] :} </li>
+                  {/* <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] :} </li> */}
                 </ul>
               </Typography>
             </CardContent>
