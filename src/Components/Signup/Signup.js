@@ -167,7 +167,7 @@ export default function Signup(props) {
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={formSubmit} color="primary">
+              <Button onClick={formSubmit} disabled={!signupFormState.email || !signupFormState.password || !signupFormState.username} color="primary">
                 Submit
               </Button>
             </DialogActions>

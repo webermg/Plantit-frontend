@@ -55,6 +55,10 @@ const API = {
         })
     },
 
+    getMyPlants: function(userId) {
+        return axios.get(URL_BASE + "myplants/" + userId)
+    }
+
 }
 
 export default API;

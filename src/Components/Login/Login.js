@@ -110,8 +110,13 @@ export default function Login(props) {
         }
       })
     }).catch(err => {
-      console.log(err)
-      setErrorState({passwordError: "E-mail address or password was incorrect."})
+      console.log(err.response.status)
+      if (err.response.status === 403) {
+        setErrorState({passwordError: "Your password was incorrect."})
+      } else if (err.response.status === 404) {
+        setErrorState({emailError: "We can't find a user with that e-mail."})
+      }
+      
     })
   }
 }
