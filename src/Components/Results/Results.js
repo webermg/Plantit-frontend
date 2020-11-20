@@ -215,14 +215,22 @@ export default function Results(props) {
               </Grid>
           )) : ""
           }
-          {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : plantsInTrefle.map(element => {
-            return <PlantSearchCard
-              data={element}
-              key={element.slug}
+          {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : _.chunk(plantsInTrefle,2).map(elements => (
+            <Grid key={elements[0]._id} item>
+            <PlantSearchCard
+              data={elements[0]}
+              key={elements[0].slug}
               newPlantInDatabase={newPlantInDatabase}
               inDatabase={false}
               addFavorite={addFavorite} />
-          })}
+            {elements[1] && <PlantSearchCard
+              data={elements[1]}
+              key={elements[1].slug}
+              newPlantInDatabase={newPlantInDatabase}
+              inDatabase={false}
+              addFavorite={addFavorite} />}
+              </Grid>
+          ))}
         </Grid>
       </Grid>
       {/* <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}> */}
