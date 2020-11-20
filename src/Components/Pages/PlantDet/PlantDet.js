@@ -320,7 +320,7 @@ export default function PlantDet() {
                       }}
                       onChange={handleUpdateChange}
                     />
-                  </React.Fragment> : (plantDetails.ph ? plantDetails.ph[0] + "-" + plantDetails.ph[1] : "unknown")}</li>
+                  </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
 
                   <li> Soil Nutriments: {update ? 
                   <Slider 
@@ -470,11 +470,6 @@ export default function PlantDet() {
       </div>
       {/* </Grid> */}
       {/* </Paper> */}
-      <Checkbox
-        checked={false}
-        onChange={handleMonthChange}
-        inputProps={{ 'aria-label': 'primary checkbox' }}
-      />
       
     </Container>
   );
