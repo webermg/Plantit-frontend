@@ -86,7 +86,7 @@ export default function TabMenu(props) {
         <Tab label="Item Seven" {...a11yProps(6)} /> */}
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
-        <DrawPanel onClick={props.onDrawClick}/>
+        <DrawPanel active={props.active} onClick={props.onDrawClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
         {props.myPlants ? <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/> : "Log in to add plants"}
