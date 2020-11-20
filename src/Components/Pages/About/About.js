@@ -76,10 +76,8 @@ export default function About() {
                          >
                             Our Story
                         </Typography>
-                        
                     </Grid>
-                    <Grid item 
-                        style={{justifyContent:"center", width:"70%", margin:'auto'}}>
+                    <Grid item style={{justifyContent:"center", width:"70%", margin:'auto'}}>
                         <Divider light />
                         <Typography
                         className={"MuiTypography--subheading"}
@@ -91,10 +89,9 @@ export default function About() {
                             I'm baby air plant tacos freegan, shaman tousled roof party craft beer typewriter. Bespoke semiotics messenger bag raw denim enamel pin. Woke blue bottle subway tile pok pok wolf palo santo actually put a bird on it poutine keytar. 
                         </Typography>
                     </Grid>
-
                 </Grid>
-                <Grid container style={{marginTop: "3%", justifyContent:"center"}}>
-                    <Grid item xs >
+                <Grid container style={{marginTop: "2%", justifyContent:"center"}}>
+                    <Grid item xs className="Caitlin">
                         <Card className={"MuiEngagementCard--01"}>
                             <CardMedia
                                 className={"MuiCardMedia-root"}
@@ -134,12 +131,12 @@ export default function About() {
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs >
+                    <Grid item xs className="Janelle">
                         <Card className={"MuiEngagementCard--01"}>
                             <CardMedia
                                 className={"MuiCardMedia-root"}
                                 image={
-                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605846987/project%203/janelleheadshot_aiqplk.jpg"
+                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605907795/project%203/janelleheadshot1-sm_opdiel.jpg"
                                 }
                                 style={{ height: 150 }}
                             />
@@ -150,31 +147,31 @@ export default function About() {
                                     gutterBottom
                                 >
                                     Janelle Deane
-              </Typography>
+                                 </Typography>
                                 <Typography
                                     className={"MuiTypography--subheading"}
                                     variant={"caption"}
                                 >
                                     We are going to learn different kinds of species in nature that
                                     live together to form amazing environment.
-              </Typography>
+                                 </Typography>
                                 <Divider className={"MuiDivider-root"} light />
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
                                     href="https://github.com/janelle-deane">
                                     Github
-              </Button>
+                                </Button>
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
                                     href="https://janelle-deane.herokuapp.com/">
                                     Portfolio
-              </Button>
+                                </Button>
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs >
+                    <Grid item xs className="Ann">
                         <Card className={"MuiEngagementCard--01"}>
                             <CardMedia
                                 className={"MuiCardMedia-root"}
@@ -214,7 +211,7 @@ export default function About() {
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs >
+                    <Grid item xs className="Maria">
                         <Card className={"MuiEngagementCard--01"}>
                             <CardMedia
                                 className={"MuiCardMedia-root"}
@@ -242,24 +239,24 @@ export default function About() {
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
-                                    href="https://github.com/GnuArtemis">
+                                    href="https://github.com/mwaslick">
                                     Github
                                 </Button>
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
-                                    href="https://ann-guinee-website.herokuapp.com/">
+                                    href="https://mwaslick.github.io/portfolio/index.html">
                                     Portfolio
                                 </Button>
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs >
+                    <Grid item xs className="Matt">
                         <Card className={"MuiEngagementCard--01"}>
                             <CardMedia
                                 className={"MuiCardMedia-root"}
                                 image={
-                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605846985/project%203/Ann_Headshot_paslhl.jpg"
+                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605907736/project%203/mgw_photo_rabivp.jpg"
                                 }
                                 style={{height:150}}
                             />
@@ -282,13 +279,13 @@ export default function About() {
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
-                                    href="https://github.com/GnuArtemis">
+                                    href="https://github.com/webermg">
                                     Github
                                 </Button>
                                 <Button
                                     variant="outlined"
                                     size="small" color="inherit"
-                                    href="https://ann-guinee-website.herokuapp.com/">
+                                    href="https://hidden-tundra-83871.herokuapp.com/">
                                     Portfolio
                                 </Button>
                             </CardContent>
