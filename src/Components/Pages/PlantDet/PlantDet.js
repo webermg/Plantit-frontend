@@ -61,24 +61,31 @@ export default function PlantDet() {
   const { slug } = useParams();
   const classes = useStyles();
   const [value, setValue] = React.useState();
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
+  const [update,setUpdate] = useState({})
 
   useEffect(() => {
-    // ID is now SLUG in the get route, currently hardcoded
     API.getPlantID(slug)
       .then(result => {
         console.log(result.data)
         setPlantDetails(result.data.dbPlant)
         setComments(result.data.dbComment)
+
+        if(result.data.dbComment.length === 0) {
+          setUpdate(result.data.dbPlant)
+        }
       }).catch(err => console.log(err))
 
-    // getPlantProfile(id)
+    
 
   }, [reset])
 
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleUpdateChange = (event) => {
+    setUpdate({...update,})
+  }
   //This resets the page when a new comment is added
   const newComment = function () {
     API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
@@ -108,25 +115,51 @@ export default function PlantDet() {
                 <h1>{plantDetails.common_name}</h1>
                 <h3>Scientific Name: {plantDetails.scientific_name}</h3>
               </Typography>
+
               <Typography gutterBottom variant="h5" component="h2">
                 <h4>Native Areas: </h4>
                 <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
               </Typography>
+              <TextField
+                id="standard-full-width"
+                label="Form"
+                style={{ margin: 8 }}
+                defaultValue={update.growth_habit}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <Typography gutterBottom variant="h5" component="h2">
                 <p>Form: {plantDetails.growth_habit} </p>
-              </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
-                <p>How to grow: {plantDetails.growth} </p>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
                 <p>Growing months: {plantDetails.growth_months} </p>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
+                <p>Light Requirement: {plantDetails.light} </p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Watering: {plantDetails.watering ? plantDetails.watering[0] + "-" + plantDetails.watering[1] + "mm" : "unknown"}</p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Temperature Range: {plantDetails.temperature ? plantDetails.temperature[0] + "-" + plantDetails.temperature[1] + " °F" : "unknown"}</p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
                 <p>Soil preferences:</p>
                 <ul>
-                  <li>PH restrictions:{plantDetails.ph ? plantDetails.ph[0]+"-"+plantDetails.ph[1] : "unknown"}</li>
-                  <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] :} </li>
+                  <li>PH restrictions: {plantDetails.ph ? plantDetails.ph[0] + "-" + plantDetails.ph[1] : "unknown"}</li>
+                  <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] : "unknown"} </li>
+                  <li> Soil texture: {plantDetails.sowing ? plantDetails.sowing[2] : "unknown"} </li>
+                  <li> Seeding depth: {plantDetails.sowing ? plantDetails.sowing[0] : "unknown"} </li>
                 </ul>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Poisonous: {plantDetails.toxicity} </p>
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Cultivation details: {plantDetails.growth} </p>
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -175,12 +208,7 @@ export default function PlantDet() {
 
 
             <h4>Comments: </h4>
-            <p>
-              DEFAULT: NO COMMENTS HAVE BEEN MADE
-              Lots of words go here isn't that great. Lets do even more words
-              for fun. What if I'm crazy and i don't stop. At what point will
-              the words wrap for me this is going on and on. When the time is right the comment map will be here and all will be well.
-            </p>
+
             {comments.map((comment) => {
               console.log(comment)
               return (
