@@ -66,10 +66,10 @@ const util = {
   },
 
   // where can we snap our objects?
-  getLineGuideStops: function(shapes, skipShape) {
+  getLineGuideStops: function(shapes, skipShape, stageWidth, stageHeight) {
     // we can snap to stage borders and the center of the stage
-    var vertical = [0, stage.width()];
-    var horizontal = [0, stage.height()];
+    var vertical = [0, stageWidth];
+    var horizontal = [0, stageHeight];
 
     // and we snap over edges and center of each object on the canvas
     shapes.forEach((guideItem) => {
@@ -78,8 +78,8 @@ const util = {
       }
       var box = guideItem.getClientRect();
       // and we can snap to all edges of shapes
-      vertical.push([guideItem.x, guideItem.x + guideItem.width]);
-      horizontal.push([guideItem.y, guideItem.y + guideItem.height]);
+      vertical.push([box.x, box.x + box.width]);
+      horizontal.push([box.y, box.y + box.height]);
     });
     return {
       vertical: vertical.flat(),
@@ -89,31 +89,31 @@ const util = {
 
   // what points of the object will trigger to snapping?
   getObjectSnappingEdges: function(shape) {
-    var box = node.getClientRect();
-    var absPos = node.absolutePosition();
+    var box = shape.getClientRect();
+    var absPos = shape.absolutePosition();
 
     return {
       vertical: [
         {
-          guide: Math.round(shape.x),
-          offset: Math.round(absPos.x - shape.x),
+          guide: Math.round(box.x),
+          offset: Math.round(absPos.x - box.x),
           snap: 'start',
         },
         {
-          guide: Math.round(shape.x + shape.width),
-          offset: Math.round(absPos.x - shape.x - shape.width),
+          guide: Math.round(box.x + box.width),
+          offset: Math.round(absPos.x - box.x - box.width),
           snap: 'end',
         },
       ],
       horizontal: [
         {
-          guide: Math.round(shape.y),
-          offset: Math.round(absPos.y - shape.y),
+          guide: Math.round(box.y),
+          offset: Math.round(absPos.y - box.y),
           snap: 'start',
         },
         {
-          guide: Math.round(shape.y + shape.height),
-          offset: Math.round(absPos.y - shape.y - shape.height),
+          guide: Math.round(box.y + box.height),
+          offset: Math.round(absPos.y - box.y - box.height),
           snap: 'end',
         },
       ],

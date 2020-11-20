@@ -27,6 +27,7 @@ export default function Scene(props) {
   const [hoveredImage, setHoveredImage] = useState(null)
 
   const [selectedId, _selectShape] = React.useState(null);
+  const [guideLines, setGuideLines] = React.useState([]);
 
   const [activeDraw, _setActiveDraw] = useState(null)
   const [temp, setTemp] = useState({
@@ -170,6 +171,7 @@ export default function Scene(props) {
   }
   
   const handleOptionsSliderChange = (e,v) => {
+    console.log(e)
     if(v !== options[e.target.ariaLabel]) setOptions({ ...options, [e.target.ariaLabel]: v });
   }
 
@@ -262,33 +264,14 @@ export default function Scene(props) {
     const mouseX = e.evt.layerX
     const mouseY = e.evt.layerY
     const newPoints = [...polygons[index].points];
-    // const xidx = newPoints.indexOf(circleX);
-    // const yidx = newPoints.indexOf(circleY);
-    // console.log(circle)
-    // console.log(newPoints)
-    // console.log(circleX + " " + circleY)
-    // Changing the points state with new points while dragging the circle
-    const stageX = stageRef.current.content.offsetLeft
-    const stageY = stageRef.current.content.offsetTop
-    // const stageW = 800
-    // const stageH = 800
+    
     //check vertex snap
     //if no vertex snap then check grid snap
     let pos = util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId);
     if(pos[0] === mouseX && pos[1] === mouseY) pos = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
-    // if (e.evt.clientX < stageX) newX = 0
-    // else if (e.evt.clientX > stageX + stageW) newX = stageW
-    // else 
-    // newX = e.evt.layerX;
-    // if (e.evt.clientY < stageY) newY = 0
-    // else if (e.evt.clientY > stageY + stageH) newY = stageH
-    // else 
-    // newY = e.evt.layerY;
+    
     newPoints[2 * circle] = pos[0];
     newPoints[2 * circle + 1] = pos[1];
-    // console.log(e.evt.clientX + " " + e.evt.clientY)
-    // console.log(stageRef.current.content.offsetLeft + " " + stageRef.current.content.offsetTop)
-    // console.log(e.currentTarget.content.offsetX + " " + e.currentTarget.content.offsetY)
 
     const absPos = e.target.absolutePosition()
     absPos.x=pos[0];
@@ -298,6 +281,14 @@ export default function Scene(props) {
     const temp = getPolygons()
     temp[index].points = newPoints;
     setPolygons(temp);
+  }
+
+  const handleVertexDragStart = (e, index, circle) => {
+    
+  }
+
+  const handleVertexDragEnd = (e, index, circle) => {
+
   }
 
   const handleMouseMove = (e) => {
@@ -364,14 +355,69 @@ export default function Scene(props) {
     setImages(imgs)
   }
 
-  const testFunc = (e) => {
+  const handleObjectDrag = e => {
+    const shapes = stageRef.current.find('Image')
+    const thisShape = shapes.filter(image => image.attrs.id === e.target.attrs.id)[0];
 
-    // e.stopPropagation();
-    // e.preventDefault();
-    console.log(e)
+    const lineGuideStops = util.getLineGuideStops(shapes, thisShape, STAGE_WIDTH, STAGE_HEIGHT);
+    const itemBounds = util.getObjectSnappingEdges(thisShape);
+    const guides = util.getGuides(lineGuideStops, itemBounds, options.snapDist);
+    if(guides.length === 0) return;
+    // console.log(thisObj.x + " " + thisObj.y)
+    // console.log(lineGuideStops)
+    // console.log(itemBounds)
+    console.log(guides)
+    let absPos = e.target.absolutePosition();
+    guides.forEach((lg) => {
+      switch (lg.snap) {
+        case 'start': {
+          switch (lg.orientation) {
+            case 'V': {
+              absPos.x = lg.lineGuide + lg.offset;
+              break;
+            }
+            case 'H': {
+              absPos.y = lg.lineGuide + lg.offset;
+              break;
+            }
+          }
+          break;
+        }
+        case 'center': {
+          switch (lg.orientation) {
+            case 'V': {
+              absPos.x = lg.lineGuide + lg.offset;
+              break;
+            }
+            case 'H': {
+              absPos.y = lg.lineGuide + lg.offset;
+              break;
+            }
+          }
+          break;
+        }
+        case 'end': {
+          switch (lg.orientation) {
+            case 'V': {
+              absPos.x = lg.lineGuide + lg.offset;
+              break;
+            }
+            case 'H': {
+              absPos.y = lg.lineGuide + lg.offset;
+              break;
+            }
+          }
+          break;
+        }
+      }
+    });
+    e.target.absolutePosition(absPos);
+    setGuideLines(guides)
   }
 
-  
+  const handleObjectDragEnd = () => {
+    setGuideLines([])
+  }
 
   return (
     <Grid container spacing={3}>
@@ -389,7 +435,7 @@ export default function Scene(props) {
         </Paper>
       </Grid>
       <Grid item xs>
-        <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onDragOver={testFunc} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+        <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
           <Layer listening={!options.lockBackground}>
             {polygons.map((item, i) => <Polygon {...item}
               key={i}
@@ -421,6 +467,8 @@ export default function Scene(props) {
                   }}
                   onMouseEnter={handleImageMouseover}
                   onMouseLeave={handleImageMouseout}
+                  onDragMove={handleObjectDrag}
+                  onDragEnd={handleObjectDragEnd}
                 />
               );
             })}
@@ -441,6 +489,16 @@ export default function Scene(props) {
             {hoveredImage && (
               <Tooltip {...hoveredImage}/>
             )}
+            {guideLines.map((line,i) => {
+              let points = [];
+              if(line.orientation==='H') {
+                points = [0,line.lineGuide,STAGE_WIDTH,line.lineGuide]
+              }
+              if(line.orientation==='V') {
+                points = [line.lineGuide,0,line.lineGuide,STAGE_HEIGHT]
+              }
+              return (<Line key={i} points={points} stroke='rgb(0,161,255)' strokeWidth={1} dash={[4,6]}/>)
+            })}
           </Layer>
         </Stage>
       </Grid>
