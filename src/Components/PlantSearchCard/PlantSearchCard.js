@@ -19,9 +19,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 
 const useStyles = makeStyles({
-    root: {
-        maxWidth: 400,
-    },
+    
     media: {
         height: 250,
     },
@@ -57,7 +55,7 @@ useEffect(()=>{
 
         return (
             <React.Fragment>
-                <Box p={1} flexShrink={1} boxShadow={3} style={{ width: '80%', margin: "0.83em", background: 'white' }}>
+                <Box p={1} flexShrink={1} boxShadow={3} style={{ width: '90%', margin: "0.83em", background: 'white' }}>
                     <Card className={classes.root} variant="outlined" style={{ margin: "5vh" }}>
                         <CardActionArea>
                             <CardMedia

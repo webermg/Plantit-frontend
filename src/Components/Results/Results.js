@@ -13,7 +13,7 @@ import Axios from 'axios';
 import { result } from 'lodash';
 import Grid from "@material-ui/core/Grid";
 import TokenExpiry from '../../utils/TokenExpiry';
-
+import _ from 'lodash'
 
 
 
@@ -186,27 +186,34 @@ export default function Results(props) {
 
 
   return (
-    <React.Fragment className={classes.root}>
-    {/* <div className={classes.root}> */}
-      <Grid container display="flex" alignContent="center"
+    // <React.Fragment className={classes.root}>
+    <div className={classes.root}>
+      <Grid container display="flex" justify='center' alignContent="center" 
       // flexDirection="row" 
       // flexWrap="wrap" 
       // alignContent="flex-start" 
       // p={1} m={1}
       >
-        <Grid item flexShrink={1} xs={12} style={{height:500, overflowY:'auto'}}>
+      {plantsInDatabase.length === 0 ? <h2>no plants found</h2> : <h2>plants found</h2>}
+        <Grid container justify="center" style={{height:500, overflowY:'auto'}}>
           {/* Section with plants already in our database */}
           {/* {console.log(plantsInDatabase)} */}
-          {plantsInDatabase.length === 0 ? "no plants found" : "plants found"}
-          {Array.isArray(plantsInDatabase) ? plantsInDatabase.map(element => {
-
-            return <PlantSearchCard
-              data={element}
-              key={element.slug}
+          {Array.isArray(plantsInDatabase) ? _.chunk(plantsInDatabase,2).map(elements => (
+            <Grid key={elements[0]._id} item>
+            <PlantSearchCard
+              data={elements[0]}
+              key={elements[0].slug}
               newPlantInDatabase={newPlantInDatabase}
               inDatabase={true}
               addFavorite={addFavorite} />
-          }) : ""
+            {elements[1] && <PlantSearchCard
+              data={elements[1]}
+              key={elements[1].slug}
+              newPlantInDatabase={newPlantInDatabase}
+              inDatabase={true}
+              addFavorite={addFavorite} />}
+              </Grid>
+          )) : ""
           }
           {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : plantsInTrefle.map(element => {
             return <PlantSearchCard
@@ -259,7 +266,7 @@ export default function Results(props) {
           </Button>
         </Box> */}
       {/* </Box> */}
-    {/* </div> */}
-    </React.Fragment>
+    {/* </React.Fragment> */}
+    </div>
   )
 }

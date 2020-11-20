@@ -90,8 +90,8 @@ class Home extends Component {
         this.setState({ plants })
     };
 
-    toggle = e => this.setState( {toggleHero: false})
-    
+    toggle = e => this.setState({ toggleHero: false })
+
     render() {
         const classes = useStyles;
         return (
@@ -100,50 +100,53 @@ class Home extends Component {
                     <CssBaseline />
                     <div className={classes.root} >
                         <Grid container >
-                        <Grid item mx="auto" style={{ width: '100%',height :'100%'}}>
-                            <Transition
-                                native
-                                items={this.state.toggleHero}
-                                from={{opacity: 1}}
-                                enter={{opacity:1}}
-                                leave={{opacity:0}}
-                            >{show => show && (props =>(
-                               <animated.div style={props}>
-                                   <Hero  
-                                    toggle={this.toggle}
-                                />
-                                </animated.div> 
-                            ))}
-                            </Transition>
+                            <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>
+                                <Transition
+                                    native
+                                    items={this.state.toggleHero}
+                                    from={{ opacity: 1 }}
+                                    enter={{ opacity: 1 }}
+                                    leave={{ opacity: 0 }}
+                                >{show => show && (props => (
+                                    <animated.div style={props}>
+                                        <Hero
+                                            toggle={this.toggle}
+                                        />
+                                    </animated.div>
+                                ))}
+                                </Transition>
                             </Grid>
-                            <Hidden only={["xs","sm"]}>
-                                <Grid item mx="auto" p={1} m={1} style={{ width: '30%', margin: '2%' }}>
-                                    <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                        <Typography>
-                                            <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
-                                        </Typography>
-                                        <Grid item style={{ height: 535, overflowY: 'auto' }}>
-                                            {this.state.plants.map(plant => (
-                                                <RecentCard
-                                                    _id={plant._id}
-                                                    key={plant.slug}
-                                                    slug={plant.slug}
-                                                    common_name={plant.common_name}
-                                                    image_url={plant.image_url}
-                                                />
-                                            ))}
-                                        </Grid>
-                                    </Paper>
-                                    
-                                </Grid>
+                            <Grid container justify='center'>
+
+                                <Hidden only={["xs", "sm"]}>
+                                    <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '30%', margin: '2%' }}>
+                                        <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                            <Typography>
+                                                <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
+                                            </Typography>
+                                            <Grid item style={{ height: 535, overflowY: 'auto' }}>
+                                                {this.state.plants.map(plant => (
+                                                    <RecentCard
+                                                        _id={plant._id}
+                                                        key={plant.slug}
+                                                        slug={plant.slug}
+                                                        common_name={plant.common_name}
+                                                        image_url={plant.image_url}
+                                                    />
+                                                ))}
+                                            </Grid>
+                                        </Paper>
+
+                                    </Grid>
                                 </Hidden>
-                            <Grid item mx="auto" style={{ width: 'auto', margin: '2%' }}>
-                                <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                    <Search handleFormSubmit={this.handleFormSubmit}
-                                        handleInputChange={this.handleInputChange} state={this.state} />
-                                    {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
-                                    <Results submittedSearch={this.state.submittedSearch} />
-                                </Paper>
+                                <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
+                                    <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                        <Search handleFormSubmit={this.handleFormSubmit}
+                                            handleInputChange={this.handleInputChange} state={this.state} />
+                                        {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
+                                        <Results submittedSearch={this.state.submittedSearch} />
+                                    </Paper>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </div>
