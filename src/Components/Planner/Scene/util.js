@@ -90,42 +90,32 @@ const util = {
   // what points of the object will trigger to snapping?
   // it can be just center of the object
   // but we will enable all edges and center
-  getObjectSnappingEdges: function(node) {
+  getObjectSnappingEdges: function(shape) {
     var box = node.getClientRect();
     var absPos = node.absolutePosition();
 
     return {
       vertical: [
         {
-          guide: Math.round(box.x),
-          offset: Math.round(absPos.x - box.x),
+          guide: Math.round(shape.x),
+          offset: Math.round(absPos.x - shape.x),
           snap: 'start',
         },
         {
-          guide: Math.round(box.x + box.width / 2),
-          offset: Math.round(absPos.x - box.x - box.width / 2),
-          snap: 'center',
-        },
-        {
-          guide: Math.round(box.x + box.width),
-          offset: Math.round(absPos.x - box.x - box.width),
+          guide: Math.round(shape.x + shape.width),
+          offset: Math.round(absPos.x - shape.x - shape.width),
           snap: 'end',
         },
       ],
       horizontal: [
         {
-          guide: Math.round(box.y),
-          offset: Math.round(absPos.y - box.y),
+          guide: Math.round(shape.y),
+          offset: Math.round(absPos.y - shape.y),
           snap: 'start',
         },
         {
-          guide: Math.round(box.y + box.height / 2),
-          offset: Math.round(absPos.y - box.y - box.height / 2),
-          snap: 'center',
-        },
-        {
-          guide: Math.round(box.y + box.height),
-          offset: Math.round(absPos.y - box.y - box.height),
+          guide: Math.round(shape.y + shape.height),
+          offset: Math.round(absPos.y - shape.y - shape.height),
           snap: 'end',
         },
       ],
