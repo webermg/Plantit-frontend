@@ -19,6 +19,12 @@ const API = {
             myGardenImg:data.myGardenImg
         })
     },
+    deleteMyPlant: function (data) {
+        return axios.put(URL_BASE + "myplants/delete", {
+           userID: data.userID, 
+           plantID: data.plantID
+        })
+    },
     getPlantID: function (slug) {
         return axios.get(URL_BASE + "plant/" + slug)
     },
