@@ -288,7 +288,7 @@ export default function Scene(props) {
   }
 
   const handleVertexDragEnd = (e, index, circle) => {
-
+    
   }
 
   const handleMouseMove = (e) => {

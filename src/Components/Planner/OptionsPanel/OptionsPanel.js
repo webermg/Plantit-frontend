@@ -24,7 +24,7 @@ export default function OptionsPanel(props) {
         label="Snap to Grid"
       />
       <Typography id="discrete-slider1" gutterBottom>
-        Grid Snap Distance
+        Snap Distance
       </Typography>
       <Slider
         defaultValue={props.snapDist}
