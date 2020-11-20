@@ -5,8 +5,8 @@ import { Hidden, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import { Spring } from 'react-spring';
-
-
+import Login from '../Login/Login';
+import Signup from '../Signup/Signup'
 
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
@@ -25,6 +25,10 @@ const useStyles = makeStyles({
 export default function Hero (props) {
     
         const classes = useStyles();
+
+    if (props.visitedHero === true) {
+        return ""
+    } else {
     return (
         <React.Fragment>
             < Grid container className={classes.root} align="center">
@@ -56,10 +60,11 @@ export default function Hero (props) {
                     >
                         Get Started
                     </Button>
+                    
                     </ThemeProvider>
                 </Grid>
             </Grid>
         </React.Fragment>
     )
-}
+}}
 

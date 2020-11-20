@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem'
 import { PinDropSharp } from "@material-ui/icons";
 import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
 
 export default function Login(props) {
   const [open, setOpen] = useState(false);
@@ -105,11 +106,26 @@ export default function Login(props) {
     setOpen(false);
   };
 
-  return (
-    <div>
+  const renderButton = () => {
+    let isMobile = props.isMobile
+    if (isMobile) {
+      return (
+        <MenuItem onClick={handleClickOpen}>
+        <Typography>
+            Log In
+        </Typography>
+      </MenuItem>
+      )
+    } else {return (
       <MenuItem onClick={handleClickOpen}>
         Log In
       </MenuItem>
+    )}
+  }
+
+  return (
+    <div>
+      {renderButton()}
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <form noValidate autoComplete="off" onSubmit={formSubmit}>

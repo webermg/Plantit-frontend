@@ -23,11 +23,16 @@ export default class profile extends Component {
 
   componentDidMount() {
     const userID = localStorage.getItem("id");
-    API.getUser(userID).then((result) => {
-      console.log(result.data);
-      this.setState({ user: result.data });
-    });
+    if (userID === null) {
+      this.props.history.push("/") }
+    else if (userID != null) {
+      API.getUser(userID).then((result) => {
+        console.log(result.data);
+        this.setState({ user: result.data });
+      });
+    }
   }
+  
   render() {
     const classes = useStyles;
     return (

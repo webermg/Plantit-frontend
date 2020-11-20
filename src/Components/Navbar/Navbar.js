@@ -10,8 +10,9 @@ import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+// import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import FilterVintage from "@material-ui/icons/FilterVintage"
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import Login from '../Login/Login.js';
@@ -47,30 +48,30 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  // searchIcon: {
+  //   padding: theme.spacing(0, 2),
+  //   height: "100%",
+  //   position: "absolute",
+  //   pointerEvents: "none",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
   inputRoot: {
 
     color: 'inherit',
 
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+  // inputInput: {
+  //   padding: theme.spacing(1, 1, 1, 0),
+  //   // vertical padding + font size from searchIcon
+  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+  //   transition: theme.transitions.create("width"),
+  //   width: "100%",
+  //   [theme.breakpoints.up("md")]: {
+  //     width: "20ch",
+  //   },
+  // },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -160,6 +161,7 @@ export default function NavBar() {
   const Logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("isVisited")
     localStorage.setItem("isLoggedIn", false)
     // redirect to home pageA
     handleMenuClose()
@@ -168,8 +170,24 @@ export default function NavBar() {
   }
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
+  const renderUserMenu = function() {
+    if (isLoggedIn) {
+      return (
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={menuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+        >
+        <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem>
+        <MenuItem onClick={Logout}>Log Out</MenuItem>
+        </Menu>
+      )
+    } else return (
+      <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
@@ -178,17 +196,61 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
-         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
-         {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
-         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
-    
+         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/>
+         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/> 
     </Menu>
-  );
+
+    )
+  }
 
   const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
+  const renderMobileMenu = function() {
+    if (isLoggedIn) {
+      return (
+        <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem component={RouterLink} to={"/"}>
+        <Typography>
+            Home
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/myplant"}>
+        <Typography>
+          My Plants
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
+        <Typography>
+          My Garden
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/profile"}>
+      <Typography>
+          My Profile
+      </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/about"}>
+        <Typography>
+            About Us
+        </Typography>
+      </MenuItem>
+      <MenuItem onClick={Logout}>
+      <Typography>
+          Log Out
+      </Typography>
+      </MenuItem>
+    </Menu>
+
+      )
+    } else return (
+      <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -197,101 +259,72 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/"}>
             Home
-          </IconButton>
         </Typography>
       </MenuItem>
-      <MenuItem>
-      <MenuItem></MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/mygarden"}>
             My Garden
-          </IconButton>
         </Typography>
       </MenuItem>
-      <MenuItem>
-        <Typography />
-        <IconButton component={RouterLink} to={"/myplant"}>
-          My Plants
-        </IconButton>
-        <Typography />
-      </MenuItem>
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/about"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/about"}>
-            About
-          </IconButton>
+            About Us
+        </Typography>
+      </MenuItem>
+          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
+          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
+    </Menu>
+    )
+  }
+
+  const renderDesktopMenu = function() {
+    if (isLoggedIn) {
+      return(
+      <div className={classes.sectionDesktop}>
+        <MenuItem component={RouterLink} to={"/about"}>
+        <Typography>
+         About Us
+        </Typography>
+        </MenuItem>
+      <MenuItem component={RouterLink} to={"/myplant"}>
+        <Typography />
+          My Plants
+        <Typography />
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
+        <Typography>
+          My Garden
         </Typography>
       </MenuItem>
 
-      <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      
-    </Menu>
-  );
-
-  return (
-    <div className={classes.grow}>
-      <AppBar position="static"style={{ background: '#614051' }}>
-        <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            <IconButton component={RouterLink} to={"/"}>
-              Plant-It!{" "}
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <FilterVintage />
             </IconButton>
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Plant Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-          <MenuItem>
+      </div>
+        
+      )
+    } else return(
+      <div className={classes.sectionDesktop}>
+          <MenuItem component={RouterLink} to={"/about"}>
               <Typography>
-              <IconButton component={RouterLink} to={"/about"}>
-               About
-              </IconButton> 
+               About Us
               </Typography>
               </MenuItem>
-            <MenuItem>
-              <Typography />
-              {isLoggedIn? <IconButton component={RouterLink} to={"/myplant"}>
-                My Plants
-              </IconButton> : ""}
-              <Typography />
-            </MenuItem>
-            <MenuItem>
+            <MenuItem component={RouterLink} to={"/mygarden"}>
               <Typography>
-              <IconButton component={RouterLink} to={"/mygarden"}>
                 My Garden
-              </IconButton>
               </Typography>
             </MenuItem>
-
-            <MenuItem>
-            {isLoggedIn? <IconButton>Welcome {userState.username} </IconButton> : null}
-            </MenuItem>
-            
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -303,6 +336,34 @@ export default function NavBar() {
               <AccountCircle />
             </IconButton>
           </div>
+    )
+  }
+
+
+  return (
+    <div className={classes.grow}>
+      <AppBar position="static"style={{ background: '#614051' }}>
+        <Toolbar>
+          <Typography className={classes.title} variant="h6" noWrap>
+            <IconButton component={RouterLink} to={"/"}>
+              Plant-It!{" "}
+            </IconButton>
+          </Typography>
+          {/* <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Plant Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+            />
+          </div> */}
+          <div className={classes.grow} />
+          {renderDesktopMenu()}
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -316,8 +377,8 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {renderMobileMenu()}
+      {renderUserMenu()}
     </div>
   );
 }
