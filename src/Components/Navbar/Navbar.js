@@ -10,7 +10,7 @@ import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+// import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import FilterVintage from "@material-ui/icons/FilterVintage"
 import MoreIcon from "@material-ui/icons/MoreVert";
@@ -48,30 +48,30 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  // searchIcon: {
+  //   padding: theme.spacing(0, 2),
+  //   height: "100%",
+  //   position: "absolute",
+  //   pointerEvents: "none",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
   inputRoot: {
 
     color: 'inherit',
 
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+  // inputInput: {
+  //   padding: theme.spacing(1, 1, 1, 0),
+  //   // vertical padding + font size from searchIcon
+  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+  //   transition: theme.transitions.create("width"),
+  //   width: "100%",
+  //   [theme.breakpoints.up("md")]: {
+  //     width: "20ch",
+  //   },
+  // },
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -349,7 +349,7 @@ export default function NavBar() {
               Plant-It!{" "}
             </IconButton>
           </Typography>
-          <div className={classes.search}>
+          {/* <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -361,7 +361,7 @@ export default function NavBar() {
               }}
               inputProps={{ "aria-label": "search" }}
             />
-          </div>
+          </div> */}
           <div className={classes.grow} />
           {renderDesktopMenu()}
           <div className={classes.sectionMobile}>

@@ -10,6 +10,7 @@ import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
 import { Redirect, useHistory } from 'react-router-dom';
 import { HistoryOutlined } from "@material-ui/icons";
+import BackButton from "../../BackButton/BackButton";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -63,7 +64,11 @@ class MyPlant extends Component {
       return <h1>loading...</h1>
     } 
     return (
-        <Container style={{ padding: 60}} className={classes.root}>
+      <div>
+      <Container style={{ padding: 60}} className={classes.root}>
+           <Grid item md mx="auto" style={{margin: '2%'}} >
+      <BackButton/>
+      </Grid>
       <div >
         <Grid container spacing={4}>
           <Typography
@@ -87,6 +92,7 @@ class MyPlant extends Component {
         </Grid>
       </div>
       </Container>
+      </div>
     );
   }
 }
