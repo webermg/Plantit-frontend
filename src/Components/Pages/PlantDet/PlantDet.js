@@ -3,7 +3,6 @@ import API from "../../../utils/API";
 import { makeStyles } from "@material-ui/core/styles";
 import Comment from "../../Comment/Comment";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useParams } from 'react-router-dom';
@@ -14,16 +13,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from '@material-ui/core/CssBaseline';
 
-const theme = createMuiTheme({
-  palette: {
-    background: {
-      default: '#005254',
-    }
-  },
-});
+// const theme = createMuiTheme({
+//   palette: {
+//     background: {
+//       default: '#005254',
+//     }
+//   },
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -384,7 +381,7 @@ export default function PlantDet() {
       </Grid>
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
         <Card mx="auto" className={classes.root} style={{ width: 500, margin: "5vh", maxWidth: 450 }}>
-          <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
+          <img src={plantDetails.image_url} alt={plantDetails.common_name} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
         </Card>
       </Grid>
       <div>

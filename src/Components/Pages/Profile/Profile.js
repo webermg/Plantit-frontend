@@ -4,9 +4,8 @@ import API from "../../../utils/API";
 import Grid from "@material-ui/core/Grid";
 import plants from "../../../plantArray.json";
 import Typography from "@material-ui/core/Typography";
-import { spacing } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
-import RecentCard from "../../Recent/Recent";
+// import RecentCard from "../../Recent/Recent";
 import "../MyPlant/MyPlant.css";
 
 const useStyles = makeStyles({
