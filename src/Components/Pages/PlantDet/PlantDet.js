@@ -12,11 +12,10 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import { Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
+import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { CheckBox } from "@material-ui/icons";
 
 const theme = createMuiTheme({
   palette: {
@@ -121,10 +120,10 @@ export default function PlantDet() {
   }
 
   const handleSliderChange = (event,value) => {
-    console.log(`${event.name}`)
+    console.log(`${event.target.ariaLabel}`)
     console.log(`${value}`)
 
-    setUpdate({ ...update, [event.name]: value });
+    setUpdate({ ...update, [event.target.ariaLabel]: value });
   }
 
   const handleMonthChange = (event) => {
@@ -150,7 +149,6 @@ export default function PlantDet() {
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
         <Card className={classes.root} style={{ margin: "5vh" }}>
-          <CardActionArea >
             <CardContent>
               <Typography
                 fontWeight="bold"
@@ -182,7 +180,7 @@ export default function PlantDet() {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={handleUpdateChange}
+                  onChangeCommitted ={handleUpdateChange}
                 /> : plantDetails.growth_habit} </p>
               </Typography>
 
@@ -191,9 +189,10 @@ export default function PlantDet() {
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormGroup>
                     <FormLabel component="legend">Growth Months</FormLabel>
-                    <FormControlLabel control={<CheckBox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
-                    <FormControlLabel control={<CheckBox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
-                    <FormControlLabel control={<CheckBox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                    <FormControlLabel control={ <Checkbox checked={months.Jan} onChange={handleMonthChange} name="Jan" />}
+                      label="Jan" />
+                    <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
+                    <FormControlLabel control={<Checkbox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
                   </FormGroup>
                 </FormControl>
                 :
@@ -210,8 +209,8 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="light"
-                  onChange={handleSliderChange}
+                  aria-label="light"
+                  onChangeCommitted={handleSliderChange}
                   /> : plantDetails.light} </p>
               </Typography>
 
@@ -381,7 +380,6 @@ export default function PlantDet() {
                 /> : plantDetails.growth} </p>
               </Typography>
             </CardContent>
-          </CardActionArea>
         </Card>
       </Grid>
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
@@ -445,6 +443,12 @@ export default function PlantDet() {
       </div>
       {/* </Grid> */}
       {/* </Paper> */}
+      <Checkbox
+        checked={false}
+        onChange={handleMonthChange}
+        inputProps={{ 'aria-label': 'primary checkbox' }}
+      />
+      
     </Container>
   );
 }
