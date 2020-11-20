@@ -179,9 +179,9 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
-         <Login setLoginState={setLoginState} setProfileState={setUserState}/>}
+         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
          {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
-         <Signup setLoginState={setLoginState} setProfileState={setUserState}/> }
+         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
     
     </Menu>
   );
@@ -262,14 +262,14 @@ export default function NavBar() {
               <Typography />
               {isLoggedIn? <IconButton component={RouterLink} to={"/myplant"}>
                 My Plants
-              </IconButton> : <p></p>}
+              </IconButton> : ""}
               <Typography />
             </MenuItem>
             <MenuItem>
               <Typography>
-              {isLoggedIn? <IconButton component={RouterLink} to={"/mygarden"}>
+              <IconButton component={RouterLink} to={"/mygarden"}>
                 My Garden
-              </IconButton> : <p></p>}
+              </IconButton>
               </Typography>
             </MenuItem>
 

@@ -59,7 +59,7 @@ export default function Login(props) {
           })
           localStorage.setItem("isLoggedIn", true);
           props.setLoginState(true)
-          handleClose();
+          props.handleClose();
         } else {
           localStorage.removeItem("token");
           props.setProfileState({
@@ -70,7 +70,7 @@ export default function Login(props) {
             id: "",
             isLoggedIn: false
           })
-          handleClose();
+          props.handleClose();
         }
       })
     }).catch(err => {
@@ -107,7 +107,7 @@ export default function Login(props) {
 
   return (
     <div>
-      <MenuItem onClick={handleClickOpen} style={{ backgroundColor: 'transparent' }} >
+      <MenuItem onClick={handleClickOpen}>
         Log In
       </MenuItem>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">

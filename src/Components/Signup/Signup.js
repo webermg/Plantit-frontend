@@ -87,7 +87,7 @@ export default function Signup(props) {
                   })
                   localStorage.setItem("isLoggedIn", true)
                   props.setLoginState(true)
-                  handleClose();
+                  props.handleClose();
             })
             
 
@@ -105,7 +105,7 @@ export default function Signup(props) {
     
     return (
         <div>
-          <MenuItem onClick={handleClickOpen} style={{ backgroundColor: 'transparent' }} >
+          <MenuItem onClick={handleClickOpen}>
             Sign Up
           </MenuItem>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
