@@ -24,7 +24,6 @@ class MyPlant extends Component {
   };
   
 
-
   componentDidMount() {
     const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")

@@ -44,6 +44,24 @@ export default function Signup(props) {
         setOpen(false);
       };
 
+    const tabDown = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("email").focus()
+      }
+    }
+
+    const tabDown2 = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("password").focus()
+      }
+    }
+
+    const tabDown3 = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("submitbtn").focus()
+      }
+    }
+
     const formSubmit = event => {
         event.preventDefault();
         if (!signupFormState.username) {
@@ -75,7 +93,11 @@ export default function Signup(props) {
         })
         .catch(err => {
           console.log(err)
-          setErrorState({passwordError: "A user with this username or e-mail already exists."})
+          if (err.response.status === 422) {
+            setErrorState({emailError: "A user with this e-mail already exists."})
+          } else if (err.response.status === 403) {
+            setErrorState({usernameError: "A user with this username already exists."})
+          }
         })}
       }
 
@@ -87,6 +109,7 @@ export default function Signup(props) {
           </Button>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
+            <form onSubmit={formSubmit}>
             <DialogContent>
               <DialogContentText>
                 Sign up for a Plant-It account!
@@ -98,8 +121,10 @@ export default function Signup(props) {
                 type="text"
                 required
                 onChange= {inputChange}
+                onKeyDown= {tabDown}
                 value = {signupFormState.username}
                 name = "username"
+                id= "username"
                 fullWidth
               />
                 <Typography variant="caption">
@@ -112,8 +137,10 @@ export default function Signup(props) {
                 type="email"
                 required
                 onChange= {inputChange}
+                onKeyDown={tabDown2}
                 value = {signupFormState.email}
                 name = "email"
+                id = "email"
                 fullWidth
               />
                 <Typography variant="caption">
@@ -126,8 +153,10 @@ export default function Signup(props) {
                 type="password"
                 required
                 onChange= {inputChange}
+                onKeyDown={tabDown3}
                 value = {signupFormState.password}
                 name = "password"
+                id = "password"
                 fullWidth
               />
               <Typography variant="caption">
@@ -138,10 +167,11 @@ export default function Signup(props) {
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={formSubmit} disabled={!signupFormState.email || !signupFormState.password || !signupFormState.username} color="primary">
+              <Button type="submit" id="submitbtn" disabled={!signupFormState.email || !signupFormState.password || !signupFormState.username} color="primary">
                 Submit
               </Button>
             </DialogActions>
+            </form>
           </Dialog>
         </div>
       )

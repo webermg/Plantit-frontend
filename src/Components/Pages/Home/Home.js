@@ -97,7 +97,7 @@ class Home extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <React.Fragment>
-                    <CssBaseline />
+                    <CssBaseline /> 
                     <div className={classes.root} >
                         <Grid container >
                             <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>

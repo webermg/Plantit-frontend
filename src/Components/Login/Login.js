@@ -84,6 +84,18 @@ export default function Login(props) {
   }
 }
 
+  const tabDown = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("password").focus()
+      }
+  }
+
+  const tabDown2 = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("submitbtn").focus()
+      }
+  }
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -99,6 +111,7 @@ export default function Login(props) {
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        <form noValidate autoComplete="off" onSubmit={formSubmit}>
         <DialogContent>
           <DialogContentText>
             Log into your Plant-It Account!
@@ -110,8 +123,10 @@ export default function Login(props) {
             type="email"
             required
             onChange= {inputChange}
+            onKeyDown= {tabDown}
             value = {loginFormState.email}
             name = "email"
+            id= "email"
             fullWidth
           />
           <Typography variant="caption">
@@ -124,8 +139,10 @@ export default function Login(props) {
             type="password"
             required
             onChange= {inputChange}
+            onKeyDown= {tabDown2}
             value = {loginFormState.password}
             name = "password"
+            id = "password"
             fullWidth
           />
           <Typography variant="caption">
@@ -136,10 +153,11 @@ export default function Login(props) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={formSubmit} disabled={!loginFormState.email || !loginFormState.password} color="primary">
+          <Button type='submit' id="submitbtn" disabled={!loginFormState.email || !loginFormState.password} color="primary">
             Submit
           </Button>
         </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
