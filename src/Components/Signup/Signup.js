@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography'
+import MenuItem from '@material-ui/core/MenuItem'
 
 export default function Signup(props) {
     const [open, setOpen] = useState(false);
@@ -104,9 +105,9 @@ export default function Signup(props) {
     
     return (
         <div>
-          <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
+          <MenuItem onClick={handleClickOpen} style={{ backgroundColor: 'transparent' }} >
             Sign Up
-          </Button>
+          </MenuItem>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
             <form onSubmit={formSubmit}>
