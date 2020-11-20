@@ -65,7 +65,7 @@ const util = {
     return min <= snapDist ** 2 ? closest : [x,y];
   },
 
-  // were can we snap our objects?
+  // where can we snap our objects?
   getLineGuideStops: function(shapes, skipShape) {
     // we can snap to stage borders and the center of the stage
     var vertical = [0, stage.width()];
@@ -88,8 +88,6 @@ const util = {
   },
 
   // what points of the object will trigger to snapping?
-  // it can be just center of the object
-  // but we will enable all edges and center
   getObjectSnappingEdges: function(shape) {
     var box = node.getClientRect();
     var absPos = node.absolutePosition();
@@ -123,7 +121,7 @@ const util = {
   },
 
   // find all snapping possibilities
-  getGuides: function(lineGuideStops, itemBounds) {
+  getGuides: function(lineGuideStops, itemBounds, snapDist) {
     var resultV = [];
     var resultH = [];
 
@@ -131,7 +129,7 @@ const util = {
       itemBounds.vertical.forEach((itemBound) => {
         var diff = Math.abs(lineGuide - itemBound.guide);
         // if the distance between guild line and object snap point is close we can consider this for snapping
-        if (diff < GUIDELINE_OFFSET) {
+        if (diff < snapDist) {
           resultV.push({
             lineGuide: lineGuide,
             diff: diff,
@@ -145,7 +143,7 @@ const util = {
     lineGuideStops.horizontal.forEach((lineGuide) => {
       itemBounds.horizontal.forEach((itemBound) => {
         var diff = Math.abs(lineGuide - itemBound.guide);
-        if (diff < GUIDELINE_OFFSET) {
+        if (diff < snapDist) {
           resultH.push({
             lineGuide: lineGuide,
             diff: diff,
