@@ -284,25 +284,19 @@ export default function NavBar() {
     if (isLoggedIn) {
       return(
       <div className={classes.sectionDesktop}>
-        <MenuItem>
+        <MenuItem component={RouterLink} to={"/about"}>
         <Typography>
-        <IconButton component={RouterLink} to={"/about"}>
-         About
-        </IconButton> 
+         About Us
         </Typography>
         </MenuItem>
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/myplant"}>
         <Typography />
-        <IconButton component={RouterLink} to={"/myplant"}>
           My Plants
-        </IconButton>
         <Typography />
       </MenuItem>
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
         <Typography>
-        <IconButton component={RouterLink} to={"/mygarden"}>
           My Garden
-        </IconButton>
         </Typography>
       </MenuItem>
 
@@ -321,18 +315,14 @@ export default function NavBar() {
       )
     } else return(
       <div className={classes.sectionDesktop}>
-          <MenuItem>
+          <MenuItem component={RouterLink} to={"/about"}>
               <Typography>
-              <IconButton component={RouterLink} to={"/about"}>
-               About
-              </IconButton> 
+               About Us
               </Typography>
               </MenuItem>
-            <MenuItem>
+            <MenuItem component={RouterLink} to={"/mygarden"}>
               <Typography>
-              <IconButton component={RouterLink} to={"/mygarden"}>
                 My Garden
-              </IconButton>
               </Typography>
             </MenuItem>
             <IconButton
@@ -373,41 +363,6 @@ export default function NavBar() {
             />
           </div>
           <div className={classes.grow} />
-          {/* <div className={classes.sectionDesktop}>
-          <MenuItem>
-              <Typography>
-              <IconButton component={RouterLink} to={"/about"}>
-               About
-              </IconButton> 
-              </Typography>
-              </MenuItem>
-            <MenuItem>
-              <Typography />
-              <IconButton component={RouterLink} to={"/myplant"}>
-                My Plants
-              </IconButton>
-              <Typography />
-            </MenuItem>
-            <MenuItem>
-              <Typography>
-              <IconButton component={RouterLink} to={"/mygarden"}>
-                My Garden
-              </IconButton>
-              </Typography>
-            </MenuItem>
-
-            
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div> */}
           {renderDesktopMenu()}
           <div className={classes.sectionMobile}>
             <IconButton
