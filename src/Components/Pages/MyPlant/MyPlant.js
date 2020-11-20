@@ -20,11 +20,12 @@ const useStyles = makeStyles(() => ({
 
 class MyPlant extends Component {
   state = {
-    plants,
+    plants: null,
   };
   
 
   componentDidMount() {
+    
     const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")
     
@@ -40,10 +41,7 @@ class MyPlant extends Component {
         }
     }).catch(err => {
       console.log(err)
-    })
-    }
-    }
-
+    })}}
 
 
 
@@ -54,6 +52,9 @@ class MyPlant extends Component {
 
   render() {
     const classes = useStyles;
+    if (this.state.plants === null) {
+      return <h1>loading...</h1>
+    } 
     return (
         <Container style={{ padding: 60}} className={classes.root}>
       <div >
