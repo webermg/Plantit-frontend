@@ -20,19 +20,20 @@ const useStyles = makeStyles(() => ({
 
 class MyPlant extends Component {
   state = {
-    plants,
+    plants: [],
+    userID: localStorage.getItem("id")
   };
   
 
   componentDidMount() {
-    const userID = localStorage.getItem("id")
+    // const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")
     
-    console.log(userID)
-    if (userID === null) {
+    console.log(this.state.userID)
+    if (this.state.userID === null) {
       this.props.history.push("/")
-    } else if (userID != null) {
-      API.getMyPlants(userID)
+    } else if (this.state.userID != null) {
+      API.getMyPlants(this.state.userID)
       .then(result => {
         if (result.data) {
           console.log(result.data)
@@ -50,6 +51,12 @@ class MyPlant extends Component {
   removePlant = (id) => {
     const plants = this.state.plants.filter((plant) => plant._id !== id);
     this.setState({ plants });
+    API.deleteMyPlant({
+      userID: this.state.userID,
+      plantID: id
+    }).then ((res, err)=>{
+      if (err) throw err;
+    })
   };
 
   render() {
