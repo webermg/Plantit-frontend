@@ -61,7 +61,7 @@ export default function PlantDet() {
   const { slug } = useParams();
   const classes = useStyles();
   const [value, setValue] = React.useState();
-  const [update,setUpdate] = useState({})
+  const [update,setUpdate] = useState(false)
 
   useEffect(() => {
     API.getPlantID(slug)
@@ -73,6 +73,7 @@ export default function PlantDet() {
         if(result.data.dbComment.length === 0) {
           setUpdate(result.data.dbPlant)
         }
+        formatted = ();
       }).catch(err => console.log(err))
 
     
@@ -84,7 +85,10 @@ export default function PlantDet() {
   };
 
   const handleUpdateChange = (event) => {
-    setUpdate({...update,})
+    let{name, value} = event.target
+    console.log(`${name}`)
+    console.log(`${value}`)
+    setUpdate({...update,[name]:value});
   }
   //This resets the page when a new comment is added
   const newComment = function () {
@@ -95,7 +99,6 @@ export default function PlantDet() {
       })
 
   }
-
 
   return (
     <Container className={classes.root}>
@@ -115,21 +118,23 @@ export default function PlantDet() {
                 <h1>{plantDetails.common_name}</h1>
                 <h3>Scientific Name: {plantDetails.scientific_name}</h3>
               </Typography>
-
               <Typography gutterBottom variant="h5" component="h2">
                 <h4>Native Areas: </h4>
                 <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
               </Typography>
+
               <TextField
                 id="standard-full-width"
                 label="Form"
                 style={{ margin: 8 }}
+                name="growth_habit"
                 defaultValue={update.growth_habit}
                 fullWidth
                 margin="normal"
                 InputLabelProps={{
                   shrink: true,
                 }}
+                onChange={handleUpdateChange}
               />
               <Typography gutterBottom variant="h5" component="h2">
                 <p>Form: {plantDetails.growth_habit} </p>
