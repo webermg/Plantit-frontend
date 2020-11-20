@@ -57,10 +57,16 @@ class Home extends Component {
         submittedSearch: "",
         seachedPlants: [],
         toggleHero: true,
+        visitedHero: false,
+        isMyPlant: false,
     };
 
     componentDidMount() {
-        // if(!)
+        const isVisited = localStorage.getItem("isVisited")
+        if (isVisited === "true") {
+            this.setState({toggleHero: false})
+            this.setState({visitedHero: true})
+        }
 
         API.getFeaturedPlants()
             .then(result => {
@@ -90,7 +96,8 @@ class Home extends Component {
         this.setState({ plants })
     };
 
-    toggle = e => this.setState({ toggleHero: false })
+    toggle = e => {this.setState({ toggleHero: false })
+        localStorage.setItem("isVisited", true)}
 
     render() {
         const classes = useStyles;
@@ -111,6 +118,7 @@ class Home extends Component {
                                     <animated.div style={props}>
                                         <Hero
                                             toggle={this.toggle}
+                                            visitedHero={this.state.visitedHero}
                                         />
                                     </animated.div>
                                 ))}
@@ -132,6 +140,7 @@ class Home extends Component {
                                                         slug={plant.slug}
                                                         common_name={plant.common_name}
                                                         image_url={plant.image_url}
+                                                        isMyPlant= {false}
                                                     />
                                                 ))}
                                             </Grid>

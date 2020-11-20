@@ -178,9 +178,9 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isLoggedIn? <MenuItem onClick={Logout}>Logout</MenuItem> :
+      {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
-         {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> : 
+         {isLoggedIn? <MenuItem onClick={Logout}>Log Out</MenuItem> : 
          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
     
     </Menu>
@@ -288,8 +288,8 @@ export default function NavBar() {
               </Typography>
             </MenuItem>
 
-            <MenuItem>
-            {isLoggedIn? <IconButton>Welcome {userState.username} </IconButton> : null}
+            <MenuItem >
+            {isLoggedIn? <Typography> Welcome, {userState.username} </Typography> : []}
             </MenuItem>
             
             <IconButton

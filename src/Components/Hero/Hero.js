@@ -25,6 +25,10 @@ const useStyles = makeStyles({
 export default function Hero (props) {
     
         const classes = useStyles();
+
+    if (props.visitedHero === true) {
+        return ""
+    } else {
     return (
         <React.Fragment>
             < Grid container className={classes.root} align="center">
@@ -61,5 +65,5 @@ export default function Hero (props) {
             </Grid>
         </React.Fragment>
     )
-}
+}}
 

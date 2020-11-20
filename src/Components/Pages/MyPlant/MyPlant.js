@@ -22,7 +22,8 @@ const useStyles = makeStyles(() => ({
 class MyPlant extends Component {
   state = {
     plants: [],
-    userID: localStorage.getItem("id")
+    userID: localStorage.getItem("id"),
+    isMyPlant: true
   };
   
 
@@ -42,10 +43,7 @@ class MyPlant extends Component {
         }
     }).catch(err => {
       console.log(err)
-    })
-    }
-    }
-
+    })}}
 
 
 
@@ -62,6 +60,9 @@ class MyPlant extends Component {
 
   render() {
     const classes = useStyles;
+    if (this.state.plants === null) {
+      return <h1>loading...</h1>
+    } 
     return (
       <div>
       <Container style={{ padding: 60}} className={classes.root}>
@@ -84,6 +85,7 @@ class MyPlant extends Component {
                 // wateringMin={plant.watering[0]}
                 // wateringMax={plant.watering[1]}
                 image_url={plant.image_url}
+                isMyPlant= {true}
               />
             </Grid>
           ))}
