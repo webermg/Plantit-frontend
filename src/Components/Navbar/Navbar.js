@@ -12,6 +12,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 // import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import FilterVintage from "@material-ui/icons/FilterVintage"
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import Login from '../Login/Login.js';
@@ -160,6 +161,7 @@ export default function NavBar() {
   const Logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("isVisited")
     localStorage.setItem("isLoggedIn", false)
     // redirect to home pageA
     handleMenuClose()
@@ -168,8 +170,24 @@ export default function NavBar() {
   }
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
+  const renderUserMenu = function() {
+    if (isLoggedIn) {
+      return (
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          id={menuId}
+          keepMounted
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+        >
+        <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem>
+        <MenuItem onClick={Logout}>Log Out</MenuItem>
+        </Menu>
+      )
+    } else return (
+      <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
@@ -178,17 +196,61 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
-         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
-         {isLoggedIn? <MenuItem onClick={Logout}>Log Out</MenuItem> : 
-         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
-    
+         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/>
+         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/> 
     </Menu>
-  );
+
+    )
+  }
 
   const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
+  const renderMobileMenu = function() {
+    if (isLoggedIn) {
+      return (
+        <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem component={RouterLink} to={"/"}>
+        <Typography>
+            Home
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/myplant"}>
+        <Typography>
+          My Plants
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
+        <Typography>
+          My Garden
+        </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/profile"}>
+      <Typography>
+          My Profile
+      </Typography>
+      </MenuItem>
+      <MenuItem component={RouterLink} to={"/about"}>
+        <Typography>
+            About Us
+        </Typography>
+      </MenuItem>
+      <MenuItem onClick={Logout}>
+      <Typography>
+          Log Out
+      </Typography>
+      </MenuItem>
+    </Menu>
+
+      )
+    } else return (
+      <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
@@ -197,50 +259,86 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/"}>
             Home
-          </IconButton>
         </Typography>
       </MenuItem>
-      <MenuItem>
-      <MenuItem></MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/mygarden"}>
             My Garden
-          </IconButton>
         </Typography>
       </MenuItem>
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/about"}>
+        <Typography>
+            About Us
+        </Typography>
+      </MenuItem>
+          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
+          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
+    </Menu>
+    )
+  }
+
+  const renderDesktopMenu = function() {
+    if (isLoggedIn) {
+      return(
+      <div className={classes.sectionDesktop}>
+        <MenuItem component={RouterLink} to={"/about"}>
+        <Typography>
+         About Us
+        </Typography>
+        </MenuItem>
+      <MenuItem component={RouterLink} to={"/myplant"}>
         <Typography />
-        <IconButton component={RouterLink} to={"/myplant"}>
           My Plants
-        </IconButton>
         <Typography />
       </MenuItem>
-      <MenuItem>
+      <MenuItem component={RouterLink} to={"/mygarden"}>
         <Typography>
-          <IconButton component={RouterLink} to={"/about"}>
-            About
-          </IconButton>
+          My Garden
         </Typography>
       </MenuItem>
 
-      <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-      
-    </Menu>
-  );
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <FilterVintage />
+            </IconButton>
+      </div>
+        
+      )
+    } else return(
+      <div className={classes.sectionDesktop}>
+          <MenuItem component={RouterLink} to={"/about"}>
+              <Typography>
+               About Us
+              </Typography>
+              </MenuItem>
+            <MenuItem component={RouterLink} to={"/mygarden"}>
+              <Typography>
+                My Garden
+              </Typography>
+            </MenuItem>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
+    )
+  }
+
 
   return (
     <div className={classes.grow}>
@@ -265,44 +363,7 @@ export default function NavBar() {
             />
           </div> */}
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-          <MenuItem>
-              <Typography>
-              <IconButton component={RouterLink} to={"/about"}>
-               About
-              </IconButton> 
-              </Typography>
-              </MenuItem>
-            <MenuItem>
-              <Typography />
-              {isLoggedIn? <IconButton component={RouterLink} to={"/myplant"}>
-                My Plants
-              </IconButton> : ""}
-              <Typography />
-            </MenuItem>
-            <MenuItem>
-              <Typography>
-              <IconButton component={RouterLink} to={"/mygarden"}>
-                My Garden
-              </IconButton>
-              </Typography>
-            </MenuItem>
-
-            <MenuItem >
-            {isLoggedIn? <Typography> Welcome, {userState.username} </Typography> : []}
-            </MenuItem>
-            
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          {renderDesktopMenu()}
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"
@@ -316,8 +377,8 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {renderMobileMenu()}
+      {renderUserMenu()}
     </div>
   );
 }
