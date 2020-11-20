@@ -10,6 +10,7 @@ import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
 import { Redirect, useHistory } from 'react-router-dom';
 import { HistoryOutlined } from "@material-ui/icons";
+import BackButton from "../../BackButton/BackButton";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,7 +22,8 @@ const useStyles = makeStyles(() => ({
 class MyPlant extends Component {
   state = {
     plants: [],
-    userID: localStorage.getItem("id")
+    userID: localStorage.getItem("id"),
+    isMyPlant: true
   };
   
 
@@ -41,10 +43,7 @@ class MyPlant extends Component {
         }
     }).catch(err => {
       console.log(err)
-    })
-    }
-    }
-
+    })}}
 
 
 
@@ -61,8 +60,15 @@ class MyPlant extends Component {
 
   render() {
     const classes = useStyles;
+    if (this.state.plants === null) {
+      return <h1>loading...</h1>
+    } 
     return (
-        <Container style={{ padding: 60}} className={classes.root}>
+      <div>
+      <Container style={{ padding: 60}} className={classes.root}>
+           <Grid item md mx="auto" style={{margin: '2%'}} >
+      <BackButton/>
+      </Grid>
       <div >
         <Grid container spacing={4}>
           <Typography
@@ -79,12 +85,14 @@ class MyPlant extends Component {
                 // wateringMin={plant.watering[0]}
                 // wateringMax={plant.watering[1]}
                 image_url={plant.image_url}
+                isMyPlant= {true}
               />
             </Grid>
           ))}
         </Grid>
       </div>
       </Container>
+      </div>
     );
   }
 }

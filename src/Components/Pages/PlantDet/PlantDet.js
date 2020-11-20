@@ -18,6 +18,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import BackButton from "../../BackButton/BackButton";
 
 const theme = createMuiTheme({
   palette: {
@@ -177,10 +178,12 @@ export default function PlantDet() {
 
   }
 
-  if(plantDetails=== null) return <h1>Loading</h1> 
-  else return (
+  return (
+    <div>
+      <Grid item md mx="auto" style={{margin: '2%'}} >
+      <BackButton/>
+      </Grid>
     <Container className={classes.root}>
-
       {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
@@ -533,5 +536,6 @@ export default function PlantDet() {
       {/* </Paper> */}
 
     </Container>
+    </div>
   );
 }
