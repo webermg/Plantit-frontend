@@ -24,8 +24,8 @@ export default function RecentCard(props) {
 
   return (
     <React.Fragment>
-      <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ width: "90%" }}>
-        <Card className={classes.root} style={{ margin: "5vh" }}>
+      <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ background: 'white', width: "90%" }}>
+        <Card className={classes.root} style={{  margin: "5vh" }}>
           <CardActionArea>
             <CardMedia
               className={classes.media}

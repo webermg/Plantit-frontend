@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem'
 import { PinDropSharp } from "@material-ui/icons";
 import Typography from '@material-ui/core/Typography'
 
@@ -58,7 +59,7 @@ export default function Login(props) {
           })
           localStorage.setItem("isLoggedIn", true);
           props.setLoginState(true)
-          handleClose();
+          props.handleClose();
         } else {
           localStorage.removeItem("token");
           props.setProfileState({
@@ -69,7 +70,7 @@ export default function Login(props) {
             id: "",
             isLoggedIn: false
           })
-          handleClose();
+          props.handleClose();
         }
       })
     }).catch(err => {
@@ -106,9 +107,9 @@ export default function Login(props) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
+      <MenuItem onClick={handleClickOpen}>
         Log In
-      </Button>
+      </MenuItem>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <form noValidate autoComplete="off" onSubmit={formSubmit}>
