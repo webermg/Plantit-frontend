@@ -274,8 +274,8 @@ export default function NavBar() {
             About Us
         </Typography>
       </MenuItem>
-          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={true}/>
-          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={true}/>
+          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
+          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMobileMenuClose} isMobile={true}/>
     </Menu>
     )
   }

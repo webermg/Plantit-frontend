@@ -113,7 +113,8 @@ export default function Signup(props) {
             </Typography>
           </MenuItem>
           )
-        } else {return (
+        } 
+        else {return (
           <MenuItem onClick={handleClickOpen}>
             Sign Up
           </MenuItem>
