@@ -12,11 +12,10 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import { Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
+import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { CheckBox } from "@material-ui/icons";
 
 const theme = createMuiTheme({
   palette: {
@@ -121,14 +120,13 @@ export default function PlantDet() {
   }
 
   const handleSliderChange = (event,value) => {
-    console.log(`${event.name}`)
+    console.log(`${event.target.ariaLabel}`)
     console.log(`${value}`)
 
-    setUpdate({ ...update, [event.name]: value });
+    setUpdate({ ...update, [event.target.ariaLabel]: value });
   }
 
   const handleMonthChange = (event) => {
-    console.log("clicked")
     setMonths({ ...months, [event.target.name]: event.target.checked })
   }
 
@@ -150,7 +148,6 @@ export default function PlantDet() {
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
         <Card className={classes.root} style={{ margin: "5vh" }}>
-          <CardActionArea >
             <CardContent>
               <Typography
                 fontWeight="bold"
@@ -182,7 +179,7 @@ export default function PlantDet() {
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={handleUpdateChange}
+                  onChangeCommitted ={handleUpdateChange}
                 /> : plantDetails.growth_habit} </p>
               </Typography>
 
@@ -191,9 +188,19 @@ export default function PlantDet() {
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormGroup>
                     <FormLabel component="legend">Growth Months</FormLabel>
-                    <FormControlLabel control={<CheckBox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
-                    <FormControlLabel control={<CheckBox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
-                    <FormControlLabel control={<CheckBox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                    <FormControlLabel control={ <Checkbox checked={months.Jan} onChange={handleMonthChange} name="Jan" />}
+                      label="Jan" />
+                    <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
+                    <FormControlLabel control={<Checkbox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                    <FormControlLabel control={<Checkbox checked={months.Apr} onChange={handleMonthChange} name="Apr" />} label="Apr" />
+                    <FormControlLabel control={<Checkbox checked={months.May} onChange={handleMonthChange} name="May" />} label="May" />
+                    <FormControlLabel control={<Checkbox checked={months.Jun} onChange={handleMonthChange} name="Jun" />} label="Jun" />
+                    <FormControlLabel control={<Checkbox checked={months.Jul} onChange={handleMonthChange} name="Jul" />} label="Jul" />
+                    <FormControlLabel control={<Checkbox checked={months.Aug} onChange={handleMonthChange} name="Aug" />} label="Aug" />
+                    <FormControlLabel control={<Checkbox checked={months.Sep} onChange={handleMonthChange} name="Sep" />} label="Sep" />
+                    <FormControlLabel control={<Checkbox checked={months.Oct} onChange={handleMonthChange} name="Oct" />} label="Oct" />
+                    <FormControlLabel control={<Checkbox checked={months.Nov} onChange={handleMonthChange} name="Nov" />} label="Nov" />
+                    <FormControlLabel control={<Checkbox checked={months.Dec} onChange={handleMonthChange} name="Dec" />} label="Dec" />
                   </FormGroup>
                 </FormControl>
                 :
@@ -210,9 +217,19 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="light"
-                  onChange={handleSliderChange}
-                  /> : plantDetails.light} </p>
+                  aria-label="light"
+                  onChangeCommitted={handleSliderChange}
+                  /> : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.light}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="light"
+                  disabled
+                  />} </p>
               </Typography>
 
               <Typography gutterBottom variant="h5" component="h2">
@@ -303,7 +320,7 @@ export default function PlantDet() {
                       }}
                       onChange={handleUpdateChange}
                     />
-                  </React.Fragment> : (plantDetails.ph ? plantDetails.ph[0] + "-" + plantDetails.ph[1] : "unknown")}</li>
+                  </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
 
                   <li> Soil Nutriments: {update ? 
                   <Slider 
@@ -314,21 +331,20 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="soil_nutriments"
-                  onChange={handleSliderChange}
+                  aria-label="soil_nutriments"
+                  onChangeCommitted={handleSliderChange}
                   />
-                  // <TextField
-                  //   style={{ margin: 8 }}
-                  //   name="soil_nutriments"
-                  //   defaultValue={update.soil_nutriments}
-                  //   variant="outlined"
-                  //   margin="normal"
-                  //   InputLabelProps={{
-                  //     shrink: true,
-                  //   }}
-                  //   onChange={handleUpdateChange}
-                  // /> 
-                  : plantDetails.soil_nutriments} </li>
+                  : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.soil_nutriments}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="soil_nutriments"
+                  disabled
+                  />} </li>
                   <li> Soil texture: {update ? <Slider 
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
@@ -337,9 +353,19 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="soil_texture"
-                  onChange={handleSliderChange}
-                  /> : plantDetails.soil_texture} </li>
+                  aria-label="soil_texture"
+                  onChangeCommitted={handleSliderChange}
+                  /> : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.soil_texture}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="soil_texture"
+                  disabled
+                  />} </li>
                   <li> Sowing Description: {update ? <TextField
                     style={{ margin: 8 }}
                     name="sowing"
@@ -381,7 +407,6 @@ export default function PlantDet() {
                 /> : plantDetails.growth} </p>
               </Typography>
             </CardContent>
-          </CardActionArea>
         </Card>
       </Grid>
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
@@ -445,6 +470,7 @@ export default function PlantDet() {
       </div>
       {/* </Grid> */}
       {/* </Paper> */}
+      
     </Container>
   );
 }
