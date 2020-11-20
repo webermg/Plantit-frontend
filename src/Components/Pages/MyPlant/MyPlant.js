@@ -8,7 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
+import { HistoryOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -16,27 +17,38 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
 class MyPlant extends Component {
   state = {
     plants,
   };
+  
 
   componentDidMount() {
     const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")
-    API.getUser(userID)
+    
+    console.log(userID)
+    if (userID === null) {
+      this.props.history.push("/")
+    } else if (userID != null) {
+      API.getMyPlants(userID)
       .then(result => {
-        console.log(result.data)
-        this.setState({plants: result.data.myPlants})
+        if (result.data) {
+          console.log(result.data)
+          this.setState({plants: result.data})
+        }
     }).catch(err => {
       console.log(err)
-    })}
-  
+    })
+    }
+    }
 
 
 
-  removePLant = (id) => {
-    const plants = this.state.plants.filter((plant) => plant.id !== id);
+
+  removePlant = (id) => {
+    const plants = this.state.plants.filter((plant) => plant._id !== id);
     this.setState({ plants });
   };
 
@@ -53,6 +65,7 @@ class MyPlant extends Component {
           {this.state.plants.map((plant) => (
             <Grid item xs={4}>
               <RecentCard
+               removePlant = {this.removePlant}
                 _id={plant._id}
                 common_name={plant.common_name}
                 slug={plant.slug}

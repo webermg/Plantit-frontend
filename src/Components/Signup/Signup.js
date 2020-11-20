@@ -16,42 +16,11 @@ export default function Signup(props) {
         email: "",
         password: ""
       });
-    const [profileState, setProfileState] = useState({
-        username: "",
-        email: "",
-        myPlants: [],
-        myGarden: "",
-        token: "",
-        isLoggedIn: false
-      })
       const [errorState, setErrorState] = useState({
         usernameError: "",
         emailError: "",
         passwordError: ""
       })
-  
-      useEffect(fetchUserData, [])
-
-      function fetchUserData() {
-        const id = localStorage.getItem("id");
-        const token = localStorage.getItem("token");
-        API.getUser(id).then(profileData => {
-          if (profileData) {
-            setProfileState({
-              username: profileData.data.username,
-              email: profileData.data.email,
-              myPlants: profileData.data.myPlants,
-              myGarden: profileData.data.myGarden,
-              token: token,
-              isLoggedIn: true
-            })
-            localStorage.setItem("isLoggedIn", true)
-          } else {
-            console.log("someting happened")
-            }
-          }
-        )
-      }
 
     const inputChange = event => {
         event.preventDefault()
@@ -72,9 +41,26 @@ export default function Signup(props) {
       };
     
     const handleClose = () => {
-        console.log(profileState)
         setOpen(false);
       };
+
+    const tabDown = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("email").focus()
+      }
+    }
+
+    const tabDown2 = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("password").focus()
+      }
+    }
+
+    const tabDown3 = (e) => {
+      if (e.keyCode === 9) {
+        document.getElementById("submitbtn").focus()
+      }
+    }
 
     const formSubmit = event => {
         event.preventDefault();
@@ -91,7 +77,7 @@ export default function Signup(props) {
             API.getUser(newUser.data.userInfo.id)
                 .then (profileData => {
                 console.log(profileData)
-                setProfileState({
+                props.setProfileState({
                     username: profileData.data.username,
                     email: profileData.data.email,
                     myPlants: profileData.data.myPlants,
@@ -107,7 +93,11 @@ export default function Signup(props) {
         })
         .catch(err => {
           console.log(err)
-          setErrorState({passwordError: "A user with this username or e-mail already exists."})
+          if (err.response.status === 422) {
+            setErrorState({emailError: "A user with this e-mail already exists."})
+          } else if (err.response.status === 403) {
+            setErrorState({usernameError: "A user with this username already exists."})
+          }
         })}
       }
 
@@ -119,6 +109,7 @@ export default function Signup(props) {
           </Button>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
+            <form onSubmit={formSubmit}>
             <DialogContent>
               <DialogContentText>
                 Sign up for a Plant-It account!
@@ -128,9 +119,12 @@ export default function Signup(props) {
                 margin="dense"
                 label="Username"
                 type="text"
+                required
                 onChange= {inputChange}
+                onKeyDown= {tabDown}
                 value = {signupFormState.username}
                 name = "username"
+                id= "username"
                 fullWidth
               />
                 <Typography variant="caption">
@@ -141,9 +135,12 @@ export default function Signup(props) {
                 margin="dense"
                 label="Email Address"
                 type="email"
+                required
                 onChange= {inputChange}
+                onKeyDown={tabDown2}
                 value = {signupFormState.email}
                 name = "email"
+                id = "email"
                 fullWidth
               />
                 <Typography variant="caption">
@@ -154,9 +151,12 @@ export default function Signup(props) {
                 margin="dense"
                 label="Password"
                 type="password"
+                required
                 onChange= {inputChange}
+                onKeyDown={tabDown3}
                 value = {signupFormState.password}
                 name = "password"
+                id = "password"
                 fullWidth
               />
               <Typography variant="caption">
@@ -167,10 +167,11 @@ export default function Signup(props) {
               <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
-              <Button onClick={formSubmit} color="primary">
+              <Button type="submit" id="submitbtn" disabled={!signupFormState.email || !signupFormState.password || !signupFormState.username} color="primary">
                 Submit
               </Button>
             </DialogActions>
+            </form>
           </Dialog>
         </div>
       )

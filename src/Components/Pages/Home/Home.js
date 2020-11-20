@@ -3,10 +3,8 @@ import '../Home/Home.css';
 import Search from "../../Search/Search";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import RecentCard from '../../Recent/Recent';
 import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
@@ -99,10 +97,10 @@ class Home extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <React.Fragment>
-                    <CssBaseline />
+                    <CssBaseline /> 
                     <div className={classes.root} >
-                        {/* <Typography component="div"> */}
                         <Grid container >
+                        <Grid item mx="auto" style={{ width: '100%',height :'100%'}}>
                             <Transition
                                 native
                                 items={this.state.toggleHero}
@@ -117,8 +115,8 @@ class Home extends Component {
                                 </animated.div> 
                             ))}
                             </Transition>
-                            {/* <Box display="flex" flexDirection="row-reverse" p={1} m={1} > */}
-                            <Hidden only="xs">
+                            </Grid>
+                            <Hidden only={["xs","sm"]}>
                                 <Grid item mx="auto" p={1} m={1} style={{ width: '30%', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
                                         <Typography>
@@ -136,10 +134,10 @@ class Home extends Component {
                                             ))}
                                         </Grid>
                                     </Paper>
+                                    
                                 </Grid>
-                            </Hidden>
-
-                            <Grid item mx="auto" style={{ width: '60%', margin: '2%' }}>
+                                </Hidden>
+                            <Grid item mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                 <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
                                     <Search handleFormSubmit={this.handleFormSubmit}
                                         handleInputChange={this.handleInputChange} state={this.state} />
@@ -147,9 +145,7 @@ class Home extends Component {
                                     <Results submittedSearch={this.state.submittedSearch} />
                                 </Paper>
                             </Grid>
-                            {/* </Box> */}
                         </Grid>
-                        {/* </Typography> */}
                     </div>
                 </React.Fragment>
             </MuiThemeProvider>

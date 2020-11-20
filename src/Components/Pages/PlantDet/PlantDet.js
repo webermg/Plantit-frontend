@@ -7,16 +7,24 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { useParams } from 'react-router-dom';
-import { Box, Container } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import { Hidden } from "@material-ui/core";
-import Paper from '@material-ui/core/Paper';
+import { Container, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { CheckBox } from "@material-ui/icons";
 
-
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: '#005254',
+    }
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '30ch',
     },
+  },
+  paper: {
+    padding: theme.spacing(1),
+    color: theme.palette.text.secondary,
+    margin: theme.spacing(1),
+    background: '#cac5b9'
   },
   input: {
     background: 'white'
@@ -61,7 +75,22 @@ export default function PlantDet() {
   const { slug } = useParams();
   const classes = useStyles();
   const [value, setValue] = React.useState();
-  const [update,setUpdate] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [months, setMonths] = useState({
+    Jan: false,
+    Feb: false,
+    Mar: false,
+    Apr: false,
+    May: false,
+    Jun: false,
+    Jul: false,
+    Aug: false,
+    Sep: false,
+    Oct: false,
+    Nov: false,
+    Dec: false
+
+  })
 
   useEffect(() => {
     API.getPlantID(slug)
@@ -70,13 +99,12 @@ export default function PlantDet() {
         setPlantDetails(result.data.dbPlant)
         setComments(result.data.dbComment)
 
-        if(result.data.dbComment.length === 0) {
+        if (result.data.dbComment.length === 0) {
           setUpdate(result.data.dbPlant)
         }
-        formatted = ();
       }).catch(err => console.log(err))
 
-    
+
 
   }, [reset])
 
@@ -85,11 +113,25 @@ export default function PlantDet() {
   };
 
   const handleUpdateChange = (event) => {
-    let{name, value} = event.target
+    let { name, value } = event.target
     console.log(`${name}`)
     console.log(`${value}`)
-    setUpdate({...update,[name]:value});
+
+    setUpdate({ ...update, [name]: value });
   }
+
+  const handleSliderChange = (event,value) => {
+    console.log(`${event.name}`)
+    console.log(`${value}`)
+
+    setUpdate({ ...update, [event.name]: value });
+  }
+
+  const handleMonthChange = (event) => {
+    console.log("clicked")
+    setMonths({ ...months, [event.target.name]: event.target.checked })
+  }
+
   //This resets the page when a new comment is added
   const newComment = function () {
     API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
@@ -102,6 +144,7 @@ export default function PlantDet() {
 
   return (
     <Container className={classes.root}>
+
       {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
@@ -112,59 +155,230 @@ export default function PlantDet() {
               <Typography
                 fontWeight="bold"
                 gutterBottom
-                variant="h5"
-                component="h2"
+                variant="h3"
+                component="h1"
               >
-                <h1>{plantDetails.common_name}</h1>
-                <h3>Scientific Name: {plantDetails.scientific_name}</h3>
+                {plantDetails.common_name}
+              </Typography>
+              <Typography
+                fontWeight="bold"
+                gutterBottom
+                variant="h4"
+                component="h2">
+                Scientific Name: {plantDetails.scientific_name}
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                <h4>Native Areas: </h4>
+                <p>Native Areas: </p>
                 <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
               </Typography>
 
-              <TextField
-                id="standard-full-width"
-                label="Form"
-                style={{ margin: 8 }}
-                name="growth_habit"
-                defaultValue={update.growth_habit}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={handleUpdateChange}
-              />
               <Typography gutterBottom variant="h5" component="h2">
-                <p>Form: {plantDetails.growth_habit} </p>
+                <p>Form: {update ? <TextField
+                  style={{ margin: 8 }}
+                  name="growth_habit"
+                  defaultValue={update.growth_habit}
+                  variant="outlined"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={handleUpdateChange}
+                /> : plantDetails.growth_habit} </p>
+              </Typography>
+
+              {update ?
+
+                <FormControl component="fieldset" className={classes.formControl}>
+                  <FormGroup>
+                    <FormLabel component="legend">Growth Months</FormLabel>
+                    <FormControlLabel control={<CheckBox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
+                    <FormControlLabel control={<CheckBox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
+                    <FormControlLabel control={<CheckBox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                  </FormGroup>
+                </FormControl>
+                :
+                <Typography gutterBottom variant="h5" component="h2">
+                  <p>Growing months:{plantDetails.growth_months} </p>
+                </Typography>}
+
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Light Requirement: {update ? <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={update.light}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  name="light"
+                  onChange={handleSliderChange}
+                  /> : plantDetails.light} </p>
+              </Typography>
+
+              <Typography gutterBottom variant="h5" component="h2">
+                <p>Watering: {update ? <React.Fragment>
+                  <TextField
+                    label="Min"
+                    style={{ margin: 8 }}
+                    name="watering_min"
+                    defaultValue={update.watering_min}
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleUpdateChange}
+                  />
+
+                  <TextField
+                    label="Max"
+                    style={{ margin: 8 }}
+                    name="watering_max"
+                    defaultValue={update.watering_max}
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleUpdateChange}
+                  />
+                </React.Fragment> : (plantDetails.watering_min + "-" + plantDetails.watering_max + "mm")}</p>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                <p>Growing months: {plantDetails.growth_months} </p>
+                <p>Temperature: {update ? <React.Fragment>
+                  <TextField
+                    label="Min"
+                    style={{ margin: 8 }}
+                    name="temperature_min"
+                    defaultValue={update.temperature_min}
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleUpdateChange}
+                  />
+
+                  <TextField
+                    label="Max"
+                    style={{ margin: 8 }}
+                    name="temperature_max"
+                    defaultValue={update.temperature_max}
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleUpdateChange}
+                  />
+                </React.Fragment> : (plantDetails.temperature_min + "-" + plantDetails.temperature_max + " °F")}</p>
               </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
-                <p>Light Requirement: {plantDetails.light} </p>
-              </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
-                <p>Watering: {plantDetails.watering ? plantDetails.watering[0] + "-" + plantDetails.watering[1] + "mm" : "unknown"}</p>
-              </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
-                <p>Temperature Range: {plantDetails.temperature ? plantDetails.temperature[0] + "-" + plantDetails.temperature[1] + " °F" : "unknown"}</p>
-              </Typography>
+
               <Typography gutterBottom variant="h5" component="h2">
                 <p>Soil preferences:</p>
                 <ul>
-                  <li>PH restrictions: {plantDetails.ph ? plantDetails.ph[0] + "-" + plantDetails.ph[1] : "unknown"}</li>
-                  <li> Soil Nutriments: {plantDetails.sowing ? plantDetails.sowing[1] : "unknown"} </li>
-                  <li> Soil texture: {plantDetails.sowing ? plantDetails.sowing[2] : "unknown"} </li>
-                  <li> Seeding depth: {plantDetails.sowing ? plantDetails.sowing[0] : "unknown"} </li>
+                  <li>  PH Restrictions: {update ? <React.Fragment>
+                    <TextField
+                      label="Min"
+                      style={{ margin: 8 }}
+                      name="ph_min"
+                      defaultValue={update.ph_min}
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={handleUpdateChange}
+                    />
+
+                    <TextField
+                      label="Max"
+                      style={{ margin: 8 }}
+                      name="ph_max"
+                      defaultValue={update.ph_max}
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={handleUpdateChange}
+                    />
+                  </React.Fragment> : (plantDetails.ph ? plantDetails.ph[0] + "-" + plantDetails.ph[1] : "unknown")}</li>
+
+                  <li> Soil Nutriments: {update ? 
+                  <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={update.soil_nutriments}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  name="soil_nutriments"
+                  onChange={handleSliderChange}
+                  />
+                  // <TextField
+                  //   style={{ margin: 8 }}
+                  //   name="soil_nutriments"
+                  //   defaultValue={update.soil_nutriments}
+                  //   variant="outlined"
+                  //   margin="normal"
+                  //   InputLabelProps={{
+                  //     shrink: true,
+                  //   }}
+                  //   onChange={handleUpdateChange}
+                  // /> 
+                  : plantDetails.soil_nutriments} </li>
+                  <li> Soil texture: {update ? <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={update.soil_texture}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  name="soil_texture"
+                  onChange={handleSliderChange}
+                  /> : plantDetails.soil_texture} </li>
+                  <li> Sowing Description: {update ? <TextField
+                    style={{ margin: 8 }}
+                    name="sowing"
+                    defaultValue={update.sowing}
+                    variant="outlined"
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleUpdateChange}
+                  /> : plantDetails.sowing} </li>
                 </ul>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                <p>Poisonous: {plantDetails.toxicity} </p>
+                <p>Poisonous: {update ? <TextField
+                  style={{ margin: 8 }}
+                  name="toxicity"
+                  variant="outlined"
+                  defaultValue={update.toxicity}
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={handleUpdateChange}
+                /> : plantDetails.toxicity} </p>
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                <p>Cultivation details: {plantDetails.growth} </p>
+                <p>Cultivation details: {update ? <TextField
+                  style={{ margin: 8 }}
+                  name="growth"
+                  variant="outlined"
+                  fullWidth
+                  defaultValue={update.growth}
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  onChange={handleUpdateChange}
+                /> : plantDetails.growth} </p>
               </Typography>
             </CardContent>
           </CardActionArea>

@@ -16,47 +16,10 @@ export default function Login(props) {
     email: "",
     password: ""
   });
-  const [profileState, setProfileState] = useState({
-    username: "",
-    email: "",
-    myPlants: [],
-    myGarden: "",
-    token: "",
-    isLoggedIn: false
-  })
   const [errorState, setErrorState] = useState({
     emailError: "",
     passwordError: ""
   })
-
-  useEffect(fetchUserData, [])
-
-  function fetchUserData() {
-    const id = localStorage.getItem("id")
-    const token = localStorage.getItem("token");
-    API.getUser(id).then(profileData => {
-      if (profileData) {
-        setProfileState({
-          username: profileData.username,
-          email: profileData.email,
-          myPlants: profileData.myPlants,
-          myGarden: profileData.myGarden,
-          token: token,
-          isLoggedIn: true
-        })
-      } else {
-        localStorage.removeItem("token");
-        setProfileState({
-          username: "",
-          email: "",
-          myPlants: [],
-          myGarden: "",
-          isLoggedIn: false
-        })
-      }
-    }
-    )
-  }
 
   const inputChange = event => {
     event.preventDefault()
@@ -85,7 +48,7 @@ export default function Login(props) {
       .then (profileData => {
         console.log(profileData)
         if(profileData) {
-          setProfileState({
+          props.setProfileState({
             username: profileData.data.username,
             email: profileData.data.email,
             myPlants: profileData.data.myPlants,
@@ -98,7 +61,7 @@ export default function Login(props) {
           handleClose();
         } else {
           localStorage.removeItem("token");
-          setProfileState({
+          props.setProfileState({
             name: "",
             email: "",
             tanks: [],
@@ -110,11 +73,28 @@ export default function Login(props) {
         }
       })
     }).catch(err => {
-      console.log(err)
-      setErrorState({passwordError: "E-mail address or password was incorrect."})
+      console.log(err.response.status)
+      if (err.response.status === 403) {
+        setErrorState({passwordError: "Your password was incorrect."})
+      } else if (err.response.status === 404) {
+        setErrorState({emailError: "We can't find a user with that e-mail address."})
+      }
+      
     })
   }
 }
+
+  const tabDown = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("password").focus()
+      }
+  }
+
+  const tabDown2 = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("submitbtn").focus()
+      }
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -131,6 +111,7 @@ export default function Login(props) {
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        <form noValidate autoComplete="off" onSubmit={formSubmit}>
         <DialogContent>
           <DialogContentText>
             Log into your Plant-It Account!
@@ -140,9 +121,12 @@ export default function Login(props) {
             margin="dense"
             label="Email Address"
             type="email"
+            required
             onChange= {inputChange}
+            onKeyDown= {tabDown}
             value = {loginFormState.email}
             name = "email"
+            id= "email"
             fullWidth
           />
           <Typography variant="caption">
@@ -153,9 +137,12 @@ export default function Login(props) {
             margin="dense"
             label="Password"
             type="password"
+            required
             onChange= {inputChange}
+            onKeyDown= {tabDown2}
             value = {loginFormState.password}
             name = "password"
+            id = "password"
             fullWidth
           />
           <Typography variant="caption">
@@ -166,10 +153,11 @@ export default function Login(props) {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={formSubmit} color="primary">
+          <Button type='submit' id="submitbtn" disabled={!loginFormState.email || !loginFormState.password} color="primary">
             Submit
           </Button>
         </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
