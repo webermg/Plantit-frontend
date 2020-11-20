@@ -95,7 +95,7 @@ export default function PlantDet() {
   useEffect(() => {
     API.getPlantID(slug)
       .then(result => {
-        console.log(result.data)
+        console.log('result from ' + slug + ': ' + result.data)
         setPlantDetails(result.data.dbPlant)
         setComments(result.data.dbComment)
 
