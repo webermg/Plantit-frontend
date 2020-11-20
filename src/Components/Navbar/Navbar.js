@@ -205,6 +205,7 @@ export default function NavBar() {
         </Typography>
       </MenuItem>
       <MenuItem>
+      <MenuItem></MenuItem>
         <Typography>
           <IconButton component={RouterLink} to={"/mygarden"}>
             My Garden
@@ -217,6 +218,13 @@ export default function NavBar() {
           My Plants
         </IconButton>
         <Typography />
+      </MenuItem>
+      <MenuItem>
+        <Typography>
+          <IconButton component={RouterLink} to={"/about"}>
+            About
+          </IconButton>
+        </Typography>
       </MenuItem>
 
       <MenuItem onClick={handleProfileMenuOpen}>
@@ -258,6 +266,13 @@ export default function NavBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+          <MenuItem>
+              <Typography>
+              <IconButton component={RouterLink} to={"/about"}>
+               About
+              </IconButton> 
+              </Typography>
+              </MenuItem>
             <MenuItem>
               <Typography />
               {isLoggedIn? <IconButton component={RouterLink} to={"/myplant"}>
