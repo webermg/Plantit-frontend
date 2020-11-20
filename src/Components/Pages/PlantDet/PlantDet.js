@@ -127,7 +127,6 @@ export default function PlantDet() {
   }
 
   const handleMonthChange = (event) => {
-    console.log("clicked")
     setMonths({ ...months, [event.target.name]: event.target.checked })
   }
 
@@ -193,6 +192,15 @@ export default function PlantDet() {
                       label="Jan" />
                     <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
                     <FormControlLabel control={<Checkbox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                    <FormControlLabel control={<Checkbox checked={months.Apr} onChange={handleMonthChange} name="Apr" />} label="Apr" />
+                    <FormControlLabel control={<Checkbox checked={months.May} onChange={handleMonthChange} name="May" />} label="May" />
+                    <FormControlLabel control={<Checkbox checked={months.Jun} onChange={handleMonthChange} name="Jun" />} label="Jun" />
+                    <FormControlLabel control={<Checkbox checked={months.Jul} onChange={handleMonthChange} name="Jul" />} label="Jul" />
+                    <FormControlLabel control={<Checkbox checked={months.Aug} onChange={handleMonthChange} name="Aug" />} label="Aug" />
+                    <FormControlLabel control={<Checkbox checked={months.Sep} onChange={handleMonthChange} name="Sep" />} label="Sep" />
+                    <FormControlLabel control={<Checkbox checked={months.Oct} onChange={handleMonthChange} name="Oct" />} label="Oct" />
+                    <FormControlLabel control={<Checkbox checked={months.Nov} onChange={handleMonthChange} name="Nov" />} label="Nov" />
+                    <FormControlLabel control={<Checkbox checked={months.Dec} onChange={handleMonthChange} name="Dec" />} label="Dec" />
                   </FormGroup>
                 </FormControl>
                 :
@@ -211,7 +219,17 @@ export default function PlantDet() {
                   max={10}
                   aria-label="light"
                   onChangeCommitted={handleSliderChange}
-                  /> : plantDetails.light} </p>
+                  /> : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.light}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="light"
+                  disabled
+                  />} </p>
               </Typography>
 
               <Typography gutterBottom variant="h5" component="h2">
@@ -313,21 +331,20 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="soil_nutriments"
-                  onChange={handleSliderChange}
+                  aria-label="soil_nutriments"
+                  onChangeCommitted={handleSliderChange}
                   />
-                  // <TextField
-                  //   style={{ margin: 8 }}
-                  //   name="soil_nutriments"
-                  //   defaultValue={update.soil_nutriments}
-                  //   variant="outlined"
-                  //   margin="normal"
-                  //   InputLabelProps={{
-                  //     shrink: true,
-                  //   }}
-                  //   onChange={handleUpdateChange}
-                  // /> 
-                  : plantDetails.soil_nutriments} </li>
+                  : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.soil_nutriments}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="soil_nutriments"
+                  disabled
+                  />} </li>
                   <li> Soil texture: {update ? <Slider 
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
@@ -336,9 +353,19 @@ export default function PlantDet() {
                   marks
                   min={1}
                   max={10}
-                  name="soil_texture"
-                  onChange={handleSliderChange}
-                  /> : plantDetails.soil_texture} </li>
+                  aria-label="soil_texture"
+                  onChangeCommitted={handleSliderChange}
+                  /> : <Slider 
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  defaultValue={plantDetails.soil_texture}
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                  aria-label="soil_texture"
+                  disabled
+                  />} </li>
                   <li> Sowing Description: {update ? <TextField
                     style={{ margin: 8 }}
                     name="sowing"
