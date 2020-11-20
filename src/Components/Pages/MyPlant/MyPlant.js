@@ -21,7 +21,8 @@ const useStyles = makeStyles(() => ({
 class MyPlant extends Component {
   state = {
     plants: [],
-    userID: localStorage.getItem("id")
+    userID: localStorage.getItem("id"),
+    isMyPlant: true
   };
   
 
@@ -79,6 +80,7 @@ class MyPlant extends Component {
                 // wateringMin={plant.watering[0]}
                 // wateringMax={plant.watering[1]}
                 image_url={plant.image_url}
+                isMyPlant= {true}
               />
             </Grid>
           ))}
