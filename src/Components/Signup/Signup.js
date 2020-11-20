@@ -8,7 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography'
-import MenuItem from '@material-ui/core/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton'
 
 export default function Signup(props) {
     const [open, setOpen] = useState(false);
@@ -102,12 +103,27 @@ export default function Signup(props) {
         })}
       }
 
-    
-    return (
-        <div>
+      const renderButton = () => {
+        let isMobile = props.isMobile
+        if (isMobile) {
+          return (
+            <MenuItem onClick={handleClickOpen}>
+            <Typography>
+                Sign Up
+            </Typography>
+          </MenuItem>
+          )
+        } else {return (
           <MenuItem onClick={handleClickOpen}>
             Sign Up
           </MenuItem>
+        )}
+      }
+
+    
+    return (
+        <div>
+          {renderButton()}
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
             <form onSubmit={formSubmit}>
