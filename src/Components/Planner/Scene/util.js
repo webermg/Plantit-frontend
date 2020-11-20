@@ -63,6 +63,131 @@ const util = {
     })
     
     return min <= snapDist ** 2 ? closest : [x,y];
+  },
+
+  // were can we snap our objects?
+  getLineGuideStops: function(shapes, skipShape) {
+    // we can snap to stage borders and the center of the stage
+    var vertical = [0, stage.width()];
+    var horizontal = [0, stage.height()];
+
+    // and we snap over edges and center of each object on the canvas
+    shapes.forEach((guideItem) => {
+      if (guideItem === skipShape) {
+        return;
+      }
+      var box = guideItem.getClientRect();
+      // and we can snap to all edges of shapes
+      vertical.push([guideItem.x, guideItem.x + guideItem.width]);
+      horizontal.push([guideItem.y, guideItem.y + guideItem.height]);
+    });
+    return {
+      vertical: vertical.flat(),
+      horizontal: horizontal.flat(),
+    };
+  },
+
+  // what points of the object will trigger to snapping?
+  // it can be just center of the object
+  // but we will enable all edges and center
+  getObjectSnappingEdges: function(node) {
+    var box = node.getClientRect();
+    var absPos = node.absolutePosition();
+
+    return {
+      vertical: [
+        {
+          guide: Math.round(box.x),
+          offset: Math.round(absPos.x - box.x),
+          snap: 'start',
+        },
+        {
+          guide: Math.round(box.x + box.width / 2),
+          offset: Math.round(absPos.x - box.x - box.width / 2),
+          snap: 'center',
+        },
+        {
+          guide: Math.round(box.x + box.width),
+          offset: Math.round(absPos.x - box.x - box.width),
+          snap: 'end',
+        },
+      ],
+      horizontal: [
+        {
+          guide: Math.round(box.y),
+          offset: Math.round(absPos.y - box.y),
+          snap: 'start',
+        },
+        {
+          guide: Math.round(box.y + box.height / 2),
+          offset: Math.round(absPos.y - box.y - box.height / 2),
+          snap: 'center',
+        },
+        {
+          guide: Math.round(box.y + box.height),
+          offset: Math.round(absPos.y - box.y - box.height),
+          snap: 'end',
+        },
+      ],
+    };
+  },
+
+  // find all snapping possibilities
+  getGuides: function(lineGuideStops, itemBounds) {
+    var resultV = [];
+    var resultH = [];
+
+    lineGuideStops.vertical.forEach((lineGuide) => {
+      itemBounds.vertical.forEach((itemBound) => {
+        var diff = Math.abs(lineGuide - itemBound.guide);
+        // if the distance between guild line and object snap point is close we can consider this for snapping
+        if (diff < GUIDELINE_OFFSET) {
+          resultV.push({
+            lineGuide: lineGuide,
+            diff: diff,
+            snap: itemBound.snap,
+            offset: itemBound.offset,
+          });
+        }
+      });
+    });
+
+    lineGuideStops.horizontal.forEach((lineGuide) => {
+      itemBounds.horizontal.forEach((itemBound) => {
+        var diff = Math.abs(lineGuide - itemBound.guide);
+        if (diff < GUIDELINE_OFFSET) {
+          resultH.push({
+            lineGuide: lineGuide,
+            diff: diff,
+            snap: itemBound.snap,
+            offset: itemBound.offset,
+          });
+        }
+      });
+    });
+
+    var guides = [];
+
+    // find closest snap
+    var minV = resultV.sort((a, b) => a.diff - b.diff)[0];
+    var minH = resultH.sort((a, b) => a.diff - b.diff)[0];
+    if (minV) {
+      guides.push({
+        lineGuide: minV.lineGuide,
+        offset: minV.offset,
+        orientation: 'V',
+        snap: minV.snap,
+      });
+    }
+    if (minH) {
+      guides.push({
+        lineGuide: minH.lineGuide,
+        offset: minH.offset,
+        orientation: 'H',
+        snap: minH.snap,
+      });
+    }
+    return guides;
   }
 }
 
