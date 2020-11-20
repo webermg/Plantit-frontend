@@ -59,18 +59,18 @@ export default function Results(props) {
       const treflePromise = new Promise((resolve, reject) => {
         const trefleToken = TokenExpiry.getLocalExpiry("trefleToken");
 
-        const trefleResults = new Promise((resolve, reject) =>{
+        const trefleResults = new Promise((resolve, reject) => {
           if (!trefleToken) {
-          API.getToken().then(result => {
-            // console.log("double api")
-            TokenExpiry.setLocalExpiry("trefleToken", result.data.token)
-            resolve(API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page))
-          }, err => reject(err))
-        } else {
-          resolve(API.getSearchedPlants(`${props.submittedSearch}`, trefleToken, page))
-        }
+            API.getToken().then(result => {
+              // console.log("double api")
+              TokenExpiry.setLocalExpiry("trefleToken", result.data.token)
+              resolve(API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page))
+            }, err => reject(err))
+          } else {
+            resolve(API.getSearchedPlants(`${props.submittedSearch}`, trefleToken, page))
+          }
         })
-        
+
 
         trefleResults.then(result => {
           // console.log("trefle promise")
@@ -88,7 +88,7 @@ export default function Results(props) {
             setPlantsInTrefle([]);
             resolve([])
             // console.log("No more plants to be found")
-          }else {
+          } else {
             reject(err)
           }
         });
@@ -96,10 +96,10 @@ export default function Results(props) {
 
       const userPromise = new Promise((resolve, reject) => {
         const userID = localStorage.getItem("id");
-        if(!userID) resolve(null)
+        if (!userID) resolve(null)
         API.getUser(userID).then(result => {
           // console.log("user promise")
-          if (userID && result.data.myPlants.length !==0) {
+          if (userID && result.data.myPlants.length !== 0) {
             const myPlantSlugs = result.data.myPlants.map(element => element.slug);
             // console.log(myPlantSlugs)
             resolve(myPlantSlugs);
@@ -110,10 +110,11 @@ export default function Results(props) {
 
 
       Promise.all([databasePromise, treflePromise, userPromise]).then(result => {
-          console.log(result)
-          filterTrefle(databasePromise, treflePromise, userPromise)
-        }, err => console.log(err)).catch(err=>{
-          console.log(err)})
+        console.log(result)
+        filterTrefle(databasePromise, treflePromise, userPromise)
+      }, err => console.log(err)).catch(err => {
+        console.log(err)
+      })
     }
   }, [props.submittedSearch, page])
 
@@ -131,7 +132,7 @@ export default function Results(props) {
           setPlantsInTrefle(newPlants)
 
           user.then(userData => {
-            if(userData) {
+            if (userData) {
 
               for (let i = 0; i < databaseData.length; i++) {
                 const element = databaseData[i];
@@ -144,7 +145,7 @@ export default function Results(props) {
             }
             setPlantsInDatabase(databaseData)
             console.log("all done!")
-          }, err =>{
+          }, err => {
             console.log(err)
           })
         }
@@ -163,10 +164,10 @@ export default function Results(props) {
     } else {
       API.getNewPlant(slug, token)
         .then(result => {
-          API.favoritePlant(result.data._id,userId)
-          .then(result => {
-            console.log(result)
-          })
+          API.favoritePlant(result.data._id, userId)
+            .then(result => {
+              console.log(result)
+            })
         }, err => console.log(err))
 
     }
@@ -188,65 +189,54 @@ export default function Results(props) {
   return (
     // <React.Fragment className={classes.root}>
     <div className={classes.root}>
-      <Grid container display="flex" justify='center' alignContent="center" 
+      <Grid container display="flex" justify='center' alignContent="center"
       // flexDirection="row" 
       // flexWrap="wrap" 
       // alignContent="flex-start" 
       // p={1} m={1}
       >
-      {plantsInDatabase.length === 0 ? <h2>no plants found</h2> : <h2>plants found</h2>}
-        <Grid container justify="center" style={{height:500, overflowY:'auto'}}>
+        {plantsInDatabase.length === 0 ? <h2>no plants found</h2> : <h2>plants found</h2>}
+        <Grid container justify="center" style={{ height: 500, overflowY: 'auto' }}>
           {/* Section with plants already in our database */}
           {/* {console.log(plantsInDatabase)} */}
-          {Array.isArray(plantsInDatabase) ? _.chunk(plantsInDatabase,2).map(elements => (
+          {Array.isArray(plantsInDatabase) ? _.chunk(plantsInDatabase, 2).map(elements => (
             <Grid key={elements[0]._id} item>
-            <PlantSearchCard
-              data={elements[0]}
-              key={elements[0].slug}
-              newPlantInDatabase={newPlantInDatabase}
-              inDatabase={true}
-              addFavorite={addFavorite} />
-            {elements[1] && <PlantSearchCard
-              data={elements[1]}
-              key={elements[1].slug}
-              newPlantInDatabase={newPlantInDatabase}
-              inDatabase={true}
-              addFavorite={addFavorite} />}
-              </Grid>
+              <PlantSearchCard
+                data={elements[0]}
+                key={elements[0].slug}
+                newPlantInDatabase={newPlantInDatabase}
+                inDatabase={true}
+                addFavorite={addFavorite} />
+              {elements[1] && <PlantSearchCard
+                data={elements[1]}
+                key={elements[1].slug}
+                newPlantInDatabase={newPlantInDatabase}
+                inDatabase={true}
+                addFavorite={addFavorite} />}
+            </Grid>
           )) : ""
           }
-          {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : _.chunk(plantsInTrefle,2).map(elements => (
+          {plantsInTrefle.length === 0 && page > 1 ? <p> No more plants, please return to previous </p> : _.chunk(plantsInTrefle, 2).map(elements => (
             <Grid key={elements[0]._id} item>
-            <PlantSearchCard
-              data={elements[0]}
-              key={elements[0].slug}
-              newPlantInDatabase={newPlantInDatabase}
-              inDatabase={false}
-              addFavorite={addFavorite} />
-            {elements[1] && <PlantSearchCard
-              data={elements[1]}
-              key={elements[1].slug}
-              newPlantInDatabase={newPlantInDatabase}
-              inDatabase={false}
-              addFavorite={addFavorite} />}
-              </Grid>
+              <PlantSearchCard
+                data={elements[0]}
+                key={elements[0].slug}
+                newPlantInDatabase={newPlantInDatabase}
+                inDatabase={false}
+                addFavorite={addFavorite} />
+              {elements[1] && <PlantSearchCard
+                data={elements[1]}
+                key={elements[1].slug}
+                newPlantInDatabase={newPlantInDatabase}
+                inDatabase={false}
+                addFavorite={addFavorite} />}
+            </Grid>
           ))}
         </Grid>
       </Grid>
-      {/* <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}> */}
 
-        {/* Button for more plants */}
-        {/* <Box p={1} flexShrink={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            endIcon={<MoreHorizIcon />}
-          ><Hidden only="xs">
-              MORE
-                </Hidden>
-          </Button>
-        </Box> */}
+      <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
+
         {/* Upon button being clicked, button for more plants does an api call  */}
         {/* next and back buttons to get more results from trefle */}
         {/* <Box p={1} flexShrink={1}>
@@ -273,8 +263,7 @@ export default function Results(props) {
                 </Hidden>
           </Button>
         </Box> */}
-      {/* </Box> */}
-    {/* </React.Fragment> */}
-    </div>
+      </Box>
+    </div >
   )
 }

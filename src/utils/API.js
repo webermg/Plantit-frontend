@@ -14,15 +14,15 @@ const API = {
         return axios.get(URL_BASE + "user/" + query)
     },
     updateUserGarden: function (query, data) {
-        return axios.put(URL_BASE + "user/" + query + '/garden',{
-            myGarden:data.myGarden,
-            myGardenImg:data.myGardenImg
+        return axios.put(URL_BASE + "user/" + query + '/garden', {
+            myGarden: data.myGarden,
+            myGardenImg: data.myGardenImg
         })
     },
     deleteMyPlant: function (data) {
         return axios.put(URL_BASE + "myplants/delete", {
-           userID: data.userID, 
-           plantID: data.plantID
+            userID: data.userID,
+            plantID: data.plantID
         })
     },
     getPlantID: function (slug) {
@@ -53,7 +53,7 @@ const API = {
             userId: userId,
         })
     },
-    makeComment: function (plantId, userId,commentText) {
+    makeComment: function (plantId, userId, commentText) {
         return axios.post(URL_BASE + "comment", {
             plantId: plantId,
             userId: userId,
@@ -61,10 +61,30 @@ const API = {
         })
     },
 
-    getMyPlants: function(userId) {
+    getMyPlants: function (userId) {
         return axios.get(URL_BASE + "myplants/" + userId)
-    }
+    },
 
+    updatePlant: function (plantId, update,growth_months) {
+        console.log(update)
+        return axios.put(URL_BASE + "plant/edit", {
+            plantId: plantId,
+            growth_habit: update.growth_habit,
+            toxicity: update.toxicity,
+            growth: update.growth,
+            ph_min: update.ph_min,
+            ph_max: update.ph_max,
+            watering_min: update.watering_min,
+            watering_max: update.watering_max,
+            temperature_min: update.temperature_min,
+            temperature_max: update.temperature_max,
+            light: update.light,
+            sowing: update.sowing,
+            soil_nutriments: update.soil_nutriments,
+            soil_texture: update.soil_texture,
+            growth_months: growth_months,
+        })
+    }
 }
 
 export default API;
