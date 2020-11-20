@@ -16,6 +16,7 @@ import { Checkbox, Container, FormControlLabel, FormGroup, FormLabel, Hidden, Sl
 import { createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
+import BackButton from "../../BackButton/BackButton";
 
 const theme = createMuiTheme({
   palette: {
@@ -141,8 +142,11 @@ export default function PlantDet() {
   }
 
   return (
+    <div>
+      <Grid item md mx="auto" style={{margin: '2%'}} >
+      <BackButton/>
+      </Grid>
     <Container className={classes.root}>
-
       {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
@@ -472,5 +476,6 @@ export default function PlantDet() {
       {/* </Paper> */}
       
     </Container>
+    </div>
   );
 }
