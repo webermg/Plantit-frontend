@@ -420,9 +420,12 @@ export default function Scene(props) {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs>
-        <Paper className={classes.paper}>
+    // <React.Fragment>
+
+    //TODO center this
+    <Grid container alignContent='center' spacing={3}>
+      <Grid item xs={3}>
+        {/* <Paper className={classes.paper}> */}
           <TabMenu 
             active={activeDraw}
             onDrawClick={handleDrawBtnClick} 
@@ -432,9 +435,9 @@ export default function Scene(props) {
             onOptionChange={handleOptionsChange}
             onSliderChange={handleOptionsSliderChange}/>
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
-        </Paper>
+        {/* </Paper> */}
       </Grid>
-      <Grid item xs>
+      <Grid item xs={9}>
         <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
           <Layer listening={!options.lockBackground}>
             {polygons.map((item, i) => <Polygon {...item}
@@ -502,6 +505,7 @@ export default function Scene(props) {
           </Layer>
         </Stage>
       </Grid>
-    </Grid>
+      {/* </React.Fragment> */}
+  </Grid>
   )
 }
