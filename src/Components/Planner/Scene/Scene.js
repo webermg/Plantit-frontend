@@ -220,9 +220,6 @@ export default function Scene(props) {
       e.preventDefault();
       if (e.keyCode === 27) {
         setTemp({})
-      }
-      if (e.keyCode === 27 || e.keyCode === 13) {
-        console.log("drawing off")
         setActiveDraw(null)
       }
     }
@@ -281,7 +278,7 @@ export default function Scene(props) {
   const handleDrawBtnClick = (imageURL,i) => {
     // console.log(activeDraw)
     selectShape(null);
-    if (activeDraw) {
+    if (activeDraw === i) {
       console.log("drawing off")
       setActiveDraw(null)
       setTemp({});
@@ -336,7 +333,6 @@ export default function Scene(props) {
   const handleMouseMove = (e) => {
     const coords = [e.evt.layerX, e.evt.layerY]
     if (!activeDraw) {
-
       return;
     }
     // console.log("hi")
