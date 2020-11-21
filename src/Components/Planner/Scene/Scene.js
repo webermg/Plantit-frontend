@@ -242,6 +242,42 @@ export default function Scene(props) {
     setImages(imagesRef.current.filter(item => item.id !== id))
   }
 
+  const bringToFront = id => {
+    //figure out which collection
+    let collection, func;
+    let item = polygons.find(poly=>id===poly.id);
+    if(item) {
+      collection=polygons.slice()
+      func=setPolygons
+    }
+    else {
+      collection=images.slice()
+      func=setImages
+      item = images.find(img=>img.id===id)
+    }
+    collection = collection.filter(element=>id!==element.id);
+    collection.push(item)
+    func(collection)
+  }
+
+  const sendToBack = id => {
+    //figure out which collection
+    let collection, func;
+    let item = polygons.find(poly=>id===poly.id);
+    if(item) {
+      collection=polygons.slice()
+      func=setPolygons
+    }
+    else {
+      collection=images.slice()
+      func=setImages
+      item = images.find(img=>img.id===id)
+    }
+    collection = collection.filter(element=>id!==element.id);
+    collection.unshift(item)
+    func(collection)
+  }
+
   const handleDrawBtnClick = (imageURL,i) => {
     // console.log(activeDraw)
     selectShape(null);
@@ -446,7 +482,13 @@ export default function Scene(props) {
       <Grid container xs={9} direction='column'>
         <Grid item xs>
 
-        <Toolbar selectedId={selectedId} onPublish={publishGardenImg}/>
+        <Toolbar 
+          selectedId={selectedId} 
+          onPublish={publishGardenImg} 
+          onDelete={deleteShape}
+          toFront={bringToFront}
+          toBack={sendToBack}
+          />
         </Grid>
         <Grid item xs>
         <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
@@ -501,7 +543,7 @@ export default function Scene(props) {
               rotateEnabled={false}
             />}
             {/* {selectedId && (
-              _.chunk(polygons.filter(item => item.id===selectedId)[0].points,2).map((coords,i) => <Circle 
+              util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
               key={i}
               x={coords[0]} 
               y={coords[1]} 

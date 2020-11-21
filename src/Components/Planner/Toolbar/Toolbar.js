@@ -8,9 +8,9 @@ export default function Toolbar(props) {
 
   {props.selectedId && 
     (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-      <Button>Delete</Button>
-      <Button>Bring to Front</Button>
-      <Button>Send to Back</Button>
+      <Button onClick={() => props.onDelete(props.selectedId)}>Delete</Button>
+      <Button onClick={() => props.toFront(props.selectedId)}>Bring to Front</Button>
+      <Button onClick={() => props.toBack(props.selectedId)}>Send to Back</Button>
     </ButtonGroup>)}
   </Grid>
   <Grid item xs>

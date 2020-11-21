@@ -176,6 +176,12 @@ const util = {
       });
     }
     return guides;
+  },
+
+  getPoints: function(polygons, selectedId) {
+    let poly = polygons.filter(item => item.id===selectedId)
+    if(poly.length === 0) return []
+    return _.chunk(poly[0].points,2)
   }
 }
 
