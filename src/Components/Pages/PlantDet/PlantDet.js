@@ -142,11 +142,21 @@ export default function PlantDet() {
   }
 
   return (
-    <div>
-      <Grid item md mx="auto" style={{margin: '2%'}} >
+    <Grid container style={{background:'#005254'}}>
+      <Typography
+                className={"MuiTypography--heading"}
+                variant={"h4"}
+                fontWeight="bold"
+                component="h4"
+                align="center"
+                style={{ color: "#a9a9a9", margin: "2%" }}
+            >
+                Plant Details
+        </Typography>
+      <Grid item xs={12} mx="auto" style={{margin: '2%'}} >
       <BackButton/>
       </Grid>
-    <Container className={classes.root}>
+    <Container className={classes.root} style={{background:'#005254'}}>
       {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
@@ -476,6 +486,6 @@ export default function PlantDet() {
       {/* </Paper> */}
       
     </Container>
-    </div>
+    </Grid>
   );
 }

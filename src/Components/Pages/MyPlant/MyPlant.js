@@ -65,10 +65,21 @@ class MyPlant extends Component {
     } 
     return (
       <div>
-      <Container style={{ padding: 60}} className={classes.root}>
-           <Grid item md mx="auto" style={{margin: '2%'}} >
-      <BackButton/>
-      </Grid>
+      <Grid container style={{ padding: 60, background:'#005254'}} className={classes.root}>
+          <Typography
+                    className={"MuiTypography--heading"}
+                    variant={"h4"}
+                    fontWeight="bold"
+                    component="h4"
+                    align="center"
+                    style={{ color: "#a9a9a9" }}
+                >
+                    My Plants
+            </Typography>
+           <Grid item xs={12} mx="auto" style={{margin: '2%'}} >
+            <BackButton/>
+            </Grid>
+            
       <div >
         <Grid container spacing={4}>
           <Typography
@@ -91,7 +102,7 @@ class MyPlant extends Component {
           ))}
         </Grid>
       </div>
-      </Container>
+      </Grid>
       </div>
     );
   }

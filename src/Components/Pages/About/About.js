@@ -31,7 +31,9 @@ const theme = {
                         boxShadow: "0 16px 70px -12.125px rgba(0,0,0,0.3)"
                     },
                     "& .MuiCardMedia-root": {
-                        paddingTop: "56.25%"
+                        paddingTop: "56.25%",
+                        height:150
+                        
                     },
                     "& .MuiCardContent-root": {
                         textAlign: "center",
@@ -63,7 +65,7 @@ const theme = {
 export default function About() {
     return (
         <MuiThemeProvider theme={createMuiTheme(theme)}>
-            <div className="About">
+            <div className="About" style={{background:'#005254'}}>
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography 
@@ -216,7 +218,7 @@ export default function About() {
                             <CardMedia
                                 className={"MuiCardMedia-root"}
                                 image={
-                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605846985/project%203/Ann_Headshot_paslhl.jpg"
+                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605925536/project%203/mariawaslickprofile_vvqmth.png"
                                 }
                                 style={{height:150}}
                             />

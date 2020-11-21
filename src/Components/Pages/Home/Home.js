@@ -102,10 +102,9 @@ class Home extends Component {
     render() {
         const classes = useStyles;
         return (
-            <MuiThemeProvider theme={theme}>
                 <React.Fragment>
                     <CssBaseline /> 
-                    <div className={classes.root} >
+                    <div className={classes.root}  style={{background:'#005254'}}>
                         <Grid container >
                             <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>
                                 <Transition
@@ -160,7 +159,6 @@ class Home extends Component {
                         </Grid>
                     </div>
                 </React.Fragment>
-            </MuiThemeProvider>
         )
     }
 
