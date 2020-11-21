@@ -186,6 +186,23 @@ export default function PlantDet() {
     API.updatePlant(plantDetails._id, update, growth_months)
       .then(result => {
         console.log(result)
+        if(localStorage.getItem("id")) {
+          API.makeComment(plantDetails._id,localStorage.getItem("id"), "Initial review completed!")
+          .then(commentResult => {
+            console.log(commentResult);
+            setReset(!reset)
+            setUpdate(false)
+          })
+        }
+        else {
+          API.makeComment(plantDetails._id,"5fb83d88db974b470c3395e4", "Initial review completed!")
+          .then(commentResult => {
+            console.log(commentResult);
+            setReset(!reset)
+            setUpdate(false)
+          })
+        }
+        
       })
   }
 
