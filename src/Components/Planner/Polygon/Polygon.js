@@ -28,6 +28,7 @@ export default function Polygon(props) {
             onClick={props.onSelect}
             draggable
             onDragStart={props.onDragStart}
+            onDragEnd={e=>props.onDragEnd(e,props.num)}
           />
           {props.isSelected && circleOrder.map((circle, i) => (
             <Circle
@@ -41,8 +42,14 @@ export default function Polygon(props) {
               strokeWidth={1}
               rotateEnabled={false}
               draggable
+              onDragStart={e => {
+                props.vertexDragStart(e,props.num,circle)
+              }}
               onDragMove={e => {
                 props.onDragMove(e, props.num, circle);
+              }}
+              onDragEnd={e => {
+                props.vertexDragEnd(e,props.num,circle)
               }}
               onClick={props.onClick}
             />

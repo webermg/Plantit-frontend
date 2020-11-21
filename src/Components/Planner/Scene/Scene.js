@@ -96,13 +96,15 @@ export default function Scene(props) {
         console.log(temp.points)
         const toAdd = { ...temp }
         toAdd.id = Date.now() + Math.random();
+        toAdd.x=0;
+        toAdd.y=0;
         console.log(toAdd)
         const polys = getPolygons()
         polys.push(toAdd);
         setPolygons(polys);
         // setTemp({})
       }
-      setTemp({})
+      setTemp({points:[]})
     }
     //test temp for completeness
     //if complete then add
@@ -173,7 +175,7 @@ export default function Scene(props) {
   }
 
   const cancelDraw = () => {
-    setTemp({})
+    setTemp({points:[]})
     setActiveDraw(null)
   }
   const completeDraw = () => {
@@ -186,6 +188,21 @@ export default function Scene(props) {
 
   const dragPolygon = () => {
     selectShape(null)
+  }
+
+  const endDragPolygon = (e, index) => {
+    console.log(e)
+    const polyPoints = [...polygons[index].points]
+    const offsetX = e.target.attrs.x;
+    const offsetY = e.target.attrs.y;
+    for(let i = 0; i < polyPoints.length; i++) {
+      if(i%2==0) polyPoints[i] += offsetX
+      else polyPoints[i] += offsetY
+    }
+    const polys = getPolygons()
+    polys[index].points = polyPoints;
+    setPolygons(polys);
+    e.target.absolutePosition({x:0,y:0})
   }
 
   const handleOptionsChange = (e) => {
@@ -314,11 +331,13 @@ export default function Scene(props) {
   }
 
   const handleCircleDrag = (e, index, circle) => {
-    console.log(e.target.absolutePosition())
+    // console.log(e.target.absolutePosition())
     const mouseX = e.evt.layerX
     const mouseY = e.evt.layerY
-    const newPoints = [...polygons[index].points];
+    // const newPoints = [...polygons[index].points];
+    const newPoints = [...temp.points];
     
+
     //check vertex snap
     //if no vertex snap then check grid snap
     let pos = util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId);
@@ -332,17 +351,21 @@ export default function Scene(props) {
     absPos.y=pos[1];
     e.target.absolutePosition(absPos)
     // console.log(newPoints)
-    const temp = getPolygons()
-    temp[index].points = newPoints;
-    setPolygons(temp);
+    // const temp = getPolygons()
+    // temp[index].points = newPoints;
+    // setPolygons(temp);
+    setTemp({...temp, points:newPoints})
   }
 
-  const handleVertexDragStart = (e, circle) => {
-    
+  const handleVertexDragStart = (e, index, circle) => {
+    setTemp({points:[...polygons[index].points]})
   }
 
   const handleVertexDragEnd = (e, index, circle) => {
-    
+    const polys = getPolygons()
+    polys[index].points = [...temp.points];
+    setPolygons(polys);
+    setTemp({points:[]})
   }
 
   const handleMouseMove = (e) => {
@@ -507,6 +530,8 @@ export default function Scene(props) {
                 key={i}
                 isSelected={item.id === selectedId}
                 onDragMove={handleCircleDrag}
+                vertexDragStart={handleVertexDragStart}
+                vertexDragEnd={handleVertexDragEnd}
                 onSelect={() => {
                   selectShape(item.id)
                 }}
@@ -514,6 +539,7 @@ export default function Scene(props) {
                 num={i}
                 radius={RADIUS} 
                 onDragStart={dragPolygon}
+                onDragEnd={endDragPolygon}
                 />)}
             </Layer>
             <Layer listening={!options.lockForeground}>
