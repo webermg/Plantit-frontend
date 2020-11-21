@@ -37,8 +37,8 @@ export default class profile extends Component {
     const classes = useStyles;
     return (
       <React.Fragment>
-        <Container>
-          <Grid>
+        <Grid container style={{background:'#005254'}}>
+          <Grid item xs={12}>
             <h1>Welcome, {this.state.user.username}!</h1>
           </Grid>
           <Typography>
@@ -66,7 +66,7 @@ export default class profile extends Component {
               />
             </Grid>
           ))} */}
-        </Container>
+        </Grid>
       </React.Fragment>
     );
   }
