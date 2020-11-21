@@ -19,14 +19,13 @@ const theme = createMuiTheme({
       contrastText: '#fff',
     },
     secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
+      light: '#68b36b',
+      main: '#43a047',
+      dark: '#2e7031',
+      contrastText: '#fff',
     },
   },
 });
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -90,7 +89,7 @@ export default function Search(props) {
             <Box p={1} flexShrink={1}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 className={classes.button}
                 endIcon={<LocalFloristIcon />}
                 onClick={props.handleFormSubmit}
