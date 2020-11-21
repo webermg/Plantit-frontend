@@ -54,12 +54,6 @@ export default class profile extends Component {
     interests: [],
   };
 
-  handleInputChange = (event) => {
-    let { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
   componentDidMount() {
     const userID = localStorage.getItem("id");
 
@@ -72,13 +66,6 @@ export default class profile extends Component {
       });
     }
   }
-  // handleSubmitLocation = (event) => {
-  //   event.preventDefault();
-  //   API.myLocation().then((res) => {
-  //     console.log("Results of submit location:", res);
-  //     this.setState({ location: res.data });
-  //   });
-  // };
 
   render() {
     const classes = useStyles;
