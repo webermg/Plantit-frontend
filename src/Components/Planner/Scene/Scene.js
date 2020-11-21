@@ -308,7 +308,6 @@ export default function Scene(props) {
   }
 
   const handleDrawBtnClick = (imageURL,i) => {
-    // console.log(activeDraw)
     selectShape(null);
     if (activeDraw === i) {
       console.log("drawing off")
@@ -330,38 +329,28 @@ export default function Scene(props) {
     setHoveredImage(null)
   }
 
-  const handleCircleDrag = (e, index, circle) => {
-    // console.log(e.target.absolutePosition())
+  const handleCircleDrag = (e, circle) => {
     const mouseX = e.evt.layerX
     const mouseY = e.evt.layerY
-    // const newPoints = [...polygons[index].points];
     const newPoints = [...temp.points];
-    
-
     //check vertex snap
     //if no vertex snap then check grid snap
     let pos = util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId);
     if(pos[0] === mouseX && pos[1] === mouseY) pos = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
-    
     newPoints[2 * circle] = pos[0];
     newPoints[2 * circle + 1] = pos[1];
-
     const absPos = e.target.absolutePosition()
     absPos.x=pos[0];
     absPos.y=pos[1];
     e.target.absolutePosition(absPos)
-    // console.log(newPoints)
-    // const temp = getPolygons()
-    // temp[index].points = newPoints;
-    // setPolygons(temp);
     setTemp({...temp, points:newPoints})
   }
 
-  const handleVertexDragStart = (e, index, circle) => {
+  const handleVertexDragStart = (index) => {
     setTemp({points:[...polygons[index].points]})
   }
 
-  const handleVertexDragEnd = (e, index, circle) => {
+  const handleVertexDragEnd = (index) => {
     const polys = getPolygons()
     polys[index].points = [...temp.points];
     setPolygons(polys);
@@ -578,17 +567,26 @@ export default function Scene(props) {
                 strokeWidth={1}
                 rotateEnabled={false}
               />}
-              {/* {selectedId && (
-                util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
-                key={i}
-                x={coords[0]} 
-                y={coords[1]} 
-                radius={RADIUS} 
-                fill='white'
-                stroke='black'
-                strokeWidth={1}
-                />)
-              )} */}
+              {options.lockForeground && images.map((img,i) => (
+                <Rect
+                  key={i}  
+                  x={img.x}
+                  y={img.y}
+                  width={img.width}
+                  height={img.height}
+                  tooltip_text={img.tooltip_text}
+                  onMouseEnter={() => {
+                    handleImageMouseover({
+                      x:img.x,
+                      y:img.y,
+                      width:img.width,
+                      height:img.height,
+                      tooltip_text:img.tooltip_text
+                    })
+                  }}
+                  onMouseLeave={handleImageMouseout}
+                />
+              ))}
               {hoveredImage && (
                 <Tooltip {...hoveredImage}/>
               )}

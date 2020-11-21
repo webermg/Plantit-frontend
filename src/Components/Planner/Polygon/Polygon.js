@@ -43,13 +43,13 @@ export default function Polygon(props) {
               rotateEnabled={false}
               draggable
               onDragStart={e => {
-                props.vertexDragStart(e,props.num,circle)
+                props.vertexDragStart(props.num)
               }}
               onDragMove={e => {
-                props.onDragMove(e, props.num, circle);
+                props.onDragMove(e, circle);
               }}
               onDragEnd={e => {
-                props.vertexDragEnd(e,props.num,circle)
+                props.vertexDragEnd(props.num)
               }}
               onClick={props.onClick}
             />
