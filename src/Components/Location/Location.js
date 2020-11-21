@@ -19,11 +19,13 @@ export default function Location(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
   const handleUpdate = (event) => {
     let {value} = event.target
     setLocation({value})
  
-  }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose()
@@ -33,7 +35,7 @@ export default function Location(props) {
       console.log("location:", location.value) 
     })
     handleClose();
-  }
+  };
 
   return (
     <div>
@@ -51,7 +53,7 @@ export default function Location(props) {
             Please add or update your location here:
           </DialogContentText>
           <TextField
-            name = "location"
+            name= "location"
             autoFocus
             margin="dense"
             id="name"

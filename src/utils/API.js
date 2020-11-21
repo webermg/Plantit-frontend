@@ -24,6 +24,16 @@ const API = {
             location: data.value
         })
     },
+    updateUserInterests: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/interests', {
+            interests: data.value
+        })
+    },
+    updateUserSkills: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/skills', {
+            skills: data.value
+        })
+    },
     deleteMyPlant: function (data) {
         return axios.put(URL_BASE + "myplants/delete", {
             userID: data.userID,
