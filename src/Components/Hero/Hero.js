@@ -120,7 +120,7 @@ export default function Hero (props) {
                     size="large" color="inherit"
                     onClick={props.handleFormSubmit}
                     >
-                        Search for a Plant
+                        Search Plants
                     </Button>
 
                     <Button
