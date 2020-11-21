@@ -16,6 +16,10 @@ const API = {
     updateUserGarden: function (query, data) {
         return axios.put(URL_BASE + "user/" + query + '/garden', {
             myGarden: data.myGarden,
+        })
+    },
+    updateUserGardenImg: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/gardenimg', {
             myGardenImg: data.myGardenImg
         })
     },
