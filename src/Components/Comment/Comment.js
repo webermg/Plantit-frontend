@@ -68,31 +68,34 @@ export default function Comment(data) {
       ><Hidden only="xs">
           Delete
             </Hidden>
-      </Button>
+        </Button>
         From: {data.user}
-      <TextField
-        label="edit"
-        style={{ margin: 8 }}
-        name="watering_min"
-        value={text}
-        variant="outlined"
-        margin="normal"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        onChange={handleUpdateChange}
-      />
-    </div>
-  } else if (data.viewerId === data.userId) {
-    return <div>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        endIcon={<EditIcon />}
-        onClick={() => setEditing(true)}
-      ><Hidden only="xs">
-          Edit
+        <TextField
+          id="outlined-multiline-static"
+          multiline
+          rows={4}
+          label="edit"
+          style={{ margin: 8, background: 'white', width: '30ch' }}
+          name="watering_min"
+          value={text}
+          variant="outlined"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleUpdateChange}
+        />
+      </div>
+    } else if (data.viewerId === data.userId) {
+      return <div>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          endIcon={<EditIcon />}
+          onClick={() => setEditing(true)}
+        ><Hidden only="xs">
+            Edit
           </Hidden>
       </Button>
 
