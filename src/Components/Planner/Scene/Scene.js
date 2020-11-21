@@ -13,6 +13,7 @@ import TabMenu from '../TabMenu/TabMenu'
 import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
 import util from './util'
+import Toolbar from '../Toolbar/Toolbar';
 
 const STAGE_HEIGHT = 800;
 const STAGE_WIDTH = 800;
@@ -144,19 +145,24 @@ export default function Scene(props) {
       images: images,
       options: options
     }
-    const id = selectedId
-    // selectShape(null)
+    
     API.updateUserGarden(props.userData._id, {
       myGarden:JSON.stringify(data),
-      myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.1})
     }).then(res=>{
-      selectShape(id)
       console.log("saved")});
   }
 
   const loadFromUser = () => {
     let dataStr = props.userData.myGarden;
     if(dataStr !== null) processLoadedData(dataStr)
+  }
+
+  const publishGardenImg = () => {
+    API.updateUserGardenImg(props.userData._id, {
+      myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.5})
+    })
+    .then(res => console.log("published"))
+    .catch(err => console.log("error"))
   }
 
   const processLoadedData = (str) => {
@@ -231,9 +237,9 @@ export default function Scene(props) {
   const deleteShape = id => {
     let polys = getPolygons()
     polys = polys.filter(item => item.id !== id)
+    selectShape(null)
     setPolygons(polys)
     setImages(imagesRef.current.filter(item => item.id !== id))
-    selectShape(null)
   }
 
   const handleDrawBtnClick = (imageURL,i) => {
@@ -283,7 +289,7 @@ export default function Scene(props) {
     setPolygons(temp);
   }
 
-  const handleVertexDragStart = (e, index, circle) => {
+  const handleVertexDragStart = (e, circle) => {
     
   }
 
@@ -437,7 +443,12 @@ export default function Scene(props) {
           {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
         {/* </Paper> */}
       </Grid>
-      <Grid item xs={9}>
+      <Grid container xs={9} direction='column'>
+        <Grid item xs>
+
+        <Toolbar selectedId={selectedId} onPublish={publishGardenImg}/>
+        </Grid>
+        <Grid item xs>
         <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
           <Layer listening={!options.lockBackground}>
             {polygons.map((item, i) => <Polygon {...item}
@@ -489,6 +500,17 @@ export default function Scene(props) {
               strokeWidth={1}
               rotateEnabled={false}
             />}
+            {/* {selectedId && (
+              _.chunk(polygons.filter(item => item.id===selectedId)[0].points,2).map((coords,i) => <Circle 
+              key={i}
+              x={coords[0]} 
+              y={coords[1]} 
+              radius={RADIUS} 
+              fill='white'
+              stroke='black'
+              strokeWidth={1}
+              />)
+            )} */}
             {hoveredImage && (
               <Tooltip {...hoveredImage}/>
             )}
@@ -504,6 +526,7 @@ export default function Scene(props) {
             })}
           </Layer>
         </Stage>
+        </Grid>
       </Grid>
       {/* </React.Fragment> */}
   </Grid>
