@@ -104,7 +104,7 @@ export default function PlantDet() {
 
         if (result.data.dbComment.length === 0) {
           setUpdate({...update, ...result.data.dbPlant})
-          if(result.data.dbPlant.growth_months.length>0) {
+          if(result.data.dbPlant.growth_months&&result.data.dbPlant.growth_months.length>0) {
             console.log(result.data.dbPlant.growth_months)
             const monthList={
               Jan: false,
@@ -148,6 +148,7 @@ export default function PlantDet() {
     console.log(name);
     console.log(value)
     setUpdate({ ...update, [name]: value });
+    console.log(update)
   }
 
   const handleMonthChange = (event) => {
@@ -177,14 +178,15 @@ export default function PlantDet() {
       })
 
   }
-
+if(plantDetails.length === 0) {
+  return <h1>loading</h1>
+}
   return (
     <div>
       <Grid item md mx="auto" style={{margin: '2%'}} >
       <BackButton/>
       </Grid>
     <Container className={classes.root}>
-      {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
@@ -271,7 +273,7 @@ export default function PlantDet() {
               <p>Light Requirement: {update.light} {update ? <Slider
                 aria-labelledby="discrete-slider"
                 valueLabelDisplay="auto"
-                value={update.light ? update.light:1}
+                defaultValue={update.light ? update.light : plantDetails.light}
                 step={1}
                 marks
                 min={1}
@@ -385,7 +387,7 @@ export default function PlantDet() {
                   <Slider
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
-                    value={update.soil_nutriments ? update.soil_nutriments : 1}
+                    defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
                     step={1}
                     marks
                     min={1}
@@ -404,20 +406,22 @@ export default function PlantDet() {
                     aria-label="soil_nutriments"
                     disabled
                   />} </li>
-                <li> Soil texture: {update ? <Slider
+                <li> Soil texture: {update ? 
+                <Slider
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
-                  value={update.soil_texture? update.soil_texture : 1}
+                  defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
                   step={1}
                   marks
                   min={1}
                   max={10}
                   aria-label="soil_texture"
                   onChangeCommitted={(event,value) => handleSliderChange("soil_texture",value)}
-                /> : <Slider
+                /> 
+                : <Slider
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
-                    defaultValue={plantDetails.soil_texture ? plantDetails.soil_texture : 1}
+                    defaultValue={plantDetails.soil_texture}
                     step={1}
                     marks
                     min={1}
