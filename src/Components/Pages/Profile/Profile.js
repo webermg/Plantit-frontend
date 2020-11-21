@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default class profile extends Component {
   state = {
+    id: "",
     user: "",
     plants: [],
     location: "",
@@ -53,12 +54,6 @@ export default class profile extends Component {
     interests: [],
   };
 
-  handleInputChange = (event) => {
-    let { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
   componentDidMount() {
     const userID = localStorage.getItem("id");
 
@@ -67,17 +62,10 @@ export default class profile extends Component {
     } else if (userID != null) {
       API.getUser(userID).then((result) => {
         console.log(result.data);
-        this.setState({ user: result.data, plants: result.data.myPlants });
+        this.setState({ user: result.data, plants: result.data.myPlants, id: result.data._id });
       });
     }
   }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    API.myLocation().then((res) => {
-      console.log("Results of submit location:", res);
-      this.setState({ location: res.data });
-    });
-  };
 
   render() {
     const classes = useStyles;
@@ -115,13 +103,13 @@ export default class profile extends Component {
                   <h3 >
                     City, State, and/or Country: {this.state.user.location}
                   </h3>
-                  <Location/>
+                  <Location id={this.state.id}/>
     
                   <h3>Gardening Interests: {this.state.user.interests}</h3>
-                  <Interests/>
+                  <Interests id={this.state.id}/>
 
                   <h3>Gardening Skills: {this.state.user.skills}</h3>
-                  <Skills/>
+                  <Skills id={this.state.id}/>
                 </Grid>
               </Grid>
             </Container>

@@ -22,8 +22,20 @@ const theme = createMuiTheme({
     palette: {
         background: {
             default: '#005254',
-        }
-    },
+        },
+            primary: {
+              light: '#806673',
+              main: '#614051',
+              dark: '#432c38',
+              contrastText: '#fff',
+            },
+            secondary: {
+              light: '#578c5a',
+              main: '#166732',
+              dark: '#204e22',
+              contrastText: '#fff',
+            },
+          },
     textField: {
         width: '90%',
         marginLeft: 'auto',
@@ -87,8 +99,10 @@ class Home extends Component {
     handleFormSubmit = event => {
         event.preventDefault();
         this.setState({
-            submittedSearch: this.state.searchValue
+            submittedSearch: this.state.searchValue,
+            toggleHero: false
         })
+        
     }
 
     removePLant = id => {
@@ -104,6 +118,7 @@ class Home extends Component {
         return (
                 <React.Fragment>
                     <CssBaseline /> 
+                    <MuiThemeProvider theme={theme}>
                     <div className={classes.root}  style={{background:'#005254'}}>
                         <Grid container >
                             <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>
@@ -118,6 +133,9 @@ class Home extends Component {
                                         <Hero
                                             toggle={this.toggle}
                                             visitedHero={this.state.visitedHero}
+                                            handleFormSubmit={this.handleFormSubmit}
+                                            handleInputChange={this.handleInputChange} 
+                                            state={this.state}
                                         />
                                     </animated.div>
                                 ))}
@@ -128,8 +146,8 @@ class Home extends Component {
                                 <Hidden only={["xs", "sm"]}>
                                     <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '35%', margin: '2%' }}>
                                         <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                            <Typography>
-                                                <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
+                                            <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
+                                                Featured Plants
                                             </Typography>
                                             <Grid item style={{ height: 535, overflowY: 'auto' }}>
                                                 {this.state.plants.map(plant => (
@@ -149,6 +167,12 @@ class Home extends Component {
                                 </Hidden>
                                 <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                        <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
+                                            Welcome to Plant-It!
+                                        </Typography>
+                                        <Typography variant= 'h5' component= 'h2' style= {{ margin: "0em", padding: "10px", textAlign: 'center' }}>
+                                            Search for a plant name to begin your gardening journey!
+                                        </Typography>
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                             handleInputChange={this.handleInputChange} state={this.state} />
                                         {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
@@ -158,6 +182,7 @@ class Home extends Component {
                             </Grid>
                         </Grid>
                     </div>
+                    </MuiThemeProvider>
                 </React.Fragment>
         )
     }

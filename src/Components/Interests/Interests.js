@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,9 +6,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import API from '../../utils/API';
 
-export default function Interests() {
-  const [open, setOpen] = React.useState(false);
+export default function Interests(props) {
+  const [open, setOpen] = useState(false);
+  const [interests, setInterests] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,6 +20,22 @@ export default function Interests() {
     setOpen(false);
   };
 
+  const handleUpdate = (event) => {
+    let {value} = event.target
+    setInterests({value})
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleClose()
+    console.log(props.id)
+    API.updateUserInterests(props.id, interests)
+    .then(result => {
+      console.log("interests:", interests.value) 
+    })
+    handleClose();
+  };
+
   return (
     <div>
       <Button size="small"
@@ -25,28 +43,30 @@ export default function Interests() {
                     color="primary"
                     style={{ backgroundColor: "#b1bb78" }} 
                     onClick={handleClickOpen}>
-        Add Interest
+        Edit Interests
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add Interests</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Please add your Gardening Interests here:
+            Please add or update your Gardening Interests here:
           </DialogContentText>
           <TextField
+            name="interests"
             autoFocus
             margin="dense"
-            id="name"
+            id="interests"
             label="Interests"
             type="text"
             fullWidth
+            onChange={handleUpdate}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Submit
           </Button>
         </DialogActions>
