@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
-import { Hidden, TextField } from "@material-ui/core";
+import { Hidden, TextField, Typography } from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 import API from '../../utils/API';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,7 +33,7 @@ export default function Comment(data) {
   }
 
   const saveEdit = () => {
-    API.editComment(data.commentId,text).then(result => {
+    API.editComment(data.commentId, text).then(result => {
       console.log(result)
       setEditing(false)
     })
@@ -54,7 +54,7 @@ export default function Comment(data) {
           color="primary"
           className={classes.button}
           endIcon={<SaveIcon />}
-        onClick={saveEdit}
+          onClick={saveEdit}
         ><Hidden only="xs">
             Save
             </Hidden>
@@ -64,12 +64,12 @@ export default function Comment(data) {
           color="primary"
           className={classes.button}
           endIcon={<DeleteIcon />}
-        onClick={deleteComment}
+          onClick={deleteComment}
         ><Hidden only="xs">
             Delete
             </Hidden>
         </Button>
-        <h4>From: {data.user}</h4>
+        From: {data.user}
         <TextField
           label="edit"
           style={{ margin: 8 }}
@@ -96,21 +96,29 @@ export default function Comment(data) {
           </Hidden>
         </Button>
 
-        <h4>From: {data.user}</h4>
-        <p>{text}</p>
+        <Typography variant="h5" gutterBottom component="span">
+          From: {data.user}
+        </Typography>
+        <Typography variant="h6" gutterBottom component="p">
+          {text}
+        </Typography>
       </div>
     }
     else {
       return <div>
-      <h4>From: {data.user}</h4>
-      <p>{text}</p>
+        <Typography variant="h5" gutterBottom component="span">
+          From: {data.user}
+        </Typography>
+        <Typography variant="h6" gutterBottom component="p">
+          {text}
+        </Typography>
       </div>
 
     }
   }
   return (
 
-    <EditOptions/>
+    <EditOptions />
     // <div>
     //   {data.viewerId === data.userId ? <Button
     //     variant="contained"
@@ -123,7 +131,7 @@ export default function Comment(data) {
     //             </Hidden>
     //   </Button> : null}
 
-    //   <h4>From: {data.user}</h4>
+    //  From: {data.user}
     //   <p>{data.comment}</p>
     // </div>
 
