@@ -264,7 +264,7 @@ export default function PlantDet() {
                     shrink: true,
                   }}
                   onChange={handleUpdateChange}
-                /> : plantDetails.growth_habit} 
+                /> : plantDetails.growth_habit}
               </Typography>
 
               {update ?
@@ -293,8 +293,8 @@ export default function PlantDet() {
                 </Typography>}
 
               <Typography gutterBottom variant="h5" component="h2">
-              Light Requirement: {update.light} {update ? <Slider
-                  key = {`slider-${update.light}`}
+                Light Requirement: {update.light} {update ? <Slider
+                  key={`slider-${update.light}`}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   defaultValue={update.light ? update.light : plantDetails.light}
@@ -314,11 +314,11 @@ export default function PlantDet() {
                     max={10}
                     aria-label="light"
                     disabled
-                  />} 
+                  />}
               </Typography>
 
               <Typography gutterBottom variant="h5" component="h2">
-              Watering: {update ? <React.Fragment>
+                Watering: {update ? <React.Fragment>
                   <TextField
                     label="Min"
                     style={{ margin: 8 }}
@@ -347,7 +347,7 @@ export default function PlantDet() {
                 </React.Fragment> : (plantDetails.watering_min + "-" + plantDetails.watering_max + "mm")}
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-              Temperature: {update ? <React.Fragment>
+                Temperature: {update ? <React.Fragment>
                   <TextField
                     label="Min"
                     style={{ margin: 8 }}
@@ -410,8 +410,8 @@ export default function PlantDet() {
                   <li> Soil Nutriments: {update ?
                     <Slider
                       aria-labelledby="discrete-slider"
-                  key = {`slider-${update.soil_nutriments}`}
-                  valueLabelDisplay="auto"
+                      key={`slider-${update.soil_nutriments}`}
+                      valueLabelDisplay="auto"
                       defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
                       step={1}
                       marks
@@ -436,7 +436,7 @@ export default function PlantDet() {
                     <Slider
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
-                  key = {`slider-${update.soil_texture}`}
+                      key={`slider-${update.soil_texture}`}
                       defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
                       step={1}
                       marks
@@ -480,7 +480,7 @@ export default function PlantDet() {
                     shrink: true,
                   }}
                   onChange={handleUpdateChange}
-                /> : plantDetails.toxicity} 
+                /> : plantDetails.toxicity}
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
                 Cultivation details: {update ? <TextField
@@ -494,7 +494,7 @@ export default function PlantDet() {
                     shrink: true,
                   }}
                   onChange={handleUpdateChange}
-                /> : plantDetails.growth} 
+                /> : plantDetails.growth}
               </Typography>
               <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleUpdateSubmit}>
                 Submit
@@ -576,8 +576,10 @@ export default function PlantDet() {
 
               </div >
 
+              <Typography variant="h4" gutterBottom component="span">
+                <strong>Comments: </strong>
+              </Typography>
 
-              <h4>Comments: </h4>
 
               {comments.map((comment) => {
                 return (
