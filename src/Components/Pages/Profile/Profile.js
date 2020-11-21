@@ -37,8 +37,8 @@ export default class profile extends Component {
     const classes = useStyles;
     return (
       <React.Fragment>
-        <Container>
-          <Grid>
+        <Grid container style={{background:'#005254'}}>
+          <Grid item xs={12}>
             <h1>Welcome, {this.state.user.username}!</h1>
           </Grid>
           <Typography>
@@ -54,11 +54,8 @@ export default class profile extends Component {
             <Grid item>
               <h3>Gardening Interests: {this.state.user.interests}</h3>
             </Grid>
-            <Grid item>
-              <h3>My Garden: {this.state.user.myGarden}</h3>
-            </Grid>
           </Typography>
-          {this.state.user.myGardenImg}
+          <img src={this.state.user.myGardenImg} alt="" style={{border:'solid black 1px',background: '#DDDDDD'}}/>
           {/* {this.state.user.myPlants.map((plant) => (
             <Grid item xs={4}>
               <RecentCard
@@ -69,7 +66,7 @@ export default class profile extends Component {
               />
             </Grid>
           ))} */}
-        </Container>
+        </Grid>
       </React.Fragment>
     );
   }

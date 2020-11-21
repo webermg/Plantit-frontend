@@ -181,11 +181,22 @@ if(plantDetails.length === 0) {
   return <h1>loading</h1>
 }
   return (
-    <div>
-      <Grid item md mx="auto" style={{margin: '2%'}} >
+    <Grid container style={{background:'#005254'}}>
+      <Typography
+                className={"MuiTypography--heading"}
+                variant={"h4"}
+                fontWeight="bold"
+                component="h4"
+                align="center"
+                style={{ color: "#a9a9a9", margin: "2%" }}
+            >
+                Plant Details
+        </Typography>
+      <Grid item xs={12} mx="auto" style={{margin: '2%'}} >
       <BackButton/>
       </Grid>
-    <Container className={classes.root}>
+    <Container className={classes.root} style={{background:'#005254'}}>
+      {console.log(comments)}
       {/* <Grid style ={{background:'#cac5b9'}}> */}
       {/* <Paper className={classes.paper} style={{background: '#cac5b9'}}> */}
       <Grid item sm={12} md={6} style={{ background: '#cac5b9' }}>
@@ -574,6 +585,6 @@ if(plantDetails.length === 0) {
       {/* </Paper> */}
 
     </Container>
-    </div>
+    </Grid>
   );
 }

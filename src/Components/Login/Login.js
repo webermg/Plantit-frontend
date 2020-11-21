@@ -106,26 +106,26 @@ export default function Login(props) {
     setOpen(false);
   };
 
-  const renderButton = () => {
-    let isMobile = props.isMobile
-    if (isMobile) {
-      return (
-        <MenuItem onClick={handleClickOpen}>
-        <Typography>
-            Log In
-        </Typography>
-      </MenuItem>
-      )
-    } else {return (
-      <MenuItem onClick={handleClickOpen}>
-        Log In
-      </MenuItem>
-    )}
-  }
+  // const renderButton = () => {
+  //   let isMobile = props.isMobile
+  //   if (isMobile) {
+  //     return (
+  //       <MenuItem onClick={handleClickOpen}>
+  //       <Typography>
+  //           Log In
+  //       </Typography>
+  //     </MenuItem>
+  //     )
+  //   } else {return (
+      
+  //   )}
+  // }
 
   return (
     <div>
-      {renderButton()}
+      <MenuItem onClick={handleClickOpen}>
+        Log In
+      </MenuItem>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <form noValidate autoComplete="off" onSubmit={formSubmit}>

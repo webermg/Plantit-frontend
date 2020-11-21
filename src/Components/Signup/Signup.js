@@ -103,28 +103,30 @@ export default function Signup(props) {
         })}
       }
 
-      const renderButton = () => {
-        let isMobile = props.isMobile
-        if (isMobile) {
-          return (
-            <MenuItem onClick={handleClickOpen}>
-            <Typography>
-                Sign Up
-            </Typography>
-          </MenuItem>
-          )
-        } 
-        else {return (
-          <MenuItem onClick={handleClickOpen}>
-            Sign Up
-          </MenuItem>
-        )}
-      }
+      // const renderButton = () => {
+      //   let isMobile = props.isMobile
+      //   if (isMobile) {
+      //     return (
+      //       <MenuItem onClick={handleClickOpen}>
+      //       <Typography>
+      //           Sign Up
+      //       </Typography>
+      //     </MenuItem>
+      //     )
+      //   } 
+      //   else {return (
+      //     <MenuItem onClick={handleClickOpen}>
+      //       Sign Up
+      //     </MenuItem>
+      //   )}
+      // }
 
     
     return (
         <div>
-          {renderButton()}
+          <MenuItem onClick={handleClickOpen}>
+            Sign Up
+       </MenuItem>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
             <form onSubmit={formSubmit}>
