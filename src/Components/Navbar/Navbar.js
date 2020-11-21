@@ -170,24 +170,9 @@ export default function NavBar() {
   }
 
   const menuId = "primary-search-account-menu";
-  const renderUserMenu = function() {
-    if (isLoggedIn) {
-      return (
-        <Menu
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          id={menuId}
-          keepMounted
-          transformOrigin={{ vertical: "top", horizontal: "right" }}
-          open={isMenuOpen}
-          onClose={handleMenuClose}
-        >
-        <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem>
-        <MenuItem onClick={Logout}>Log Out</MenuItem>
-        </Menu>
-      )
-    } else {return (
-      <Menu
+
+  const renderUserMenu = (
+    <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
@@ -196,12 +181,47 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/>
-         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/> 
+      {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
+         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
+         {isLoggedIn? <MenuItem onClick={Logout}>Log Out</MenuItem> : 
+         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
+    
     </Menu>
+  );
 
-    )
-  }}
+  
+  // const renderUserMenu = function() {
+  //   if (isLoggedIn) {
+  //     return (
+  //       <Menu
+  //         anchorEl={anchorEl}
+  //         anchorOrigin={{ vertical: "top", horizontal: "right" }}
+  //         id={menuId}
+  //         keepMounted
+  //         transformOrigin={{ vertical: "top", horizontal: "right" }}
+  //         open={isMenuOpen}
+  //         onClose={handleMenuClose}
+  //       >
+  //       <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem>
+  //       <MenuItem onClick={Logout}>Log Out</MenuItem>
+  //       </Menu>
+  //     )
+  //   } else {return (
+  //     <Menu
+  //     anchorEl={anchorEl}
+  //     anchorOrigin={{ vertical: "top", horizontal: "right" }}
+  //     id={menuId}
+  //     keepMounted
+  //     transformOrigin={{ vertical: "top", horizontal: "right" }}
+  //     open={isMenuOpen}
+  //     onClose={handleMenuClose}
+  //   >
+  //        <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/>
+  //        <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/> 
+  //   </Menu>
+
+  //   )
+  // }}
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = function() {
@@ -310,8 +330,8 @@ export default function NavBar() {
             >
               <FilterVintage />
             </IconButton>
+            {renderUserMenu}
       </div>
-        
       )
     } else return(
       <div className={classes.sectionDesktop}>
@@ -335,6 +355,7 @@ export default function NavBar() {
             >
               <AccountCircle />
             </IconButton>
+            {renderUserMenu}
           </div>
     )
   }
@@ -377,8 +398,9 @@ export default function NavBar() {
           </div>
         </Toolbar>
       </AppBar>
+      
       {renderMobileMenu()}
-      {renderUserMenu()}
+      
     </div>
   );
 }
