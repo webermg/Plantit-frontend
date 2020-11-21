@@ -71,8 +71,11 @@ export default function Comment(data) {
         </Button>
         <h4>From: {data.user}</h4>
         <TextField
+          id="outlined-multiline-static"
+          multiline
+          rows={4}
           label="edit"
-          style={{ margin: 8 }}
+          style={{ margin: 8, background: 'white', width: '30ch' }}
           name="watering_min"
           value={text}
           variant="outlined"
