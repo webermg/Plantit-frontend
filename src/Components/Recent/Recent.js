@@ -58,7 +58,6 @@ export default function RecentCard(props) {
        
     }
 
-
   return (
     <React.Fragment>
       <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ background: 'white', width: "90%" }}>
