@@ -25,7 +25,7 @@ export default function MyGarden() {
     if (userData === null) return <h1>loading...</h1>
 
     return (
-        <Grid container style={{ background: '#005254' }}>
+        <Container >
             <Typography
                 className={"MuiTypography--heading"}
                 variant={"h4"}
@@ -37,7 +37,7 @@ export default function MyGarden() {
                 My Garden
         </Typography>
             <Scene userData={userData} />
-        </Grid>)
+        </Container>)
 
 
 }
