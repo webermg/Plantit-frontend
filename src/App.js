@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react'
 import NavBar from "./Components/Navbar/Navbar";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Home from '../src/Components/Pages/Home/Home';
@@ -12,6 +13,10 @@ import About from './Components/Pages/About/About';
 
 
 function App() {
+  React.useEffect(()=>{
+    document.body.style.backgroundColor='#005254'
+  })
+
   return (
     <Router>
       <NavBar/>
