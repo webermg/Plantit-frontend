@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Comment(data) {
+  console.log("rerendered")
   const classes = useStyles();
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(data.comment)
@@ -46,94 +47,94 @@ export default function Comment(data) {
       setEditing(false)
     })
   }
-  const EditOptions = () => {
-    if (editing) {
-      return <div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          endIcon={<SaveIcon />}
-          onClick={saveEdit}
-        ><Hidden only="xs">
-            Save
+  if (editing) {
+    return <div>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        endIcon={<SaveIcon />}
+        onClick={saveEdit}
+      ><Hidden only="xs">
+          Save
             </Hidden>
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          endIcon={<DeleteIcon />}
-          onClick={deleteComment}
-        ><Hidden only="xs">
-            Delete
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        endIcon={<DeleteIcon />}
+        onClick={deleteComment}
+      ><Hidden only="xs">
+          Delete
             </Hidden>
-        </Button>
+      </Button>
         From: {data.user}
-        <TextField
-          label="edit"
-          style={{ margin: 8 }}
-          name="watering_min"
-          value={text}
-          variant="outlined"
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={handleUpdateChange}
-        />
-      </div>
-    } else if (data.viewerId === data.userId) {
-      return <div>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          endIcon={<EditIcon />}
-          onClick={() => setEditing(true)}
-        ><Hidden only="xs">
-            Edit
+      <TextField
+        label="edit"
+        style={{ margin: 8 }}
+        name="watering_min"
+        value={text}
+        variant="outlined"
+        margin="normal"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={handleUpdateChange}
+      />
+    </div>
+  } else if (data.viewerId === data.userId) {
+    return <div>
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        endIcon={<EditIcon />}
+        onClick={() => setEditing(true)}
+      ><Hidden only="xs">
+          Edit
           </Hidden>
-        </Button>
+      </Button>
 
-        <Typography variant="h5" gutterBottom component="span">
-          From: {data.user}
-        </Typography>
-        <Typography variant="h6" gutterBottom component="p">
-          {text}
-        </Typography>
-      </div>
-    }
-    else {
-      return <div>
-        <Typography variant="h5" gutterBottom component="span">
-          From: {data.user}
-        </Typography>
-        <Typography variant="h6" gutterBottom component="p">
-          {text}
-        </Typography>
-      </div>
-
-    }
+      <Typography variant="h5" gutterBottom component="span">
+        From: {data.user}
+      </Typography>
+      <Typography variant="h6" gutterBottom component="p">
+        {text}
+      </Typography>
+    </div>
   }
-  return (
+  else {
+    return <div>
+      <Typography variant="h5" gutterBottom component="span">
+        From: {data.user}
+      </Typography>
+      <Typography variant="h6" gutterBottom component="p">
+        {text}
+      </Typography>
+    </div>
 
-    <EditOptions />
-    // <div>
-    //   {data.viewerId === data.userId ? <Button
-    //     variant="contained"
-    //     color="primary"
-    //     className={classes.button}
-    //     endIcon={<EditIcon />}
-    //   // onClick={props.handleFormSubmit}
-    //   ><Hidden only="xs">
-    //       Edit
-    //             </Hidden>
-    //   </Button> : null}
+  }
 
-    //  From: {data.user}
-    //   <p>{data.comment}</p>
-    // </div>
 
-  )
+  // return (
+  // <EditOptions />
+
+  //   // <div>
+  //   //   {data.viewerId === data.userId ? <Button
+  //   //     variant="contained"
+  //   //     color="primary"
+  //   //     className={classes.button}
+  //   //     endIcon={<EditIcon />}
+  //   //   // onClick={props.handleFormSubmit}
+  //   //   ><Hidden only="xs">
+  //   //       Edit
+  //   //             </Hidden>
+  //   //   </Button> : null}
+
+  //   //  From: {data.user}
+  //   //   <p>{data.comment}</p>
+  //   // </div>
+
+  // )
 }
