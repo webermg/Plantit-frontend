@@ -72,13 +72,13 @@ export default class profile extends Component {
       });
     }
   }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    API.myLocation().then((res) => {
-      console.log("Results of submit location:", res);
-      this.setState({ location: res.data });
-    });
-  };
+  // handleSubmitLocation = (event) => {
+  //   event.preventDefault();
+  //   API.myLocation().then((res) => {
+  //     console.log("Results of submit location:", res);
+  //     this.setState({ location: res.data });
+  //   });
+  // };
 
   render() {
     const classes = useStyles;
@@ -119,10 +119,10 @@ export default class profile extends Component {
                   <Location id={this.state.id}/>
     
                   <h3>Gardening Interests: {this.state.user.interests}</h3>
-                  <Interests/>
+                  <Interests id={this.state.id}/>
 
                   <h3>Gardening Skills: {this.state.user.skills}</h3>
-                  <Skills/>
+                  <Skills id={this.state.id}/>
                 </Grid>
               </Grid>
             </Container>
