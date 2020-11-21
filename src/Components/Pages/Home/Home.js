@@ -126,7 +126,7 @@ class Home extends Component {
                             <Grid container justify='center'>
 
                                 <Hidden only={["xs", "sm"]}>
-                                    <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '30%', margin: '2%' }}>
+                                    <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '35%', margin: '2%' }}>
                                         <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
                                             <Typography>
                                                 <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
