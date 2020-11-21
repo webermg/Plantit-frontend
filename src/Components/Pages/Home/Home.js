@@ -128,8 +128,8 @@ class Home extends Component {
                                 <Hidden only={["xs", "sm"]}>
                                     <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '35%', margin: '2%' }}>
                                         <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                            <Typography>
-                                                <h2 style={{ margin: "0em", padding: "1em" }}>Featured Plants</h2>
+                                            <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
+                                                Featured Plants
                                             </Typography>
                                             <Grid item style={{ height: 535, overflowY: 'auto' }}>
                                                 {this.state.plants.map(plant => (
@@ -149,6 +149,12 @@ class Home extends Component {
                                 </Hidden>
                                 <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                        <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
+                                            Welcome to Plant-It!
+                                        </Typography>
+                                        <Typography variant= 'h5' component= 'h2' style= {{ margin: "0em", padding: "10px", textAlign: 'center' }}>
+                                            Search for a plant name to begin your gardening journey!
+                                        </Typography>
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                             handleInputChange={this.handleInputChange} state={this.state} />
                                         {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}

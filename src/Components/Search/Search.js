@@ -8,6 +8,24 @@ import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { Hidden } from "@material-ui/core";
+import { createMuiTheme, useTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
+    },
+  },
+});
 
 
 
@@ -26,13 +44,12 @@ const useStyles = makeStyles((theme) => ({
     width: '25ch',
   },
   input: {
-    background: 'white'
-},
+    backgroundColor: 'transparent',
+    color: '614051' },
   button: {
     margin: theme.spacing(1),
     float: "right",
     position: "relative",
-    backgroundColor: "#b1bb78"
   }
 }));
 
@@ -40,14 +57,16 @@ export default function Search(props) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
+       <MuiThemeProvider theme={theme}>
       <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
         <FormControl className={classes.formControl} >
           <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
             <Box p={1} flexShrink={1}>
-            <TextField 
+            <TextField
               id="outlined-basic" 
               background="white"
-              label="Plant?" 
+              color="primary.dark"
+              label="Search for a plant!" 
               variant="outlined" 
               name="searchValue"
               InputProps={{
@@ -83,6 +102,7 @@ export default function Search(props) {
           </Box>
         </FormControl>
       </form>
+      </MuiThemeProvider>
     </div>
    
   );
