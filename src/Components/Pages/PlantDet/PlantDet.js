@@ -76,7 +76,7 @@ export default function PlantDet() {
   const [reset, setReset] = useState(true)
   const { slug } = useParams();
   const classes = useStyles();
-  const [value, setValue] = React.useState();
+  const [value, setValue] = useState();
   const [update, setUpdate] = useState(false)
   const [months, setMonths] = useState({
     Jan: false,
@@ -128,8 +128,6 @@ export default function PlantDet() {
         }
       }).catch(err => console.log(err))
 
-
-
   }, [reset])
 
   const handleCommentChange = (event) => {
@@ -174,6 +172,7 @@ export default function PlantDet() {
     API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
       .then(result => {
         console.log(result)
+        setValue("")
         setReset(!reset)
       })
 
@@ -484,6 +483,38 @@ if(plantDetails.length === 0) {
         <div className={classes.root} style={{ margin: "5vh" }}>
           <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
             <div className={classes.root2}>
+              {!(JSON.parse(localStorage.getItem("isLoggedIn"))) ? <form
+                className={classes.root3}
+                onSubmit={newComment}
+                noValidate autoComplete="off">
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    disabled
+                    id="outlined-multiline-static"
+                    label="Comment"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    InputProps={{
+                      readOnly:true,
+                      className: classes.input
+                    }}
+                    defaultValue={"Please log in to add a comment."}
+                  />
+                  <Button
+                    className={classes.button}
+                    disabled
+                    variant="contained"
+                    size="small" color="primary"
+                    endIcon={<PostAddIcon />}
+                  >
+                    <Hidden only="xs">
+                      Add Comment
+                      </Hidden>
+                  </Button>
+                </FormControl>
+              </form> 
+              : 
               <form
                 className={classes.root3}
                 onSubmit={newComment}
@@ -513,21 +544,24 @@ if(plantDetails.length === 0) {
                       </Hidden>
                   </Button>
                 </FormControl>
-              </form>
+              </form> }
+              
             </div >
 
 
             <h4>Comments: </h4>
 
             {comments.map((comment) => {
-              console.log(comment)
               return (
 
                 <Comment
                   variant="p"
                   comment={comment.commentText}
                   user={comment.userId.username}
+                  commentId={comment._id}
                   key={comment._id}
+                  userId={comment.userId._id}
+                  viewerId={localStorage.getItem("id")}
                 />
               );
             })}
