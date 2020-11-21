@@ -23,9 +23,6 @@ const useStyles = makeStyles({
     media: {
         height: 250,
     },
-    button1: {
-        backgroundColor: '#b1bb78'
-    }
 });
 
 

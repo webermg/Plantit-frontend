@@ -22,8 +22,20 @@ const theme = createMuiTheme({
     palette: {
         background: {
             default: '#005254',
-        }
-    },
+        },
+            primary: {
+              light: '#806673',
+              main: '#614051',
+              dark: '#432c38',
+              contrastText: '#fff',
+            },
+            secondary: {
+              light: '#578c5a',
+              main: '#166732',
+              dark: '#204e22',
+              contrastText: '#fff',
+            },
+          },
     textField: {
         width: '90%',
         marginLeft: 'auto',
@@ -104,6 +116,7 @@ class Home extends Component {
         return (
                 <React.Fragment>
                     <CssBaseline /> 
+                    <MuiThemeProvider theme={theme}>
                     <div className={classes.root}  style={{background:'#005254'}}>
                         <Grid container >
                             <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>
@@ -164,6 +177,7 @@ class Home extends Component {
                             </Grid>
                         </Grid>
                     </div>
+                    </MuiThemeProvider>
                 </React.Fragment>
         )
     }
