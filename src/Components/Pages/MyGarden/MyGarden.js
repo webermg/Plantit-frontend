@@ -1,10 +1,9 @@
 import { Container } from '@material-ui/core'
-import React, { Suspense } from 'react'
+import React from 'react'
 import Scene from '../../Planner/Scene/Scene'
 import '../MyGarden/MyGarden.css'
 import API from '../../../utils/API'
 import Typography from '@material-ui/core/Typography';
-import Grid from "@material-ui/core/Grid";
 
 
 

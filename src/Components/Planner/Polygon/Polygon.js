@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Konva from "konva";
-import { Stage, Layer, Line, Circle, Transformer } from "react-konva";
-import _ from "lodash";
+import React from "react";
+import { Line, Circle } from "react-konva";
 import useImage from "use-image";
 
 export default function Polygon(props) {

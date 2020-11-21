@@ -3,24 +3,23 @@ import Polygon from '../Polygon/Polygon'
 import PlanImage from '../PlanImage/PlanImage'
 import Tooltip from '../Tooltip/Tooltip'
 import Konva from "konva";
-import { Stage, Layer, Line, Circle, Transformer, Rect } from "react-konva";
-import _ from "lodash";
+import { Stage, Layer, Line, Circle, Rect } from "react-konva";
+
 import PlanGrid from '../PlanGrid/PlanGrid';
-import sceneStyle from './sceneStyle';
+// import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TabMenu from '../TabMenu/TabMenu'
-import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
 import util from './util'
 import Toolbar from '../Toolbar/Toolbar';
 
 const STAGE_HEIGHT = 800;
 const STAGE_WIDTH = 800;
-const RADIUS = 6;
+const RADIUS = 8;
 
 export default function Scene(props) {
-  const classes = sceneStyle;
+  // const classes = sceneStyle;
 
   const [polygons, _setPolygons] = useState([])
 
@@ -46,6 +45,9 @@ export default function Scene(props) {
     gridSnap: true,
     lockBackground: false,
     lockForeground: false,
+    hideBackground: false,
+    hideForeground: false,
+    alwaysShowTooltips: false
   })
   
   //refs
@@ -196,7 +198,7 @@ export default function Scene(props) {
     const offsetX = e.target.attrs.x;
     const offsetY = e.target.attrs.y;
     for(let i = 0; i < polyPoints.length; i++) {
-      if(i%2==0) polyPoints[i] += offsetX
+      if(i%2===0) polyPoints[i] += offsetX
       else polyPoints[i] += offsetY
     }
     const polys = getPolygons()
@@ -483,9 +485,9 @@ export default function Scene(props) {
 
   return (
     <Grid container spacing={0} justify='space-around'>
-        <Paper>
       
-      <Grid item>
+      <Grid item xs={3}>
+        <Paper>
           <TabMenu 
             active={activeDraw}
             onDrawClick={handleDrawBtnClick} 
@@ -494,8 +496,8 @@ export default function Scene(props) {
             options={options} 
             onOptionChange={handleOptionsChange}
             onSliderChange={handleOptionsSliderChange}/>
-      </Grid>
       </Paper>
+      </Grid>
       <Paper>
       <Grid item>
         <Grid container direction='column'>
@@ -514,7 +516,7 @@ export default function Scene(props) {
           </Grid>
           <Grid item>
           <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
-            <Layer listening={!options.lockBackground}>
+            <Layer listening={!options.lockBackground} visible={!options.hideBackground}>
               {polygons.map((item, i) => <Polygon {...item}
                 key={i}
                 isSelected={item.id === selectedId}
@@ -531,7 +533,7 @@ export default function Scene(props) {
                 onDragEnd={endDragPolygon}
                 />)}
             </Layer>
-            <Layer listening={!options.lockForeground}>
+            <Layer listening={!options.lockForeground} visible={!options.hideForeground}>
               {images.map((img, i) => {
                 return (
                   <PlanImage
@@ -587,8 +589,11 @@ export default function Scene(props) {
                   onMouseLeave={handleImageMouseout}
                 />
               ))}
-              {hoveredImage && (
+              {hoveredImage && !options.alwaysShowTooltips && (
                 <Tooltip {...hoveredImage}/>
+              )}
+              {options.alwaysShowTooltips && (
+                images.map(img => <Tooltip {...img}/>)
               )}
               {guideLines.map((line,i) => {
                 let points = [];

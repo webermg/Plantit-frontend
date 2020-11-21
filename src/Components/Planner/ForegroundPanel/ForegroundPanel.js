@@ -1,4 +1,4 @@
-import React,{useEffect, useRef} from 'react'
+import React from 'react'
 import {Button, ButtonGroup} from '@material-ui/core'
 import pics from './pics'
 
