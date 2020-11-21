@@ -294,6 +294,7 @@ export default function PlantDet() {
 
               <Typography gutterBottom variant="h5" component="h2">
               Light Requirement: {update.light} {update ? <Slider
+                  key = {`slider-${update.light}`}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   defaultValue={update.light ? update.light : plantDetails.light}
@@ -409,7 +410,8 @@ export default function PlantDet() {
                   <li> Soil Nutriments: {update ?
                     <Slider
                       aria-labelledby="discrete-slider"
-                      valueLabelDisplay="auto"
+                  key = {`slider-${update.soil_nutriments}`}
+                  valueLabelDisplay="auto"
                       defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
                       step={1}
                       marks
@@ -434,6 +436,7 @@ export default function PlantDet() {
                     <Slider
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
+                  key = {`slider-${update.soil_texture}`}
                       defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
                       step={1}
                       marks
