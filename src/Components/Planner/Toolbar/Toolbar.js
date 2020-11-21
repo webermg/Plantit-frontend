@@ -1,9 +1,11 @@
 import React from 'react'
-import { ButtonGroup, Button, Grid, Paper } from '@material-ui/core'
+import { ButtonGroup, Button, Grid, Snackbar, IconButton } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close';
 
 export default function Toolbar(props) {
 
   const [enabled, setEnabled] = React.useState(true)
+  const [open, setOpen] = React.useState(false);
 
   const disable = (time) => {
     setEnabled(false)
@@ -12,9 +14,21 @@ export default function Toolbar(props) {
     }, time)
   }
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
 
-    // <Paper>
+    <React.Fragment>
       <Grid container xs justify='space-between'>
         <Grid item>
           {props.selectedId &&
@@ -32,12 +46,32 @@ export default function Toolbar(props) {
               disabled={!enabled}
               onClick={() => {
                 props.onPublish()
+                handleClick()
                 disable(5000)
               }}>Publish</Button>
           </ButtonGroup>
         </Grid>
       </Grid>
-    // </Paper>
+        <div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        message='Image Published to Profile!'
+        action={
+          <React.Fragment>
+            <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
+    </div>
+      </React.Fragment>
   )
   
 }
