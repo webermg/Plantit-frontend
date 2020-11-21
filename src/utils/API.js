@@ -61,6 +61,17 @@ const API = {
         })
     },
 
+    editComment : function (commentId,commentUpdate) {
+        return axios.put(URL_BASE + "comment/edit", {
+            commentId,
+            commentUpdate
+        })
+    },
+
+    deleteComment : function(commentId) {
+        return axios.delete(URL_BASE+"comment/delete/"+commentId)
+    },
+
     getMyPlants: function (userId) {
         return axios.get(URL_BASE + "myplants/" + userId)
     },
