@@ -87,7 +87,7 @@ class MyPlant extends Component {
             style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
           />
           {this.state.plants.map((plant) => (
-            <Grid item xs={4}>
+            <Grid item xs>
               <RecentCard
                removePlant = {this.removePlant}
                 _id={plant._id}

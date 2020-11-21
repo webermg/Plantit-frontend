@@ -86,6 +86,12 @@ export default function Login(props) {
   }
 }
 
+const tabSelect = (e) => {
+  if (e.keyCode === 9) {
+     document.getElementById("email").focus()
+    }
+}
+
   const tabDown = (e) => {
     if (e.keyCode === 9) {
        document.getElementById("password").focus()

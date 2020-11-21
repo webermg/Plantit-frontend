@@ -195,7 +195,6 @@ export default function Results(props) {
       // alignContent="flex-start" 
       // p={1} m={1}
       >
-        {plantsInDatabase.length === 0 ? <h2>no plants found</h2> : <h2>plants found</h2>}
         <Grid container justify="center" style={{ height: 500, overflowY: 'auto' }}>
           {/* Section with plants already in our database */}
           {/* {console.log(plantsInDatabase)} */}
