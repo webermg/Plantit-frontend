@@ -186,7 +186,7 @@ export default function NavBar() {
         <MenuItem onClick={Logout}>Log Out</MenuItem>
         </Menu>
       )
-    } else return (
+    } else {return (
       <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -201,7 +201,7 @@ export default function NavBar() {
     </Menu>
 
     )
-  }
+  }}
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = function() {
