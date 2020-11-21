@@ -76,7 +76,7 @@ export default function PlantDet() {
   const [reset, setReset] = useState(true)
   const { slug } = useParams();
   const classes = useStyles();
-  const [value, setValue] = React.useState();
+  const [value, setValue] = useState();
   const [update, setUpdate] = useState(false)
   const [months, setMonths] = useState({
     Jan: false,
@@ -104,7 +104,7 @@ export default function PlantDet() {
 
         if (result.data.dbComment.length === 0) {
           setUpdate({...update, ...result.data.dbPlant})
-          if(result.data.dbPlant.growth_months.length>0) {
+          if(result.data.dbPlant.growth_months&&result.data.dbPlant.growth_months.length>0) {
             console.log(result.data.dbPlant.growth_months)
             const monthList={
               Jan: false,
@@ -128,8 +128,6 @@ export default function PlantDet() {
         }
       }).catch(err => console.log(err))
 
-
-
   }, [reset])
 
   const handleCommentChange = (event) => {
@@ -148,6 +146,7 @@ export default function PlantDet() {
     console.log(name);
     console.log(value)
     setUpdate({ ...update, [name]: value });
+    console.log(update)
   }
 
   const handleMonthChange = (event) => {
@@ -173,11 +172,14 @@ export default function PlantDet() {
     API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
       .then(result => {
         console.log(result)
+        setValue("")
         setReset(!reset)
       })
 
   }
-
+if(plantDetails.length === 0) {
+  return <h1>loading</h1>
+}
   return (
     <Grid container style={{background:'#005254'}}>
       <Typography
@@ -281,7 +283,7 @@ export default function PlantDet() {
               <p>Light Requirement: {update.light} {update ? <Slider
                 aria-labelledby="discrete-slider"
                 valueLabelDisplay="auto"
-                value={update.light ? update.light:1}
+                defaultValue={update.light ? update.light : plantDetails.light}
                 step={1}
                 marks
                 min={1}
@@ -395,7 +397,7 @@ export default function PlantDet() {
                   <Slider
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
-                    value={update.soil_nutriments ? update.soil_nutriments : 1}
+                    defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
                     step={1}
                     marks
                     min={1}
@@ -414,20 +416,22 @@ export default function PlantDet() {
                     aria-label="soil_nutriments"
                     disabled
                   />} </li>
-                <li> Soil texture: {update ? <Slider
+                <li> Soil texture: {update ? 
+                <Slider
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
-                  value={update.soil_texture? update.soil_texture : 1}
+                  defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
                   step={1}
                   marks
                   min={1}
                   max={10}
                   aria-label="soil_texture"
                   onChangeCommitted={(event,value) => handleSliderChange("soil_texture",value)}
-                /> : <Slider
+                /> 
+                : <Slider
                     aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
-                    defaultValue={plantDetails.soil_texture ? plantDetails.soil_texture : 1}
+                    defaultValue={plantDetails.soil_texture}
                     step={1}
                     marks
                     min={1}
@@ -490,6 +494,38 @@ export default function PlantDet() {
         <div className={classes.root} style={{ margin: "5vh" }}>
           <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
             <div className={classes.root2}>
+              {!(JSON.parse(localStorage.getItem("isLoggedIn"))) ? <form
+                className={classes.root3}
+                onSubmit={newComment}
+                noValidate autoComplete="off">
+                <FormControl className={classes.formControl}>
+                  <TextField
+                    disabled
+                    id="outlined-multiline-static"
+                    label="Comment"
+                    multiline
+                    rows={4}
+                    variant="outlined"
+                    InputProps={{
+                      readOnly:true,
+                      className: classes.input
+                    }}
+                    defaultValue={"Please log in to add a comment."}
+                  />
+                  <Button
+                    className={classes.button}
+                    disabled
+                    variant="contained"
+                    size="small" color="primary"
+                    endIcon={<PostAddIcon />}
+                  >
+                    <Hidden only="xs">
+                      Add Comment
+                      </Hidden>
+                  </Button>
+                </FormControl>
+              </form> 
+              : 
               <form
                 className={classes.root3}
                 onSubmit={newComment}
@@ -519,21 +555,24 @@ export default function PlantDet() {
                       </Hidden>
                   </Button>
                 </FormControl>
-              </form>
+              </form> }
+              
             </div >
 
 
             <h4>Comments: </h4>
 
             {comments.map((comment) => {
-              console.log(comment)
               return (
 
                 <Comment
                   variant="p"
                   comment={comment.commentText}
                   user={comment.userId.username}
+                  commentId={comment._id}
                   key={comment._id}
+                  userId={comment.userId._id}
+                  viewerId={localStorage.getItem("id")}
                 />
               );
             })}
