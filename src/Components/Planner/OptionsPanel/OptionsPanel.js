@@ -6,21 +6,33 @@ import {Switch,Slider,Typography} from '@material-ui/core';
 export default function OptionsPanel(props) {
   
   return (
-    <FormGroup row>
+    <FormGroup>
       <FormControlLabel
-        control={<Switch checked={props.displayGrid} onChange={props.onChange} name="displayGrid" />}
+        control={<Switch value="on" checked={props.displayGrid} onChange={props.onChange} name="displayGrid" />}
         label="Display Grid"
       />
       <FormControlLabel
-        control={<Switch checked={props.lockBackground} onChange={props.onChange} name="lockBackground" />}
+        control={<Switch value="on" checked={props.lockBackground} onChange={props.onChange} name="lockBackground" />}
         label="Lock Background"
       />
       <FormControlLabel
-        control={<Switch checked={props.lockForeground} onChange={props.onChange} name="lockForeground" />}
+        control={<Switch value="on" checked={props.hideBackground} onChange={props.onChange} name="hideBackground" />}
+        label="Hide Background"
+      />
+      <FormControlLabel
+        control={<Switch value="on" checked={props.lockForeground} onChange={props.onChange} name="lockForeground" />}
         label="Lock Foreground"
       />
       <FormControlLabel
-        control={<Switch checked={props.gridSnap} onChange={props.onChange} name="gridSnap" />}
+        control={<Switch value="on" checked={props.hideForeground} onChange={props.onChange} name="hideForeground" />}
+        label="Hide Foreground"
+      />
+      <FormControlLabel
+        control={<Switch value="on" checked={props.alwaysShowTooltips} onChange={props.onChange} name="alwaysShowTooltips" />}
+        label="Always Show Tooltips"
+      />
+      <FormControlLabel
+        control={<Switch value="on" checked={props.gridSnap} onChange={props.onChange} name="gridSnap" />}
         label="Snap to Grid"
       />
       <Typography id="discrete-slider1" gutterBottom>
