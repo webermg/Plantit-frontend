@@ -26,6 +26,8 @@ export default function Polygon(props) {
             id={props.id}
             points={props.points}
             onClick={props.onSelect}
+            draggable
+            onDragStart={props.onDragStart}
           />
           {props.isSelected && circleOrder.map((circle, i) => (
             <Circle
