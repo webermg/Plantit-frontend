@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default class profile extends Component {
   state = {
+    id: "",
     user: "",
     plants: [],
     location: "",
@@ -67,7 +68,7 @@ export default class profile extends Component {
     } else if (userID != null) {
       API.getUser(userID).then((result) => {
         console.log(result.data);
-        this.setState({ user: result.data, plants: result.data.myPlants });
+        this.setState({ user: result.data, plants: result.data.myPlants, id: result.data._id });
       });
     }
   }
@@ -115,7 +116,7 @@ export default class profile extends Component {
                   <h3 >
                     City, State, and/or Country: {this.state.user.location}
                   </h3>
-                  <Location/>
+                  <Location id={this.state.id}/>
     
                   <h3>Gardening Interests: {this.state.user.interests}</h3>
                   <Interests/>
