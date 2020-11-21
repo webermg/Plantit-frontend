@@ -37,11 +37,13 @@ export default function Toolbar(props) {
               <Button onClick={() => props.toFront(props.selectedId)}>Bring to Front</Button>
               <Button onClick={() => props.toBack(props.selectedId)}>Send to Back</Button>
             </ButtonGroup>)}
+            {props.drawing && (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
+              <Button onClick={props.completeDraw}>Complete</Button>
+              <Button onClick={props.cancelDraw}>Discard</Button>
+            </ButtonGroup>)}
         </Grid>
         <Grid item>
           <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-            <Button>Undo</Button>
-            <Button>Redo</Button>
             <Button
               disabled={!enabled}
               onClick={() => {

@@ -172,6 +172,22 @@ export default function Scene(props) {
     setOptions(data.options);
   }
 
+  const cancelDraw = () => {
+    setTemp({})
+    setActiveDraw(null)
+  }
+  const completeDraw = () => {
+    const tempPoints = [...temp.points]
+    tempPoints.pop()
+    tempPoints.pop()
+    setTemp({...temp, points:tempPoints})
+    setActiveDraw(null)
+  }
+
+  const dragPolygon = () => {
+    selectShape(null)
+  }
+
   const handleOptionsChange = (e) => {
     setOptions({ ...options, [e.target.name]: e.target.checked });
   }
@@ -219,8 +235,7 @@ export default function Scene(props) {
     if (drawRef.current) {
       e.preventDefault();
       if (e.keyCode === 27) {
-        setTemp({})
-        setActiveDraw(null)
+        cancelDraw()
       }
     }
     else {
@@ -335,9 +350,7 @@ export default function Scene(props) {
     if (!activeDraw) {
       return;
     }
-    // console.log("hi")
     const tempCopy = [...temp.points]
-    // console.log(temp.points)
     if (tempCopy.length >= 2) {
       tempCopy.pop();
       tempCopy.pop();
@@ -478,10 +491,13 @@ export default function Scene(props) {
 
           <Toolbar 
             selectedId={selectedId} 
+            drawing={activeDraw}
             onPublish={publishGardenImg} 
             onDelete={deleteShape}
             toFront={bringToFront}
             toBack={sendToBack}
+            cancelDraw={cancelDraw}
+            completeDraw={completeDraw}
             />
           </Grid>
           <Grid item>
@@ -496,9 +512,9 @@ export default function Scene(props) {
                 }}
                 // onClick={e => handleClick(e, i)}
                 num={i}
-                radius={RADIUS} />)}
-              
-
+                radius={RADIUS} 
+                onDragStart={dragPolygon}
+                />)}
             </Layer>
             <Layer listening={!options.lockForeground}>
               {images.map((img, i) => {
