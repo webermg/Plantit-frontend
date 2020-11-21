@@ -8,7 +8,8 @@ import { Spring } from 'react-spring';
 import {TextField} from '@material-ui/core'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import Box from '@material-ui/core/Box';
-import LocalFloristIcon from '@material-ui/icons/LocalFlorist'
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
+import FormControl from '@material-ui/core/FormControl'
 
 let theme = createMuiTheme({
     palette: {
@@ -76,21 +77,25 @@ export default function Hero (props) {
                     </Typography>
                     </Hidden>
 
-                    
+                    <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
                     <Grid container>
                         <Grid item xs={12}>
+                        
                         <TextField className={classes.input}
                         id="outlined-primary" 
                         variant='filled'
                         color= "primary"
                         style={{ margin: 8, width: '70%'}}
                         margin="normal"
+                        name="searchValue"
                         label="Search for a plant to get started!"
                         InputProps= {{
                             classes: {
                                 input: classes.resize,
                               },
                         }}
+                        value={props.state.searchValue}
+                        onChange={props.handleInputChange}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -113,7 +118,7 @@ export default function Hero (props) {
                     className={classes.button}
                     variant="outlined"
                     size="large" color="inherit"
-                    onClick={props.toggle}
+                    onClick={props.handleFormSubmit}
                     >
                         Search for a Plant
                     </Button>
@@ -135,7 +140,7 @@ export default function Hero (props) {
                     >
                         Sign Up
                     </Button>
-                    
+                    </form>
                     </ThemeProvider>
                 </Grid>
             </Grid>

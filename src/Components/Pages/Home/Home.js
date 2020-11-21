@@ -99,8 +99,10 @@ class Home extends Component {
     handleFormSubmit = event => {
         event.preventDefault();
         this.setState({
-            submittedSearch: this.state.searchValue
+            submittedSearch: this.state.searchValue,
+            toggleHero: false
         })
+        
     }
 
     removePLant = id => {
@@ -131,6 +133,9 @@ class Home extends Component {
                                         <Hero
                                             toggle={this.toggle}
                                             visitedHero={this.state.visitedHero}
+                                            handleFormSubmit={this.handleFormSubmit}
+                                            handleInputChange={this.handleInputChange} 
+                                            state={this.state}
                                         />
                                     </animated.div>
                                 ))}
