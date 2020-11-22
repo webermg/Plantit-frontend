@@ -6,7 +6,7 @@ import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { Hidden } from "@material-ui/core";
-import { createMuiTheme, useTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import Paper from '@material-ui/core/Paper'
@@ -17,7 +17,7 @@ const theme = createMuiTheme({
     primary: {
       light: '#806673',
       main: '#614051',
-      dark: '#432c38',
+      dark: '#432c38', 
       contrastText: '#fff',
     },
     secondary: {

@@ -73,6 +73,7 @@ class Home extends Component {
         isMyPlant: false,
     };
 
+    // Function to setState if the site has been visited so that Hero Image hides
     componentDidMount() {
         const isVisited = localStorage.getItem("isVisited")
         if (isVisited === "true") {
@@ -80,6 +81,7 @@ class Home extends Component {
             this.setState({visitedHero: true})
         }
 
+        // API call to load featured Plants when page loads
         API.getFeaturedPlants()
             .then(result => {
                 console.log(result.data)
@@ -89,6 +91,7 @@ class Home extends Component {
             })
     }
 
+    // Handle Input Change for the search bars
     handleInputChange = event => {
         let { name, value } = event.target;
         this.setState({
@@ -96,6 +99,8 @@ class Home extends Component {
         })
     }
 
+
+    // On Submit set the state for the desired search state and that state that the site has been visited
     handleFormSubmit = event => {
         event.preventDefault();
         this.setState({
@@ -106,11 +111,13 @@ class Home extends Component {
         
     }
 
+    // To remove a plant from the My Plants array
     removePLant = id => {
         const plants = this.state.plants.filter(plant => plant.id !== id);
         this.setState({ plants })
     };
 
+    // Toggle to hide Hero Image
     toggle = e => {this.setState({ toggleHero: false })
         localStorage.setItem("isVisited", true)}
 
@@ -122,6 +129,8 @@ class Home extends Component {
                     <MuiThemeProvider theme={theme}>
                     <div className={classes.app}  style={{background:'#005254'}}>
                         <Grid container >
+                           
+                           {/* Animated Hero */}
                             <Grid item mx="auto" display="flex" style={{ width: '100%', height: '100%' }}>
                                 <Transition
                                     native
@@ -144,6 +153,7 @@ class Home extends Component {
                             </Grid>
                             <Grid container justify='center'>
 
+                                 {/*Featured Plants only visible on nonmobile views  */}
                                 <Hidden only={["xs", "sm"]}>
                                     <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '35%', margin: '2%' }}>
                                         <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
@@ -166,6 +176,8 @@ class Home extends Component {
 
                                     </Grid>
                                 </Hidden>
+
+                                {/* Search Results */}
                                 <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
                                         <Search handleFormSubmit={this.handleFormSubmit}

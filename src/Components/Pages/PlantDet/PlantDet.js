@@ -17,7 +17,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import BackButton from "../../BackButton/BackButton";
 import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
-import { createMuiTheme, useTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 
 const theme = createMuiTheme({
@@ -42,15 +42,7 @@ const theme = createMuiTheme({
         contrastText: '#fff',
       },
     },
-    MuiSlider: {
-      
-      track: {
-        color: 'red'
-      },
-      rail: {
-        color: 'black'
-      }
-    }
+    
   }
 });
 
