@@ -102,6 +102,7 @@ class Home extends Component {
             submittedSearch: this.state.searchValue,
             toggleHero: false
         })
+        localStorage.setItem("isVisited", true)
         
     }
 
@@ -149,7 +150,7 @@ class Home extends Component {
                                             <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
                                                 Featured Plants
                                             </Typography>
-                                            <Grid item style={{ height: 535, overflowY: 'auto' }}>
+                                            <Grid item style={{ height: 600, overflowY: 'auto', paddingLeft: '20px', paddingRight: '20px'}}>
                                                 {this.state.plants.map(plant => (
                                                     <RecentCard
                                                         _id={plant._id}
@@ -167,12 +168,7 @@ class Home extends Component {
                                 </Hidden>
                                 <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                        <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
-                                            Welcome to Plant-It!
-                                        </Typography>
-                                        <Typography variant= 'h5' component= 'h2' style= {{ margin: "0em", padding: "10px", textAlign: 'center' }}>
-                                            Search for a plant name to begin your gardening journey!
-                                        </Typography>
+                                        
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                             handleInputChange={this.handleInputChange} state={this.state} />
                                         {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}

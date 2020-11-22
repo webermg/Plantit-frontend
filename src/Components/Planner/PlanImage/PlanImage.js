@@ -1,8 +1,6 @@
-import React, { Component, useState } from 'react';
-import { render } from 'react-dom';
-import { Stage, Layer, Image, Transformer, Text } from 'react-konva';
+import React from 'react';
+import { Image, Transformer } from 'react-konva';
 import useImage from 'use-image';
-import { Tooltip } from '@material-ui/core'
 
 export default function PlanImage({ shapeProps, isSelected, onSelect, onChange, onMouseEnter, onMouseLeave, onDragMove, onDragEnd}) {
 
@@ -12,8 +10,6 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange, 
 
   React.useEffect(() => {
     if (isSelected) {
-      console.log("hi")
-      // we need to attach transformer manually
       trRef.current.nodes([imgRef.current]);
       trRef.current.getLayer().batchDraw();
     }

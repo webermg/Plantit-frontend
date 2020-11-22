@@ -81,7 +81,7 @@ class MyPlant extends Component {
             </Grid>
             
       <div >
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           <Typography
             component="div"
             style={{ backgroundColor: "#cfe8fc", height: "50vh" }}

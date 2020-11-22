@@ -179,9 +179,20 @@ const util = {
   },
 
   getPoints: function(polygons, selectedId) {
-    let poly = polygons.filter(item => item.id===selectedId)
-    if(poly.length === 0) return []
-    return _.chunk(poly[0].points,2)
+    let poly = polygons.find(item => item.id===selectedId)
+    return poly ? _.chunk(poly.points,2) : []
+  },
+
+  isPolygon: function(polygons, selectedId) {
+    return polygons.findIndex(item=>item.id===selectedId) !== -1;
+  },
+
+  getOutline: function(polygons, selectedId) {
+    let poly = polygons.find(item => item.id===selectedId)
+    let pts = [...poly.points]
+    pts.push(pts[0])
+    pts.push(pts[1])
+    return pts;
   }
 }
 
