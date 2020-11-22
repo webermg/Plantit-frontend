@@ -152,12 +152,17 @@ export default function PlantDet() {
           }
         }
 
+
         if(localStorage.getItem("id")) {
       API.getMyPlants(localStorage.getItem("id"))
       .then(myplants =>{
         const mySlugs = myplants.data.map(element => element.slug)
         if(mySlugs.includes(result.data.dbPlant.slug)){
           setIsFavorite(true)
+
+              }
+            })
+
         }
       }).catch(err => console.log(err))
 
@@ -288,7 +293,6 @@ export default function PlantDet() {
 
           {/* Plant DetailsCard */}
           <Grid container style={{ background: '#005254', padding: '1%' }}>
-            {console.log(comments)}
             <Card style={{ background: '#cac5b9' }}>
 
               {/* Plant Det Head with Pic */}
