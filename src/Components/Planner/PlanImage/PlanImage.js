@@ -64,6 +64,7 @@ export default function PlanImage({ shapeProps, isSelected, onSelect, onChange, 
       {isSelected && (
         <Transformer
           ref={trRef}
+          rotationSnaps={[0, 90, 180, 270]}
           boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) {
               return oldBox;

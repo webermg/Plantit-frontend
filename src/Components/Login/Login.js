@@ -11,6 +11,25 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { PinDropSharp } from "@material-ui/icons";
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
+
 
 export default function Login(props) {
   const [open, setOpen] = useState(false);
@@ -112,6 +131,7 @@ const tabSelect = (e) => {
 
   return (
     <div>
+      <MuiThemeProvider theme={theme}>
       <MenuItem onClick={handleClickOpen}>
         <Typography variant="button" display="block" gutterBottom>
         Log In
@@ -127,6 +147,7 @@ const tabSelect = (e) => {
           <TextField
             autoFocus
             margin="dense"
+            color='secondary'
             label="Email Address"
             type="email"
             required
@@ -143,6 +164,7 @@ const tabSelect = (e) => {
           <TextField
             autoFocus
             margin="dense"
+            color='secondary'
             label="Password"
             type="password"
             required
@@ -167,6 +189,7 @@ const tabSelect = (e) => {
         </DialogActions>
         </form>
       </Dialog>
+      </MuiThemeProvider>
     </div>
   );
 }

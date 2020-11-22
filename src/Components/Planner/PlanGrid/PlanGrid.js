@@ -22,9 +22,9 @@ export default function PlanGrid(props) {
 
   return (
     <Layer>
-      {_.chunk(lines, 4).map(coords => (
+      {_.chunk(lines, 4).map((coords,i) => (
         <Line
-          key={coords.toString()}
+          key={i}
           stroke="#AAAAAA"
           strokeWidth={1}
           points={coords}

@@ -14,7 +14,7 @@ export default function PlantDetModal(props) {
 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            This plant is new to Plantit! Please take a moment to review the information compiled.
+            This plant is new to Plant-It! Please take a moment to review the information compiled.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

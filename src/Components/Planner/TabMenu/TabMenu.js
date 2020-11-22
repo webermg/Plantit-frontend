@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import DrawPanel from '../DrawPanel/DrawPanel';
 import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
 import PlantsPanel from '../PlantsPanel/PlantsPanel';
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     // flexGrow:1
   },
   tabPanel: {
-    overflow: 'scroll',
+    overflow: 'auto',
     flexGrow:1
   }
 }));
@@ -82,8 +83,8 @@ export default function TabMenu(props) {
         <Tab label="Plants" {...a11yProps(1)} />
         <Tab label="Other" {...a11yProps(2)} />
         <Tab label="Options" {...a11yProps(3)} />
-        {/* <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
+        <Tab label="Clear" {...a11yProps(4)} />
+        {/* <Tab label="Item Six" {...a11yProps(5)} />
         <Tab label="Item Seven" {...a11yProps(6)} /> */}
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
@@ -99,7 +100,7 @@ export default function TabMenu(props) {
         <OptionsPanel {...props.options} onChange={props.onOptionChange} onSnapSliderChange={props.onSnapSliderChange} onGridSliderChange={props.onGridSliderChange}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={4}>
-        Item Five
+        <Button variant="contained" color="secondary" onClick={props.clearAll}>Clear</Button>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={5}>
         Item Six
