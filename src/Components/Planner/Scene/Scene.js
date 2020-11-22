@@ -79,7 +79,6 @@ export default function Scene(props) {
   
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-    // setTimeout(loadFromLocalStorage,5000);
     if(props.userData.myGarden) loadFromUser()
     else loadFromLocalStorage()
     return () => {
@@ -493,6 +492,7 @@ export default function Scene(props) {
             onSnapSliderChange={handleSnapDistSliderChange}
             onGridSliderChange={handleGridSizeSliderChange}
             clearAll={clearAll}
+            loggedIn={props.userData._id}
             />
       </Paper>
       </Grid>

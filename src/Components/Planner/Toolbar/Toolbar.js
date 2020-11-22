@@ -46,7 +46,7 @@ export default function Toolbar(props) {
         </Grid>
         <Grid item>
           <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-            <Button
+            {props.loggedIn && <Button
               disabled={!enabled}
               startIcon={<CloudUploadIcon/>}
               onClick={() => {
@@ -54,7 +54,7 @@ export default function Toolbar(props) {
                 handleClick()
                 disable(5000)
               }}
-              style={{background:'#BB7354'}}>publish</Button>
+              style={{background:'#BB7354'}}>publish</Button>}
           </ButtonGroup>
         </Grid>
       </Grid>
