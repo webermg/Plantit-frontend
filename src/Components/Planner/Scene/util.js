@@ -179,9 +179,8 @@ const util = {
   },
 
   getPoints: function(polygons, selectedId) {
-    let poly = polygons.filter(item => item.id===selectedId)
-    if(poly.length === 0) return []
-    return _.chunk(poly[0].points,2)
+    let poly = polygons.find(item => item.id===selectedId)
+    return poly ? _.chunk(poly.points,2) : []
   }
 }
 

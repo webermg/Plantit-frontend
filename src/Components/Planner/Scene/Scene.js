@@ -211,9 +211,12 @@ export default function Scene(props) {
     setOptions({ ...options, [e.target.name]: e.target.checked });
   }
   
-  const handleOptionsSliderChange = (e,v) => {
-    console.log(e)
-    if(v !== options[e.target.ariaLabel]) setOptions({ ...options, [e.target.ariaLabel]: v });
+  const handleSnapDistSliderChange = (e,v) => {
+    if(v !== options.snapDist) setOptions({ ...options, snapDist: v });
+  }
+  
+  const handleGridSizeSliderChange = (e,v) => {
+    if(v !== options.gridSize) setOptions({ ...options, gridSize: v });
   }
 
   const handleStageClick = (e) => {
@@ -495,10 +498,12 @@ export default function Scene(props) {
             myPlants={props.userData.myPlants} 
             options={options} 
             onOptionChange={handleOptionsChange}
-            onSliderChange={handleOptionsSliderChange}/>
+            onSnapSliderChange={handleSnapDistSliderChange}
+            onGridSliderChange={handleGridSizeSliderChange}
+            />
       </Paper>
       </Grid>
-      <Paper>
+      {/* <Paper> */}
       <Grid item>
         <Grid container direction='column'>
           <Grid item>
@@ -593,7 +598,30 @@ export default function Scene(props) {
                 <Tooltip {...hoveredImage}/>
               )}
               {options.alwaysShowTooltips && (
-                images.map(img => <Tooltip {...img}/>)
+                images.map(img => <Tooltip key={img.id} {...img}/>)
+              )}
+              {selectedId && (
+                util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
+                key={i}
+                x={coords[0]} 
+                y={coords[1]} 
+                radius={RADIUS} 
+                fill='white'
+                stroke='black'
+                strokeWidth={1}
+                draggable
+                onDragStart={e => {
+                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                  handleVertexDragStart(idx)
+                }}
+                onDragMove={e => {
+                  handleCircleDrag(e, i);
+                }}
+                onDragEnd={e => {
+                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                  handleVertexDragEnd(idx)
+                }}
+                />)
               )}
               {guideLines.map((line,i) => {
                 let points = [];
@@ -610,7 +638,7 @@ export default function Scene(props) {
           </Grid>
         </Grid>
         </Grid>
-      </Paper>
+      {/* </Paper> */}
   </Grid>
   )
 }
