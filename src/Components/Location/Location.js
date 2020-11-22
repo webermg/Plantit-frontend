@@ -8,10 +8,48 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import API from '../../utils/API';
 
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: "#005254",
+    },
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+    action: {
+      disabled: {
+        light: '#c88f76',
+        main: '#bb7354',
+        dark: '#82503a',
+        contrastText: '#fff',
+      },
+    },
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    
+  }
+}));
+
 export default function Location(props) {
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState("");
-  const [reset, setReset] = useState(true);
+  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,7 +61,6 @@ export default function Location(props) {
   
   const handleClose = () => {
     setOpen(false);
-    refreshPage();
   };
   
   const handleUpdate = (event) => {
@@ -39,14 +76,16 @@ export default function Location(props) {
     .then(result => {
     })
     handleClose();
+    refreshPage();
   };
 
   return (
+    <MuiThemeProvider theme={theme}>
     <div>
       <Button size="small"
+      className={classes.button}
                     variant="contained"
                     color="primary"
-                    style={{ backgroundColor: "#b1bb78" }} 
                     onClick={handleClickOpen}>
         Edit Region
       </Button>
@@ -77,6 +116,7 @@ export default function Location(props) {
         </DialogActions>
       </Dialog>
     </div>
+    </MuiThemeProvider>
   );
 }
 
