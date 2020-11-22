@@ -21,6 +21,8 @@ export default function Polygon(props) {
             draggable
             onDragStart={props.onDragStart}
             onDragEnd={e=>props.onDragEnd(e,props.num)}
+            onMouseEnter={props.onMouseEnter}
+            onMouseLeave={props.onMouseLeave}
           />
     </React.Fragment>
   );
