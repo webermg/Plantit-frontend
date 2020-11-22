@@ -101,7 +101,6 @@ const API = {
     },
 
     updatePlant: function (plantId, update,growth_months) {
-        console.log(update)
         return axios.put(URL_BASE + "plant/edit", {
             plantId: plantId,
             growth_habit: update.growth_habit,
