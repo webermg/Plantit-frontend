@@ -71,6 +71,7 @@ export default class profile extends Component {
           <CssBaseline />
           <div className={classes.root}>
             <Container>
+              {/* Page Header (Profile Page name) */}
               <Grid container direction="column">
                 <Grid item xs={12}>
                   <Typography
@@ -88,14 +89,16 @@ export default class profile extends Component {
                     {this.state.user.username}'s Profile
                   </Typography>
                 </Grid>
-
+{/* Rendering of My Garden image to profile page */}
                 <Typography style={{ color: "#a9a9a9", margin: "2%" }}>
                   <h2>My Garden:</h2>
                 </Typography>
+                {/* Location/Skills/Interests rendered */}
                 <Grid item>
                   <Grid container justify="space-evenly">
                     <Grid item xs={12} lg={8}>
                       <img
+                        alt=""
                         src={this.state.user.myGardenImg}
                         style={{ background: "#cac5b9" }}
                       />
@@ -110,20 +113,22 @@ export default class profile extends Component {
                     >
                       <h3>City, State, and/or Country:</h3>
                       <p>{this.state.user.location}</p>
+                      {/* Button to open location modal */}
                       <Location id={this.state.id} />
 
                       <h3>Gardening Interests: </h3>
                       <p>{this.state.user.interests}</p>
+                      {/* Button to open Interests Modal */}
                       <Interests id={this.state.id} />
 
                       <h3>Gardening Skills:</h3>
                       <p>{this.state.user.skills}</p>
+                      {/* Button to open Skills modal */}
                       <Skills id={this.state.id} />
                     </Grid>
                   </Grid>
                 </Grid>
-
-                {/* <Container spacing={5}> */}
+{/* Rendering of my plants to profile page */}
                 <Grid item>
                   <Typography style={{ color: "#a9a9a9", margin: "2%" }}>
                     <h2>My Plants:</h2>

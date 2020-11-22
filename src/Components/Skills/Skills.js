@@ -11,7 +11,6 @@ import API from '../../utils/API';
 export default function Skills(props) {
   const [open, setOpen] = useState(false);
   const [skills, setSkills] = useState("");
-  const [reset, setReset] = useState(true);
 
   const handleClickOpen = () => {
     setOpen(true);
