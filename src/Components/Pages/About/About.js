@@ -1,10 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import {
-    withStyles,
-    MuiThemeProvider,
-    createMuiTheme
-} from "@material-ui/core/styles";
+import {MuiThemeProvider,createMuiTheme} from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -38,10 +33,10 @@ const theme = {
                     },
                     "& .MuiCardContent-root": {
                         textAlign: "center",
-                        padding: muiBaseTheme.spacing.unit * 3
+                        padding: muiBaseTheme.spacing(3)
                     },
                     "& .MuiDivider-root": {
-                        margin: `${muiBaseTheme.spacing.unit * 3}px 0`
+                        margin: `${muiBaseTheme.spacing(3)}px 0`
                     },
                     "& .MuiTypography--heading": {
                         fontWeight: "bold"
@@ -53,7 +48,7 @@ const theme = {
                         display: "inline-block",
                         border: "2px solid white",
                         "&:not(:first-of-type)": {
-                            marginLeft: -muiBaseTheme.spacing.unit
+                            marginLeft: -muiBaseTheme.spacing()
                         }
                     }
                 }
@@ -67,6 +62,8 @@ export default function About() {
     return (
         <MuiThemeProvider theme={createMuiTheme(theme)}>
             <div className="About" style={{ background: '#005254' }}>
+               
+               {/* Our Story */}
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography
@@ -84,8 +81,8 @@ export default function About() {
                         <Divider light />
                         <Typography
                             className={"MuiTypography--subheading"}
-                            variant={"subtitle"}
-                            component="subtitle"
+                            variant="subtitle1"
+                            component="subtitle1"
                             align="center"
                             style={{ color: "#a9a9a9" }}
                         >
@@ -94,10 +91,12 @@ export default function About() {
                     </Grid>
                 </Grid>
                 <Grid container style={{ marginTop: "2%", justifyContent: "center" }}>
+                    
+                    {/* Caitlin's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -100 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ duration:1000}}>
+                        config={{ duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Caitlin">
@@ -143,10 +142,12 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+                   
+                    {/* Janelle's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:1000, duration:1000}}>
+                        config={{ delay:1000, duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Janelle">
@@ -170,8 +171,7 @@ export default function About() {
                                                 className={"MuiTypography--subheading"}
                                                 variant={"caption"}
                                             >
-                                                We are going to learn different kinds of species in nature that
-                                                live together to form amazing environment.
+                                                Janelle primary focused on the frontend working with React and Material-Ui. It was a blast to combine a love of coding and gardens!
                                  </Typography>
                                             <Divider className={"MuiDivider-root"} light />
                                             <Button
@@ -192,10 +192,12 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+                   
+                    {/* Ann's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:2000, duration:1000}}>
+                        config={{ delay:2000, duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Ann">
@@ -241,10 +243,12 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+
+                    {/* Maria's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:3000, duration:1000}}>
+                        config={{ delay:3000, duration:2000}}>
                         {props => (
                             <div style={props}>
                     <Grid item xs className="Maria">
@@ -290,10 +294,12 @@ export default function About() {
                     </div>
                         )}
                     </Spring>
+
+                    {/* Matt's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:4000, duration:1000}}>
+                        config={{ delay:4000, duration:2000}}>
                         {props => (
                             <div style={props}>
                     <Grid item xs className="Matt">
