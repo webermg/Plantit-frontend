@@ -779,7 +779,6 @@ export default function PlantDet() {
               </div>
 
             </Card>
-          </Grid >
         </Grid >
       </React.Fragment >
     </MuiThemeProvider>
