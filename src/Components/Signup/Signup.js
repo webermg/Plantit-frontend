@@ -125,7 +125,9 @@ export default function Signup(props) {
     return (
         <div>
           <MenuItem onClick={handleClickOpen}>
+            <Typography variant="button" display="block" gutterBottom>
             Sign Up
+            </Typography>
        </MenuItem>
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
             <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>

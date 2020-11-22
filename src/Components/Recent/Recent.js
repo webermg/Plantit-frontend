@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import Box from "@material-ui/core/Box";
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const useStyles = makeStyles({
   root: {
@@ -60,9 +61,8 @@ export default function RecentCard(props) {
 
   return (
     <React.Fragment>
-      <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ background: 'white', width: "90%" }}>
-        <Card className={classes.root} style={{  margin: "5vh" }}>
-          <CardActionArea>
+      <Box p={1} m={1} flexShrink={1} boxShadow={3} style={{ backgroundColor: fade('#fff', 0.7), maxWidth: 300 }}>
+        <Card className={classes.root} style={{  margin: "1vh" }}>
             <CardMedia
               className={classes.media}
               id={props._id}
@@ -77,7 +77,6 @@ export default function RecentCard(props) {
                 {props.info}
               </Typography>
             </CardContent>
-          </CardActionArea>
           {renderButtons()}
         </Card>
       </Box>

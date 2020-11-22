@@ -86,6 +86,12 @@ export default function Login(props) {
   }
 }
 
+const tabSelect = (e) => {
+  if (e.keyCode === 9) {
+     document.getElementById("email").focus()
+    }
+}
+
   const tabDown = (e) => {
     if (e.keyCode === 9) {
        document.getElementById("password").focus()
@@ -124,7 +130,9 @@ export default function Login(props) {
   return (
     <div>
       <MenuItem onClick={handleClickOpen}>
+        <Typography variant="button" display="block" gutterBottom>
         Log In
+        </Typography>
       </MenuItem>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth="true">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
