@@ -102,6 +102,7 @@ class Home extends Component {
             submittedSearch: this.state.searchValue,
             toggleHero: false
         })
+        localStorage.setItem("isVisited", true)
         
     }
 
