@@ -46,7 +46,7 @@ export default function Location(props) {
       <Button size="small"
                     variant="contained"
                     color="primary"
-                    style={{ backgroundColor: "#b1bb78" }} 
+                    style={{ backgroundColor: "#BB7354" }} 
                     onClick={handleClickOpen}>
         Edit Region
       </Button>
