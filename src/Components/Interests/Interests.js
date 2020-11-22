@@ -7,10 +7,48 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import API from '../../utils/API';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
+
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: "#005254",
+    },
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+    action: {
+      disabled: {
+        light: '#c88f76',
+        main: '#bb7354',
+        dark: '#82503a',
+        contrastText: '#fff',
+      },
+    },
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+    
+  }
+}));
 
 export default function Interests(props) {
   const [open, setOpen] = useState(false);
   const [interests, setInterests] = useState("");
+  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -22,7 +60,6 @@ export default function Interests(props) {
   
   const handleClose = () => {
     setOpen(false);
-    refreshPage();
   };
 
   const handleUpdate = (event) => {
@@ -37,14 +74,16 @@ export default function Interests(props) {
     .then(result => {
     })
     handleClose();
+    refreshPage();
   };
 
   return (
+    <MuiThemeProvider theme={theme}>
     <div>
       <Button size="small"
+      className={classes.button}
                     variant="contained"
                     color="primary"
-                    style={{ backgroundColor: "#BB7354" }} 
                     onClick={handleClickOpen}>
         Edit Interests
       </Button>
@@ -75,6 +114,7 @@ export default function Interests(props) {
         </DialogActions>
       </Dialog>
     </div>
+    </MuiThemeProvider>
   );
 }
 
