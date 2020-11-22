@@ -19,6 +19,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import BackButton from "../../BackButton/BackButton";
+import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 
 const theme = createMuiTheme({
   palette: {
@@ -79,6 +80,7 @@ export default function PlantDet() {
   const [value, setValue] = useState();
   const [update, setUpdate] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [open, setOpen] = React.useState(false);
   const [months, setMonths] = useState({
     Jan: false,
     Feb: false,
@@ -104,6 +106,7 @@ export default function PlantDet() {
         setComments(result.data.dbComment)
 
         if (result.data.dbComment.length === 0) {
+          setOpen(true)
           setUpdate({ ...update, ...result.data.dbPlant })
           if (result.data.dbPlant.growth_months && result.data.dbPlant.growth_months.length > 0) {
             console.log(result.data.dbPlant.growth_months)
@@ -216,12 +219,30 @@ export default function PlantDet() {
       })
   }
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+
   if (plantDetails.length === 0) {
     return <h1>loading</h1>
   }
 
+  
+
+
   return (
     <Grid container style={{ background: '#005254' }}>
+      
+      <PlantDetModal 
+      open={open}
+      handleClose={handleClose}
+       />
       <Typography
         className={"MuiTypography--heading"}
         variant={"h4"}
@@ -523,9 +544,10 @@ export default function PlantDet() {
                   onChange={handleUpdateChange}
                 /> : plantDetails.growth}
               </Typography>
-              <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleUpdateSubmit}>
+              {update ? <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleUpdateSubmit}>
                 Submit
-      </Button>
+      </Button> : null}
+              
             </CardContent>
           </Card>
         </Grid>
