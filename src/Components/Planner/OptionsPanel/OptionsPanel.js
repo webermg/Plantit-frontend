@@ -74,20 +74,7 @@ export default function OptionsPanel(props) {
         min={20}
         max={80}
       />
-      {/* <FormControlLabel
-        control={
-          <Switch
-            checked={state.checkedB}
-            onChange={handleChange}
-            name="checkedB"
-            color="primary"
-          />
-        }
-        label="Primary"
-      />
-      <FormControlLabel control={<Switch />} label="Uncontrolled" />
-      <FormControlLabel disabled control={<Switch />} label="Disabled" />
-      <FormControlLabel disabled control={<Switch checked />} label="Disabled" /> */}
+      
     </FormGroup>
   );
 }

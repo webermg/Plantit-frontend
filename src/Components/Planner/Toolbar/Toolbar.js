@@ -1,6 +1,8 @@
 import React from 'react'
 import { ButtonGroup, Button, Grid, Snackbar, IconButton } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function Toolbar(props) {
 
@@ -29,28 +31,29 @@ export default function Toolbar(props) {
   return (
 
     <React.Fragment>
-      <Grid container xs justify='space-between'>
+      <Grid container justify='flex-start'>
         <Grid item>
           {props.selectedId &&
-            (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-              <Button onClick={() => props.onDelete(props.selectedId)}>Delete</Button>
+            (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group" style={{marginRight:30}}>
+              <Button color='secondary' startIcon={<DeleteIcon />} style={{marginRight:30}} onClick={() => props.onDelete(props.selectedId)}>Delete</Button>
               <Button onClick={() => props.toFront(props.selectedId)}>Bring to Front</Button>
               <Button onClick={() => props.toBack(props.selectedId)}>Send to Back</Button>
             </ButtonGroup>)}
-            {props.drawing && (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
+            {props.drawing && (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group" style={{marginRight:30}}>
               <Button onClick={props.completeDraw}>Complete</Button>
-              <Button onClick={props.cancelDraw}>Discard</Button>
+              <Button color='secondary' onClick={props.cancelDraw}>Discard</Button>
             </ButtonGroup>)}
         </Grid>
         <Grid item>
           <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
             <Button
               disabled={!enabled}
+              startIcon={<CloudUploadIcon/>}
               onClick={() => {
                 props.onPublish()
                 handleClick()
                 disable(5000)
-              }}>Publish</Button>
+              }}>publish</Button>
           </ButtonGroup>
         </Grid>
       </Grid>

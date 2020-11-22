@@ -4,9 +4,7 @@ import PlanImage from '../PlanImage/PlanImage'
 import Tooltip from '../Tooltip/Tooltip'
 import Konva from "konva";
 import { Stage, Layer, Line, Circle, Rect } from "react-konva";
-
 import PlanGrid from '../PlanGrid/PlanGrid';
-import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
@@ -20,7 +18,7 @@ const STAGE_WIDTH = 800;
 const RADIUS = 8;
 
 export default function Scene(props) {
-  const classes = sceneStyle;
+  
 
   const [polygons, _setPolygons] = useState([])
 
@@ -85,8 +83,8 @@ export default function Scene(props) {
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     }
+    // eslint-disable-next-line
   }, [])
-
 
   useEffect(() => {
     //test drawing for effect
@@ -112,12 +110,13 @@ export default function Scene(props) {
     //test temp for completeness
     //if complete then add
     //if not complete then discard
-    //
+    // eslint-disable-next-line
   }, [activeDraw])
 
   useEffect(() => {
     if(props.userData._id) saveToUser()
     else saveToLocalStorage()
+    // eslint-disable-next-line
   }, [polygons, images, options])
 
   const getPolygons = () => {
@@ -209,6 +208,7 @@ export default function Scene(props) {
   }
 
   const handleOptionsChange = (e) => {
+    if(/ground/.test(e.target.name)) selectShape(null)
     setOptions({ ...options, [e.target.name]: e.target.checked });
   }
   
@@ -223,7 +223,6 @@ export default function Scene(props) {
   const handleStageClick = (e) => {
     console.log(e)
     if (!activeDraw) {
-      // console.log(e)
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
       selectShape(null)
     }
@@ -234,14 +233,11 @@ export default function Scene(props) {
       const coords = [...temp.points]
       let distToFirst = 1000
       if (temp.points && temp.points.length > 2) {
-        console.log(x + " " + y + " " + coords[0] + " " + coords[1])
         distToFirst = (x - coords[0]) ** 2 + (y - coords[1]) ** 2
       }
-      console.log(options.snapDist)
       if (distToFirst <= options.snapDist**2) {
         coords.pop()
         coords.pop()
-        console.log("drawing off")
         setTemp({ ...temp, points: coords });
         setActiveDraw(null)
       }
@@ -254,7 +250,6 @@ export default function Scene(props) {
   }
 
   const handleKeyPress = (e) => {
-    console.log(e)
     if (drawRef.current) {
       e.preventDefault();
       if (e.keyCode === 27) {
@@ -263,7 +258,6 @@ export default function Scene(props) {
     }
     else {
       if (e.keyCode === 46 && selectRef.current) {
-        console.log(selectRef.current)
         deleteShape(selectRef.current)
       }
     }
@@ -328,10 +322,12 @@ export default function Scene(props) {
   }
 
   const handleImageMouseover = (props) => {
+    if(!props.lockForeground) stageRef.current.container().style.cursor='move'
     if(props.tooltip_text) setHoveredImage(props)
   }
 
   const handleImageMouseout = () => {
+    stageRef.current.container().style.cursor='default'
     setHoveredImage(null)
   }
 
@@ -368,6 +364,7 @@ export default function Scene(props) {
     if (!activeDraw) {
       return;
     }
+    stageRef.current.container().style.cursor='crosshair'
     const tempCopy = [...temp.points]
     if (tempCopy.length >= 2) {
       tempCopy.pop();
@@ -448,6 +445,7 @@ export default function Scene(props) {
               absPos.y = lg.lineGuide + lg.offset;
               break;
             }
+            default:
           }
           break;
         }
@@ -461,6 +459,7 @@ export default function Scene(props) {
               absPos.y = lg.lineGuide + lg.offset;
               break;
             }
+            default:
           }
           break;
         }
@@ -474,10 +473,13 @@ export default function Scene(props) {
               absPos.y = lg.lineGuide + lg.offset;
               break;
             }
+            default:
           }
           break;
         }
+        default:
       }
+      
     });
     e.target.absolutePosition(absPos);
     setGuideLines(guides)
@@ -490,7 +492,7 @@ export default function Scene(props) {
   return (
     <Grid container spacing={1} justify='space-around'>
       <Hidden mdDown>
-      <Grid item lg={3} xs={12} className={classes.menu}>
+      <Grid item lg={4} xs={12}>
         <Paper style={{marginTop:35,height:800}}>
           <TabMenu 
             active={activeDraw}
@@ -521,8 +523,15 @@ export default function Scene(props) {
             completeDraw={completeDraw}
             />
           </Grid>
-          <Grid item justify="center">
-          <Stage className={classes.gardenPlanner} ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onTap={handleStageClick} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+          <Grid item>
+          <Stage  
+            ref={stageRef} 
+            height={STAGE_HEIGHT} 
+            width={STAGE_WIDTH} 
+            onTap={handleStageClick} 
+            onClick={handleStageClick} 
+            onMouseMove={handleMouseMove} 
+            style={{ display: 'inline-block', background: '#DDDDDD' }}>
             <Layer listening={!options.lockBackground} visible={!options.hideBackground}>
               {polygons.map((item, i) => <Polygon {...item}
                 key={i}
@@ -538,6 +547,8 @@ export default function Scene(props) {
                 radius={RADIUS} 
                 onDragStart={dragPolygon}
                 onDragEnd={endDragPolygon}
+                onMouseEnter={()=>stageRef.current.container().style.cursor='move'}
+                onMouseLeave={()=>stageRef.current.container().style.cursor='default'}
                 />)}
             </Layer>
             <Layer listening={!options.lockForeground} visible={!options.hideForeground}>
@@ -627,12 +638,16 @@ export default function Scene(props) {
                     const idx = polygons.findIndex(poly=>poly.id===selectedId)
                     handleVertexDragEnd(idx)
                   }}
+                  onMouseEnter={()=>stageRef.current.container().style.cursor = 'grab'}
+                  onMouseLeave={()=>stageRef.current.container().style.cursor = 'default'}
+                  onMouseDown={()=>stageRef.current.container().style.cursor = 'grabbing'}
+                  onMouseUp={()=>stageRef.current.container().style.cursor = 'grab'}
                   />
                   )}
                   </React.Fragment>
                 )}
               {options.alwaysShowTooltips && (
-                images.map(img => <Tooltip key={img.id} {...img}/>)
+                images.map(img => img.tooltip_text!=='' && <Tooltip key={img.id} {...img}/>)
               )}
               {guideLines.map((line,i) => {
                 let points = [];
@@ -648,7 +663,7 @@ export default function Scene(props) {
           </Stage>
           </Grid>
           <Hidden lgUp>
-      <Grid item className={classes.menu}>
+      <Grid item>
         <Paper style={{marginTop:35}}>
           <TabMenu 
             active={activeDraw}
