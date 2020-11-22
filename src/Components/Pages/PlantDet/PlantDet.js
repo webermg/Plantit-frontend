@@ -13,8 +13,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Checkbox, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/Favorite';
-import BackButton from "../../BackButton/BackButton";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';import BackButton from "../../BackButton/BackButton";
+import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
 
 
@@ -72,6 +72,7 @@ export default function PlantDet() {
   const [value, setValue] = useState();
   const [update, setUpdate] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [open, setOpen] = React.useState(false);
   const [months, setMonths] = useState({
     Jan: false,
     Feb: false,
@@ -97,6 +98,7 @@ export default function PlantDet() {
         setComments(result.data.dbComment)
 
         if (result.data.dbComment.length === 0) {
+          setOpen(true)
           setUpdate({ ...update, ...result.data.dbPlant })
           if (result.data.dbPlant.growth_months && result.data.dbPlant.growth_months.length > 0) {
             console.log(result.data.dbPlant.growth_months)
@@ -125,6 +127,8 @@ export default function PlantDet() {
       API.getMyPlants(localStorage.getItem("id"))
       .then(myplants =>{
         const mySlugs = myplants.data.map(element => element.slug)
+        console.log(mySlugs);
+        console.log(result.data.dbPlant.slug)
         if(mySlugs.includes(result.data.dbPlant.slug)){
           console.log('is favorite')
           setIsFavorite(true)
@@ -209,6 +213,12 @@ export default function PlantDet() {
       })
   }
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+
   if (plantDetails.length === 0) {
     return (
       <Grid container style={{ background: '#005254' }}>
@@ -224,8 +234,16 @@ export default function PlantDet() {
       </Grid>)
   }
 
+  
+
+
   return (
     <React.Fragment>
+      {console.log(isFavorite)}
+      <PlantDetModal 
+      open={open}
+      handleClose={handleClose}
+       />
       <Grid container mx="auto" className={classes.root} style={{ background: '#005254', justifyContent: 'center', margin: 'auto' }}>
         {/* Header title and button */}
         <Grid container >
@@ -271,16 +289,14 @@ export default function PlantDet() {
                         variant="contained"
                         size="small" color="primary"
                         style={{ background: '#614051' }}
-                        endIcon={isFavorite ? <FavoriteIcon /> : 
-                        <FavoriteBorderIcon/>}
-                      onClick={makeFavorite}
+                        endIcon={isFavorite ? <FavoriteIcon/>: <FavoriteBorderIcon/>}
+                      onClick={() => makeFavorite()}
                       ><Hidden only="xs">
                           Save
                         </Hidden>
                       </Button>
                     </Grid>
                   </Grid>
-
                   <Typography
                     fontWeight="bold"
                     gutterBottom
