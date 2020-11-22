@@ -13,9 +13,38 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Checkbox, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';import BackButton from "../../BackButton/BackButton";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import BackButton from "../../BackButton/BackButton";
 import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+    action: {
+      disabled: {
+        light: '#c88f76',
+        main: '#bb7354',
+        dark: '#82503a',
+        contrastText: '#fff',
+      },
+    },
+    
+  }
+});
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,9 +78,12 @@ const useStyles = makeStyles((theme) => ({
     background: 'white',
 
   },
+  thumb:{
+    backgroundColor: '#614051',
+    },
   button: {
     margin: theme.spacing(1),
-    backgroundColor: "#b1bb78",
+    
   },
   Card: {
     width: 300,
@@ -123,20 +155,20 @@ export default function PlantDet() {
           }
         }
 
-        if(localStorage.getItem("id")) {
-      API.getMyPlants(localStorage.getItem("id"))
-      .then(myplants =>{
-        const mySlugs = myplants.data.map(element => element.slug)
-        console.log(mySlugs);
-        console.log(result.data.dbPlant.slug)
-        if(mySlugs.includes(result.data.dbPlant.slug)){
-          console.log('is favorite')
-          setIsFavorite(true)
+        if (localStorage.getItem("id")) {
+          API.getMyPlants(localStorage.getItem("id"))
+            .then(myplants => {
+              const mySlugs = myplants.data.map(element => element.slug)
+              console.log(mySlugs);
+              console.log(result.data.dbPlant.slug)
+              if (mySlugs.includes(result.data.dbPlant.slug)) {
+                console.log('is favorite')
+                setIsFavorite(true)
+              }
+            })
         }
-      })
-    }
       }).catch(err => console.log(err))
-    
+
   }, [reset])
 
   function makeFavorite() {
@@ -183,23 +215,23 @@ export default function PlantDet() {
     API.updatePlant(plantDetails._id, update, growth_months)
       .then(result => {
         console.log(result)
-        if(localStorage.getItem("id")) {
-          API.makeComment(plantDetails._id,localStorage.getItem("id"), "Initial review completed!")
-          .then(commentResult => {
-            console.log(commentResult);
-            setReset(!reset)
-            setUpdate(false)
-          })
+        if (localStorage.getItem("id")) {
+          API.makeComment(plantDetails._id, localStorage.getItem("id"), "Initial review completed!")
+            .then(commentResult => {
+              console.log(commentResult);
+              setReset(!reset)
+              setUpdate(false)
+            })
         }
         else {
-          API.makeComment(plantDetails._id,"5fb83d88db974b470c3395e4", "Initial review completed!")
-          .then(commentResult => {
-            console.log(commentResult);
-            setReset(!reset)
-            setUpdate(false)
-          })
+          API.makeComment(plantDetails._id, "5fb83d88db974b470c3395e4", "Initial review completed!")
+            .then(commentResult => {
+              console.log(commentResult);
+              setReset(!reset)
+              setUpdate(false)
+            })
         }
-        
+
       })
   }
 
@@ -224,7 +256,7 @@ export default function PlantDet() {
       <Grid container style={{ background: '#005254' }}>
         <Typography
           className={"MuiTypography--heading"}
-          variant={"h4"}
+          variant={"h3"}
           fontWeight="bold"
           component="h4"
           align="center"
@@ -234,10 +266,12 @@ export default function PlantDet() {
       </Grid>)
   }
 
-  
+
 
 
   return (
+<MuiThemeProvider theme={theme}>
+    
     <React.Fragment>
       {console.log(isFavorite)}
       <PlantDetModal 
@@ -250,67 +284,68 @@ export default function PlantDet() {
           <Grid item xs={12}>
             <Typography
               className={"MuiTypography--heading"}
-              variant={"h4"}
+              variant={"h3"}
               fontWeight="bold"
-              component="h4"
+              component="h1"
+              align="center"
               style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
             >
               Plant Details
           </Typography>
+            </Grid>
+            <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
+              <BackButton />
+            </Grid>
           </Grid>
-          <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
-            <BackButton />
-          </Grid>
-        </Grid>
 
-        {/* Plant DetailsCard */}
-        <Grid container style={{ background: '#005254', padding: '1%' }}>
-          {console.log(comments)}
-          <Card style={{ background: '#cac5b9' }}>
+          {/* Plant DetailsCard */}
+          <Grid container style={{ background: '#005254', padding: '1%' }}>
+            {console.log(comments)}
+            <Card style={{ background: '#cac5b9' }}>
 
-            {/* Plant Det Head with Pic */}
-            <Grid container>
-              <Grid item sm={12} md={6} >
-                <CardContent style={{ margin: "5vh" }}>
-                  <Grid container >
-                    <Grid item xs={10}>
-                      <Typography
-                        fontWeight="bold"
-                        gutterBottom
-                        variant="h3"
-                        component="h1"
-                      >
-                        {plantDetails.common_name}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs>
-                      <Button
-                        className={classes.button1}
-                        variant="contained"
-                        size="small" color="primary"
-                        style={{ background: '#614051' }}
-                        endIcon={isFavorite ? <FavoriteIcon/>: <FavoriteBorderIcon/>}
-                      onClick={() => makeFavorite()}
-                      ><Hidden only="xs">
-                          Save
+              {/* Plant Det Head with Pic */}
+              <Grid container>
+                <Grid item sm={12} md={6} >
+                  <CardContent style={{ margin: "5vh" }}>
+                    <Grid container >
+                      <Grid item xs={10}>
+                        <Typography
+                          fontWeight="bold"
+                          gutterBottom
+                          variant="h3"
+                          component="h1"
+                        >
+                          {plantDetails.common_name}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs>
+                        <Button
+                          className={classes.button1}
+                          variant="contained"
+                          size="small" color="primary"
+                          style={{ background: '#614051' }}
+                          endIcon={isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                          onClick={() => makeFavorite()}
+                        ><Hidden only="xs">
+                            Save
                         </Hidden>
-                      </Button>
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                  <Typography
-                    fontWeight="bold"
-                    gutterBottom
-                    variant="h4"
-                    component="h2">
-                    Scientific Name: {plantDetails.scientific_name}
-                  </Typography>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    <p>Native Areas: </p>
-                    <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
-                  </Typography>
+                    <Typography
+                      fontWeight="bold"
+                      gutterBottom
+                      variant="h4"
+                      component="h2">
+                      Scientific Name: {plantDetails.scientific_name}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      <p>Native Areas: </p>
+                      <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
+                    </Typography>
 
                   <Typography gutterBottom variant="h5" component="h2">
-                    Form: {update.growth_habit} {update ? <TextField
+                    Form: {update ? <TextField
                       id="outlined-static"
                       style={{ margin: 8, background: "white" }}
                       name="growth_habit"
@@ -330,71 +365,72 @@ export default function PlantDet() {
                 <CardMedia style={{ margin: "5vh" }}>
                   <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
                 </CardMedia>
+                </Grid>
+
               </Grid>
-            </Grid>
 
-            {/*Form and Saved info  */}
-            <Grid container >
+              {/*Form and Saved info  */}
+              <Grid container >
 
-              {/* Left side of the form/info */}
-              <Grid item sm={12} md={6}>
-                <CardContent style={{ marginLeft: "5vh" }}>
-                  <Grid container>
+                {/* Left side of the form/info */}
+                <Grid item sm={12} md={6}>
+                  <CardContent style={{ marginLeft: "5vh" }}>
+                    <Grid container>
 
-                    {/* Month Selection or Month List */}
-                    <Grid item>
-                      {update ?
-                        <FormControl component="fieldset" className={classes.formControl}>
-                          <FormGroup>
-                            <FormLabel component="legend">Growth Months (check all that apply)</FormLabel>
-                            <Grid item xs>
-                              <FormControlLabel control={<Checkbox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
-                              <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
-                              <FormControlLabel control={<Checkbox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
-                              <FormControlLabel control={<Checkbox checked={months.Apr} onChange={handleMonthChange} name="Apr" />} label="Apr" />
-                            </Grid>
-                            <Grid item xs >
-                              <FormControlLabel control={<Checkbox checked={months.May} onChange={handleMonthChange} name="May" />} label="May" />
-                              <FormControlLabel control={<Checkbox checked={months.Jun} onChange={handleMonthChange} name="Jun" />} label="Jun" />
-                              <FormControlLabel control={<Checkbox checked={months.Jul} onChange={handleMonthChange} name="Jul" />} label="Jul" />
-                              <FormControlLabel control={<Checkbox checked={months.Aug} onChange={handleMonthChange} name="Aug" />} label="Aug" />
-                            </Grid>
-                            <Grid item xs >
-                              <FormControlLabel control={<Checkbox checked={months.Sep} onChange={handleMonthChange} name="Sep" />} label="Sep" />
-                              <FormControlLabel control={<Checkbox checked={months.Oct} onChange={handleMonthChange} name="Oct" />} label="Oct" />
-                              <FormControlLabel control={<Checkbox checked={months.Nov} onChange={handleMonthChange} name="Nov" />} label="Nov" />
-                              <FormControlLabel control={<Checkbox checked={months.Dec} onChange={handleMonthChange} name="Dec" />} label="Dec" />
-                            </Grid>
-                          </FormGroup>
-                        </FormControl>
-                        :
-                        <Grid item>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            <p>Growing months:{plantDetails.growth_months} </p>
-                          </Typography>
-                        </Grid>}
+                      {/* Month Selection or Month List */}
+                      <Grid item>
+                        {update ?
+                          <FormControl component="fieldset" className={classes.formControl}>
+                            <FormGroup>
+                              <FormLabel component="legend">Growth Months (check all that apply)</FormLabel>
+                              <Grid item xs>
+                                <FormControlLabel control={<Checkbox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
+                                <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
+                                <FormControlLabel control={<Checkbox checked={months.Mar} onChange={handleMonthChange} name="Mar" />} label="Mar" />
+                                <FormControlLabel control={<Checkbox checked={months.Apr} onChange={handleMonthChange} name="Apr" />} label="Apr" />
+                              </Grid>
+                              <Grid item xs >
+                                <FormControlLabel control={<Checkbox checked={months.May} onChange={handleMonthChange} name="May" />} label="May" />
+                                <FormControlLabel control={<Checkbox checked={months.Jun} onChange={handleMonthChange} name="Jun" />} label="Jun" />
+                                <FormControlLabel control={<Checkbox checked={months.Jul} onChange={handleMonthChange} name="Jul" />} label="Jul" />
+                                <FormControlLabel control={<Checkbox checked={months.Aug} onChange={handleMonthChange} name="Aug" />} label="Aug" />
+                              </Grid>
+                              <Grid item xs >
+                                <FormControlLabel control={<Checkbox checked={months.Sep} onChange={handleMonthChange} name="Sep" />} label="Sep" />
+                                <FormControlLabel control={<Checkbox checked={months.Oct} onChange={handleMonthChange} name="Oct" />} label="Oct" />
+                                <FormControlLabel control={<Checkbox checked={months.Nov} onChange={handleMonthChange} name="Nov" />} label="Nov" />
+                                <FormControlLabel control={<Checkbox checked={months.Dec} onChange={handleMonthChange} name="Dec" />} label="Dec" />
+                              </Grid>
+                            </FormGroup>
+                          </FormControl>
+                          :
+                          <Grid item>
+                            <Typography gutterBottom variant="h5" component="h2">
+                              <p>Growing months:{plantDetails.growth_months} </p>
+                            </Typography>
+                          </Grid>}
+                      </Grid>
                     </Grid>
-                  </Grid>
 
-                  {/* Watering */}
-                  <Grid item >
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Watering (mm): {update ? <React.Fragment>
-                        <TextField
-                          label="Min"
-                          style={{ margin: 8, width: '8ch' }}
-                          name="watering_min"
-                          defaultValue={update.watering_min}
-                          variant="outlined"
-                          margin="normal"
-                          InputProps={{
-                            className: classes.input
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          onChange={handleUpdateChange}
-                        />
+                    {/* Watering */}
+                    <Grid item >
+                      <Typography gutterBottom variant="h5" component="h2">
+                        Watering (mm): {update ? <React.Fragment>
+                          <TextField
+                            label="Min"
+                            style={{ margin: 8, width: '8ch' }}
+                            name="watering_min"
+                            defaultValue={update.watering_min}
+                            variant="outlined"
+                            margin="normal"
+                            InputProps={{
+                              className: classes.input
+                            }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onChange={handleUpdateChange}
+                          />
 
                         <TextField
                           label="Max"
@@ -411,218 +447,19 @@ export default function PlantDet() {
                           }}
                           onChange={handleUpdateChange}
                         />
-                      </React.Fragment> : (plantDetails.watering_min + "-" + plantDetails.watering_max + "mm")}
+                      </React.Fragment> : (plantDetails.watering_min + " - " + plantDetails.watering_max + " mm")}
                     </Typography>
                   </Grid>
 
-                  {/* Temperature */}
-                  <Grid item >
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Temperature (°F): {update ? <React.Fragment>
-                        <TextField
-                          label="Min"
-                          style={{ margin: 8, width: '8ch' }}
-                          name="temperature_min"
-                          defaultValue={update.temperature_min}
-                          variant="outlined"
-                          margin="normal"
-                          InputProps={{
-                            className: classes.input
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          onChange={handleUpdateChange}
-                        />
-
-                        <TextField
-                          label="Max"
-                          style={{ margin: 8, width: '8ch' }}
-                          name="temperature_max"
-                          defaultValue={update.temperature_max}
-                          variant="outlined"
-                          margin="normal"
-                          InputProps={{
-                            className: classes.input
-                          }}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          onChange={handleUpdateChange}
-                        />
-                      </React.Fragment> : (plantDetails.temperature_min + "-" + plantDetails.temperature_max + " °F")}
-                    </Typography>
-                  </Grid>
-
-                  {/* Poisonous */}
-                  <Grid item >
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Poisonous: {update ? <TextField
-                        style={{ margin: 8 }}
-                        name="toxicity"
-                        variant="outlined"
-                        defaultValue={update.toxicity}
-                        margin="normal"
-                        InputProps={{
-                          className: classes.input
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleUpdateChange}
-                      /> : plantDetails.toxicity}
-                    </Typography>
-                  </Grid>
-
-                  {/* Cultivation */}
-                  <Grid item >
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Cultivation details: {update ? <TextField
-                        style={{ margin: 8 }}
-                        name="growth"
-                        variant="outlined"
-                        fullWidth
-                        defaultValue={update.growth}
-                        margin="normal"
-                        InputProps={{
-                          className: classes.input
-                        }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleUpdateChange}
-                      /> : plantDetails.growth}
-                    </Typography>
-                  </Grid>
-                </CardContent>
-              </Grid>
-
-
-              {/* Right Side of the Form */}
-              <Grid item sm={12} md={6}>
-                <CardContent style={{ marginLeft: "5vh" }}>
-                  <Grid container>
-
-                    {/* Light Req */}
+                    {/* Temperature */}
                     <Grid item >
                       <Typography gutterBottom variant="h5" component="h2">
-                        Light Requirement (low to high): {update.light} {update ? <Slider
-                          key={`slider-${update.light}`}
-                          aria-labelledby="discrete-slider"
-                          valueLabelDisplay="auto"
-                          defaultValue={update.light ? update.light : plantDetails.light}
-                          step={1}
-                          marks
-                          min={1}
-                          max={10}
-                          name="light"
-                          onChangeCommitted={(event, value) => handleSliderChange("light", value)}
-                        /> : <Slider
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="auto"
-                            defaultValue={plantDetails.light ? plantDetails.light : 1}
-                            step={1}
-                            marks
-                            min={1}
-                            max={10}
-                            aria-label="light"
-                            disabled
-                          />}
-                      </Typography>
-                    </Grid>
-
-                    {/* Soil Preferences */}
-                    <Grid item >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        <p>Soil Preferences:</p>
-                        <ul>
-                          <li>  PH Restrictions: {update ? <React.Fragment>
-                            <TextField
-                              label="Min"
-                              style={{ margin: 8, width: '8ch' }}
-                              name="ph_min"
-                              defaultValue={update.ph_min}
-                              variant="outlined"
-                              margin="normal"
-                              InputProps={{
-                                className: classes.input
-                              }}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              onChange={handleUpdateChange}
-                            />
-
-                            <TextField
-                              label="Max"
-                              style={{ margin: 8, width: '8ch' }}
-                              name="ph_max"
-                              defaultValue={update.ph_max}
-                              variant="outlined"
-                              margin="normal"
-                              InputProps={{
-                                className: classes.input
-                              }}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              onChange={handleUpdateChange}
-                            />
-                          </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
-
-                          <li> Soil Nutriments: {update ?
-                            <Slider
-                              aria-labelledby="discrete-slider"
-                              key={`slider-${update.soil_nutriments}`}
-                              valueLabelDisplay="auto"
-                              defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
-                              step={1}
-                              marks
-                              min={1}
-                              max={10}
-                              aria-label="soil_nutriments"
-                              onChangeCommitted={(event, value) => handleSliderChange("soil_nutriments", value)}
-                            />
-                            : <Slider
-                              aria-labelledby="discrete-slider"
-                              valueLabelDisplay="auto"
-                              value={plantDetails.soil_nutriments}
-                              step={1}
-                              marks
-                              min={1}
-                              max={10}
-                              aria-label="soil_nutriments"
-                              disabled
-                            />} </li>
-
-                          <li> Soil texture: {update ?
-                            <Slider
-                              aria-labelledby="discrete-slider"
-                              valueLabelDisplay="auto"
-                              key={`slider-${update.soil_texture}`}
-                              defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
-                              step={1}
-                              marks
-                              min={1}
-                              max={10}
-                              aria-label="soil_texture"
-                              onChangeCommitted={(event, value) => handleSliderChange("soil_texture", value)}
-                            />
-                            : <Slider
-                              aria-labelledby="discrete-slider"
-                              valueLabelDisplay="auto"
-                              defaultValue={plantDetails.soil_texture}
-                              step={1}
-                              marks
-                              min={1}
-                              max={10}
-                              aria-label="soil_texture"
-                              disabled
-                            />} </li>
-                          <li> Sowing Description: {update ? <TextField
-                            style={{ margin: 8 }}
-                            name="sowing"
-                            defaultValue={update.sowing}
+                        Temperature (°F): {update ? <React.Fragment>
+                          <TextField
+                            label="Min"
+                            style={{ margin: 8, width: '8ch' }}
+                            name="temperature_min"
+                            defaultValue={update.temperature_min}
                             variant="outlined"
                             margin="normal"
                             InputProps={{
@@ -632,122 +469,331 @@ export default function PlantDet() {
                               shrink: true,
                             }}
                             onChange={handleUpdateChange}
-                          /> : plantDetails.sowing} </li>
-                        </ul>
+                          />
+
+                          <TextField
+                            label="Max"
+                            style={{ margin: 8, width: '8ch' }}
+                            name="temperature_max"
+                            defaultValue={update.temperature_max}
+                            variant="outlined"
+                            margin="normal"
+                            InputProps={{
+                              className: classes.input
+                            }}
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onChange={handleUpdateChange}
+                          />
+                        </React.Fragment> : (plantDetails.temperature_min + "-" + plantDetails.temperature_max + " °F")}
                       </Typography>
                     </Grid>
-                  </Grid>
-                </CardContent>
-              </Grid>
-            </Grid>
 
-            {/* Submit button */}
-            <Grid container>
-              <Grid item xs={12} s={6}>
-                <CardContent style={{ marginLeft: "5vh" }}>
-                  <Grid item style={{justifyContent:'center'}}>
-                  <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleUpdateSubmit}>
-                    Submit
-                  </Button>
-                  </Grid>
-                </CardContent>
-              </Grid>
-            </Grid>
-
-            {/* Comment Section */}
-            <div>
-              <div className={classes.root} style={{ margin: "5vh" }}>
-                <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
-                  <div className={classes.root2}>
-                    {!(JSON.parse(localStorage.getItem("isLoggedIn"))) ? <form
-                      className={classes.root3}
-                      onSubmit={newComment}
-                      noValidate autoComplete="off">
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          disabled
-                          id="outlined-multiline-static"
-                          label="Comment"
-                          multiline
-                          rows={4}
+                    {/* Poisonous */}
+                    <Grid item >
+                      <Typography gutterBottom variant="h5" component="h2">
+                        Poisonous: {update ? <TextField
+                          style={{ margin: 8 }}
+                          name="toxicity"
                           variant="outlined"
+                          defaultValue={update.toxicity}
+                          margin="normal"
                           InputProps={{
-                            readOnly: true,
                             className: classes.input
                           }}
-                          defaultValue={"Please log in to add a comment."}
-                        />
-                        <Button
-                          className={classes.button}
-                          disabled
-                          variant="contained"
-                          size="small" color="primary"
-                          endIcon={<PostAddIcon />}
-                        >
-                          <Hidden only="xs">
-                            Add Comment
-                      </Hidden>
-                        </Button>
-                      </FormControl>
-                    </form>
-                      :
-                      <form
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          onChange={handleUpdateChange}
+                        /> : plantDetails.toxicity}
+                      </Typography>
+                    </Grid>
+
+                    {/* Cultivation */}
+                    <Grid item >
+                      <Typography gutterBottom variant="h5" component="h2">
+                        Cultivation details: {update ? <TextField
+                          style={{ margin: 8 }}
+                          name="growth"
+                          variant="outlined"
+                          fullWidth
+                          defaultValue={update.growth}
+                          margin="normal"
+                          InputProps={{
+                            className: classes.input
+                          }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          onChange={handleUpdateChange}
+                        /> : plantDetails.growth}
+                      </Typography>
+                    </Grid>
+                  </CardContent>
+                </Grid>
+
+
+                {/* Right Side of the Form */}
+                <Grid item sm={12} md={6}>
+                  <CardContent style={{ marginLeft: "5vh" }}>
+                    <Grid container>
+
+                      {/* Light Req */}
+                      <Grid item >
+                        <Typography gutterBottom variant="h5" component="h2">
+                          Light Requirement (low to high): {update.light} {update ? <Slider
+                            key={`slider-${update.light}`}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="auto"
+                            defaultValue={update.light ? update.light : plantDetails.light}
+                            step={1}
+                            marks
+                            min={1}
+                            max={10}
+                            name="light"
+                            onChangeCommitted={(event, value) => handleSliderChange("light", value)}
+                          /> : <Slider
+                              aria-labelledby="discrete-slider"
+                              valueLabelDisplay="auto"
+                              defaultValue={plantDetails.light ? plantDetails.light : 1}
+                              step={1}
+                              marks
+                              min={1}
+                              max={10}
+                              aria-label="light"
+                              className={classes.thumb}
+                              disabled
+                              color="secondary"
+                            />}
+                        </Typography>
+                      </Grid>
+
+                      {/* Soil Preferences */}
+                      <Grid item >
+                        <Typography gutterBottom variant="h5" component="h2">
+                          <p>Soil Preferences:</p>
+                          <ul>
+                            <li>  PH Restrictions: {update ? <React.Fragment>
+                              <TextField
+                                label="Min"
+                                style={{ margin: 8, width: '8ch' }}
+                                name="ph_min"
+                                defaultValue={update.ph_min}
+                                variant="outlined"
+                                margin="normal"
+                                InputProps={{
+                                  className: classes.input
+                                }}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                onChange={handleUpdateChange}
+                              />
+
+                              <TextField
+                                label="Max"
+                                style={{ margin: 8, width: '8ch' }}
+                                name="ph_max"
+                                defaultValue={update.ph_max}
+                                variant="outlined"
+                                margin="normal"
+                                InputProps={{
+                                  className: classes.input
+                                }}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                onChange={handleUpdateChange}
+                              />
+                            </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
+
+                            <li> Soil Nutriments: {update ?
+                              <Slider
+                                aria-labelledby="discrete-slider"
+                                key={`slider-${update.soil_nutriments}`}
+                                valueLabelDisplay="auto"
+                                defaultValue={update.soil_nutriments ? update.soil_nutriments : plantDetails.soil_nutriments}
+                                step={1}
+                                marks
+                                min={1}
+                                max={10}
+                                aria-label="soil_nutriments"
+                                onChangeCommitted={(event, value) => handleSliderChange("soil_nutriments", value)}
+                              />
+                              : <Slider
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                value={plantDetails.soil_nutriments}
+                                step={1}
+                                marks
+                                min={1}
+                                max={10}
+                                aria-label="soil_nutriments"
+                                disabled
+                                className={classes.thumb}
+                              />} </li>
+
+                            <li> Soil texture: {update ?
+                              <Slider
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                key={`slider-${update.soil_texture}`}
+                                defaultValue={update.soil_texture ? update.soil_texture : plantDetails.soil_texture}
+                                step={1}
+                                marks
+                                min={1}
+                                max={10}
+                                aria-label="soil_texture"
+                                onChangeCommitted={(event, value) => handleSliderChange("soil_texture", value)}
+                              />
+                              : <Slider
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                defaultValue={plantDetails.soil_texture}
+                                step={1}
+                                marks
+                                min={1}
+                                max={10}
+                                aria-label="soil_texture"
+                                disabled
+                                className={classes.thumb}
+                              />} </li>
+                            <li> Sowing Description: {update ? <TextField
+                              style={{ margin: 8 }}
+                              name="sowing"
+                              defaultValue={update.sowing}
+                              variant="outlined"
+                              margin="normal"
+                              InputProps={{
+                                className: classes.input
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              onChange={handleUpdateChange}
+                            /> : plantDetails.sowing} </li>
+                          </ul>
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Grid>
+              </Grid>
+
+              {/* Submit button */}
+              {update ? <Grid container>
+                <Grid item xs={12} s={6}>
+                  <CardContent style={{ marginLeft: "5vh" }}>
+                    <Grid item style={{ justifyContent: 'center' }}>
+                      <Button
+                        variant="contained"
+                        size="large"
+                        color='secondary'
+                        className={classes.margin}
+                        onClick={handleUpdateSubmit}>
+                        Submit
+                  </Button>
+                    </Grid>
+                  </CardContent>
+                </Grid>
+                </Grid> : null }
+
+              {/* Comment Section */}
+              <div>
+                <div className={classes.root} style={{ margin: "5vh" }}>
+                  <Typography gutterBottom variant="h5" component="h2" style={{ background: '#cac5b9' }}>
+                    <div className={classes.root2}>
+                      {!(JSON.parse(localStorage.getItem("isLoggedIn"))) ? <form
                         className={classes.root3}
                         onSubmit={newComment}
                         noValidate autoComplete="off">
                         <FormControl className={classes.formControl}>
                           <TextField
+                            disabled
                             id="outlined-multiline-static"
                             label="Comment"
                             multiline
                             rows={4}
                             variant="outlined"
                             InputProps={{
+                              readOnly: true,
                               className: classes.input
                             }}
-                            value={value}
-                            onChange={handleCommentChange}
+                            defaultValue={"Please log in to add a comment."}
                           />
                           <Button
                             className={classes.button}
+                            disabled
                             variant="contained"
                             size="small" color="primary"
                             endIcon={<PostAddIcon />}
-                            onClick={newComment}
                           >
                             <Hidden only="xs">
                               Add Comment
                       </Hidden>
                           </Button>
                         </FormControl>
-                      </form>}
+                      </form>
+                        :
+                        <form
+                          className={classes.root3}
+                          onSubmit={newComment}
+                          noValidate autoComplete="off">
+                          <FormControl className={classes.formControl}>
+                            <TextField
+                              id="outlined-multiline-static"
+                              label="Comment"
+                              multiline
+                              rows={4}
+                              variant="outlined"
+                              InputProps={{
+                                className: classes.input
+                              }}
+                              value={value}
+                              onChange={handleCommentChange}
+                            />
+                            <Button
+                              className={classes.button}
+                              variant="contained"
+                              size="small" color="secondary"
+                              endIcon={<PostAddIcon />}
+                              onClick={newComment}
+                            >
+                              <Hidden only="xs">
+                                Add Comment
+                      </Hidden>
+                            </Button>
+                          </FormControl>
+                        </form>}
 
-                  </div >
+                    </div >
 
 
-                  <h4>Comments: </h4>
+                    <h4>Comments: </h4>
 
-                  {comments.map((comment) => {
-                    return (
+                    {comments.map((comment) => {
+                      return (
 
-                      <Comment
-                        variant="p"
-                        comment={comment.commentText}
-                        user={comment.userId.username}
-                        commentId={comment._id}
-                        key={comment._id}
-                        userId={comment.userId._id}
-                        viewerId={localStorage.getItem("id")}
-                      />
-                    );
-                  })}
-                </Typography>
+                        <Comment
+                          variant="p"
+                          comment={comment.commentText}
+                          user={comment.userId.username}
+                          commentId={comment._id}
+                          key={comment._id}
+                          userId={comment.userId._id}
+                          viewerId={localStorage.getItem("id")}
+                        />
+                      );
+                    })}
+                  </Typography>
+                </div>
               </div>
-            </div>
 
-          </Card>
+            </Card>
+          </Grid >
         </Grid >
-      </Grid >
-    </React.Fragment >
+      </React.Fragment >
+    </MuiThemeProvider>
   );
 }

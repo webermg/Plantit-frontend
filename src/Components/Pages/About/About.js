@@ -1,10 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import {
-    withStyles,
-    MuiThemeProvider,
-    createMuiTheme
-} from "@material-ui/core/styles";
+import {MuiThemeProvider,createMuiTheme} from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -38,10 +33,10 @@ const theme = {
                     },
                     "& .MuiCardContent-root": {
                         textAlign: "center",
-                        padding: muiBaseTheme.spacing.unit * 3
+                        padding: muiBaseTheme.spacing(3)
                     },
                     "& .MuiDivider-root": {
-                        margin: `${muiBaseTheme.spacing.unit * 3}px 0`
+                        margin: `${muiBaseTheme.spacing(3)}px 0`
                     },
                     "& .MuiTypography--heading": {
                         fontWeight: "bold"
@@ -53,7 +48,7 @@ const theme = {
                         display: "inline-block",
                         border: "2px solid white",
                         "&:not(:first-of-type)": {
-                            marginLeft: -muiBaseTheme.spacing.unit
+                            marginLeft: -muiBaseTheme.spacing()
                         }
                     }
                 }
@@ -67,15 +62,17 @@ export default function About() {
     return (
         <MuiThemeProvider theme={createMuiTheme(theme)}>
             <div className="About" style={{ background: '#005254' }}>
+               
+               {/* Our Story */}
                 <Grid container>
                     <Grid item xs={12}>
                         <Typography
                             className={"MuiTypography--heading"}
-                            variant={"h1"}
+                            variant={"h3"}
                             fontWeight="bold"
                             component="h1"
                             align="center"
-                            style={{ color: "#a9a9a9", margin: "2%" }}
+                            style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
                         >
                             Our Story
                         </Typography>
@@ -84,20 +81,22 @@ export default function About() {
                         <Divider light />
                         <Typography
                             className={"MuiTypography--subheading"}
-                            variant={"subtitle"}
-                            component="subtitle"
+                            variant="subtitle1"
+                            component="subtitle1"
                             align="center"
                             style={{ color: "#a9a9a9" }}
                         >
-                            I'm baby air plant tacos freegan, shaman tousled roof party craft beer typewriter. Bespoke semiotics messenger bag raw denim enamel pin. Woke blue bottle subway tile pok pok wolf palo santo actually put a bird on it poutine keytar.
+                            We came together with a common goal: making our plants happy, healthy, and most importantly, alive. There are many avenues to find information about plants, but we are glad you have come here to learn, teach, and share.
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container style={{ marginTop: "2%", justifyContent: "center" }}>
+                    
+                    {/* Caitlin's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -100 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ duration:1000}}>
+                        config={{ duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Caitlin">
@@ -143,10 +142,12 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+                   
+                    {/* Janelle's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:1000, duration:1000}}>
+                        config={{ delay:1000, duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Janelle">
@@ -170,8 +171,7 @@ export default function About() {
                                                 className={"MuiTypography--subheading"}
                                                 variant={"caption"}
                                             >
-                                                We are going to learn different kinds of species in nature that
-                                                live together to form amazing environment.
+                                                Janelle primary focused on the frontend working with React and Material-Ui. It was a blast to combine a love of coding and gardens!
                                  </Typography>
                                             <Divider className={"MuiDivider-root"} light />
                                             <Button
@@ -192,10 +192,12 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+                   
+                    {/* Ann's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:2000, duration:1000}}>
+                        config={{ delay:2000, duration:2000}}>
                         {props => (
                             <div style={props}>
                                 <Grid item xs className="Ann">
@@ -241,102 +243,106 @@ export default function About() {
                             </div>
                         )}
                     </Spring>
+
+                    {/* Maria's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:3000, duration:1000}}>
+                        config={{ delay:3000, duration:2000}}>
                         {props => (
                             <div style={props}>
-                    <Grid item xs className="Maria">
-                        <Card className={"MuiEngagementCard--01"}>
-                            <CardMedia
-                                className={"MuiCardMedia-root"}
-                                image={
-                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605925536/project%203/mariawaslickprofile_vvqmth.png"
-                                }
-                                style={{ height: 150 }}
-                            />
-                            <CardContent className={"MuiCardContent-root"}>
-                                <Typography
-                                    className={"MuiTypography--heading"}
-                                    variant={"h6"}
-                                    gutterBottom
-                                >
-                                    Maria Waslick
+                                <Grid item xs className="Maria">
+                                    <Card className={"MuiEngagementCard--01"}>
+                                        <CardMedia
+                                            className={"MuiCardMedia-root"}
+                                            image={
+                                                "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605925536/project%203/mariawaslickprofile_vvqmth.png"
+                                            }
+                                            style={{ height: 150 }}
+                                        />
+                                        <CardContent className={"MuiCardContent-root"}>
+                                            <Typography
+                                                className={"MuiTypography--heading"}
+                                                variant={"h6"}
+                                                gutterBottom
+                                            >
+                                                Maria Waslick
                                 </Typography>
-                                <Typography
-                                    className={"MuiTypography--subheading"}
-                                    variant={"caption"}
-                                >
-                                    We are going to learn different kinds of species in nature that
-                                    live together to form amazing environment.
+                                            <Typography
+                                                className={"MuiTypography--subheading"}
+                                                variant={"caption"}
+                                            >
+                                                We are going to learn different kinds of species in nature that
+                                                live together to form amazing environment.
                                 </Typography>
-                                <Divider className={"MuiDivider-root"} light />
-                                <Button
-                                    variant="outlined"
-                                    size="small" color="inherit"
-                                    href="https://github.com/mwaslick">
-                                    Github
+                                            <Divider className={"MuiDivider-root"} light />
+                                            <Button
+                                                variant="outlined"
+                                                size="small" color="inherit"
+                                                href="https://github.com/mwaslick">
+                                                Github
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    size="small" color="inherit"
-                                    href="https://mwaslick.github.io/portfolio/index.html">
-                                    Portfolio
+                                            <Button
+                                                variant="outlined"
+                                                size="small" color="inherit"
+                                                href="https://mwaslick.github.io/portfolio/index.html">
+                                                Portfolio
                                 </Button>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    </div>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </div>
                         )}
                     </Spring>
+
+                    {/* Matt's card with animation */}
                     <Spring
-                        from={{ opacity: 0, marginTop: -500 }}
+                        from={{ opacity: 0, marginTop: -200 }}
                         to={{ opacity: 1, marginTop: 0 }}
-                        config={{ delay:4000, duration:1000}}>
+                        config={{ delay:4000, duration:2000}}>
                         {props => (
                             <div style={props}>
-                    <Grid item xs className="Matt">
-                        <Card className={"MuiEngagementCard--01"}>
-                            <CardMedia
-                                className={"MuiCardMedia-root"}
-                                image={
-                                    "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605907736/project%203/mgw_photo_rabivp.jpg"
-                                }
-                                style={{ height: 150 }}
-                            />
-                            <CardContent className={"MuiCardContent-root"}>
-                                <Typography
-                                    className={"MuiTypography--heading"}
-                                    variant={"h6"}
-                                    gutterBottom
-                                >
-                                    Matt Weber
+                                <Grid item xs className="Matt">
+                                    <Card className={"MuiEngagementCard--01"}>
+                                        <CardMedia
+                                            className={"MuiCardMedia-root"}
+                                            image={
+                                                "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605907736/project%203/mgw_photo_rabivp.jpg"
+                                            }
+                                            style={{ height: 150 }}
+                                        />
+                                        <CardContent className={"MuiCardContent-root"}>
+                                            <Typography
+                                                className={"MuiTypography--heading"}
+                                                variant={"h6"}
+                                                gutterBottom
+                                            >
+                                                Matt Weber
                                 </Typography>
-                                <Typography
-                                    className={"MuiTypography--subheading"}
-                                    variant={"caption"}
-                                >
-                                    We are going to learn different kinds of species in nature that
-                                    live together to form amazing environment.
+                                            <Typography
+                                                className={"MuiTypography--subheading"}
+                                                variant={"caption"}
+                                            >
+                                                We are going to learn different kinds of species in nature that
+                                                live together to form amazing environment.
                                 </Typography>
-                                <Divider className={"MuiDivider-root"} light />
-                                <Button
-                                    variant="outlined"
-                                    size="small" color="inherit"
-                                    href="https://github.com/webermg">
-                                    Github
+                                            <Divider className={"MuiDivider-root"} light />
+                                            <Button
+                                                variant="outlined"
+                                                size="small" color="inherit"
+                                                href="https://github.com/webermg">
+                                                Github
                                 </Button>
-                                <Button
-                                    variant="outlined"
-                                    size="small" color="inherit"
-                                    href="https://hidden-tundra-83871.herokuapp.com/">
-                                    Portfolio
+                                            <Button
+                                                variant="outlined"
+                                                size="small" color="inherit"
+                                                href="https://hidden-tundra-83871.herokuapp.com/">
+                                                Portfolio
                                 </Button>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    </div>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </div>
                         )}
                     </Spring>
                 </Grid>
