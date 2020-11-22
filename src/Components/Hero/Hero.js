@@ -10,6 +10,8 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 import Box from '@material-ui/core/Box';
 import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import FormControl from '@material-ui/core/FormControl'
+import Login from '../Login/Login';
+import Signup from '../Signup/Signup';
 
 let theme = createMuiTheme({
     palette: {
@@ -123,23 +125,7 @@ export default function Hero (props) {
                         Search Plants
                     </Button>
 
-                    <Button
-                    className={classes.button}
-                    variant="outlined"
-                    size="large" color="inherit"
-                    onClick={props.toggle}
-                    >
-                       Log In
-                    </Button>
 
-                    <Button
-                    className={classes.button}
-                    variant="outlined"
-                    size="large" color="inherit"
-                    onClick={props.toggle}
-                    >
-                        Sign Up
-                    </Button>
                     </form>
                     </ThemeProvider>
                 </Grid>
