@@ -51,7 +51,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles((theme) => ({
 
-    root: {
+    app: {
         flexGrow: 1,
     },
     paper: {
@@ -102,7 +102,6 @@ class Home extends Component {
             submittedSearch: this.state.searchValue,
             toggleHero: false
         })
-        localStorage.setItem("isVisited", true)
         
     }
 
@@ -120,9 +119,9 @@ class Home extends Component {
                 <React.Fragment>
                     <CssBaseline /> 
                     <MuiThemeProvider theme={theme}>
-                    <div className={classes.root}  style={{background:'#005254'}}>
+                    <div className={classes.app}  style={{background:'#005254'}}>
                         <Grid container >
-                            <Grid item mx="auto" style={{ width: '100%', height: '100%' }}>
+                            <Grid item mx="auto" display="flex" style={{ width: '100%', height: '100%' }}>
                                 <Transition
                                     native
                                     items={this.state.toggleHero}
@@ -150,7 +149,7 @@ class Home extends Component {
                                             <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
                                                 Featured Plants
                                             </Typography>
-                                            <Grid item style={{ height: 600, overflowY: 'auto', paddingLeft: '20px', paddingRight: '20px'}}>
+                                            <Grid item style={{ height: 600, overflowY: 'auto', padding: '20px' }}>
                                                 {this.state.plants.map(plant => (
                                                     <RecentCard
                                                         _id={plant._id}
@@ -168,7 +167,6 @@ class Home extends Component {
                                 </Hidden>
                                 <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
                                     <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
-                                        
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                             handleInputChange={this.handleInputChange} state={this.state} />
                                         {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
