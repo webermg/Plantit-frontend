@@ -171,23 +171,26 @@ export default function NavBar() {
 
   const menuId = "primary-search-account-menu";
 
-  const renderUserMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      {isLoggedIn? <MenuItem onClick={handleMenuClose} component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
-         <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
-         {isLoggedIn? <MenuItem onClick={Logout}>Log Out</MenuItem> : 
-         <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
-    
-    </Menu>
-  );
+  const renderUserMenu = function()  {
+    if (isLoggedIn) {
+      return(
+        <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        id={menuId}
+        keepMounted
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        open={isMenuOpen}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose} component={RouterLink} to={"/profile"}>My Profile</MenuItem> 
+       <MenuItem onClick={Logout}>Log Out</MenuItem> 
+      </Menu>
+
+      )
+
+    }
+  }
 
   
   // const renderUserMenu = function() {
@@ -237,37 +240,37 @@ export default function NavBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem component={RouterLink} to={"/"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             Home
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/myplant"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
           My Plants
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/mygarden"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
           My Garden
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/gallery"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             Gallery
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/profile"}>
-      <Typography>
+      <Typography variant="button" display="block" gutterBottom>
           My Profile
       </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/about"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             About Us
         </Typography>
       </MenuItem>
       <MenuItem onClick={Logout}>
-      <Typography>
+      <Typography variant="button" display="block" gutterBottom>
           Log Out
       </Typography>
       </MenuItem>
@@ -285,22 +288,22 @@ export default function NavBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem component={RouterLink} to={"/"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             Home
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/mygarden"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             My Garden
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/gallery"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             Gallery
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/about"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
             About Us
         </Typography>
       </MenuItem>
@@ -315,22 +318,22 @@ export default function NavBar() {
       return(
       <div className={classes.sectionDesktop}>
         <MenuItem component={RouterLink} to={"/about"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
          About Us
         </Typography>
         </MenuItem>
       <MenuItem component={RouterLink} to={"/myplant"}>
-        <Typography />
+        <Typography variant="button" display="block" gutterBottom>
           My Plants
-        <Typography />
+        </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/mygarden"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
           My Garden
         </Typography>
       </MenuItem>
       <MenuItem component={RouterLink} to={"/gallery"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
           Gallery
         </Typography>
       </MenuItem>
@@ -345,45 +348,37 @@ export default function NavBar() {
             >
               <FilterVintage />
             </IconButton>
-            {renderUserMenu}
+            {renderUserMenu()}
       </div>
       )
     } else return(
       <div className={classes.sectionDesktop}>
           <MenuItem component={RouterLink} to={"/about"}>
-              <Typography>
+              <Typography variant="button" display="block" gutterBottom>
                About Us
               </Typography>
               </MenuItem>
             <MenuItem component={RouterLink} to={"/mygarden"}>
-              <Typography>
+              <Typography variant="button" display="block" gutterBottom>
                 My Garden
               </Typography>
             </MenuItem>
             <MenuItem component={RouterLink} to={"/gallery"}>
-        <Typography>
+        <Typography variant="button" display="block" gutterBottom>
           Gallery
         </Typography>
       </MenuItem>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            {renderUserMenu}
+      <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>
+      <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>
           </div>
     )
   }
 
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="static"style={{ background: '#614051' }}>
+    <React.Fragment>
+      <div className={classes.grow}>
+      <AppBar position="fixed" style={{ background: '#614051' }}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             <IconButton component={RouterLink} to={"/"}>
@@ -416,11 +411,13 @@ export default function NavBar() {
               <MoreIcon />
             </IconButton>
           </div>
+          {renderMobileMenu()}
         </Toolbar>
       </AppBar>
+      <Toolbar />
       
-      {renderMobileMenu()}
       
-    </div>
+      </div>
+    </React.Fragment>
   );
 }
