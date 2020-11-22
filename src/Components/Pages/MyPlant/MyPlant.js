@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import RecentCard from "../../Recent/Recent";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
 import BackButton from "../../BackButton/BackButton";
 

@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../utils/API';
 import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
-import { Hidden } from "@material-ui/core";
-import { Redirect, useHistory } from 'react-router-dom';
-import Axios from 'axios';
-import { result } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import TokenExpiry from '../../utils/TokenExpiry';
 import _ from 'lodash'
@@ -101,8 +94,9 @@ export default function Results(props) {
 
       Promise.all([databasePromise, treflePromise, userPromise]).then(result => {
         filterTrefle(databasePromise, treflePromise, userPromise)
-      }, err => err)
-      .catch(err => {
+      }, err => {
+        throw err;
+      }).catch(err => {
         throw err;
       })
     }
@@ -150,6 +144,9 @@ export default function Results(props) {
       API.getNewPlant(slug, token)
         .then(result => {
           API.favoritePlant(result.data._id, userId)
+            .catch(err => {
+              throw err;
+            })
         }, err => {
           throw err;
         })

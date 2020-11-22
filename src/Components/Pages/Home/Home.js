@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../Home/Home.css';
 import Search from "../../Search/Search";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';

@@ -1,7 +1,6 @@
 import { Container } from '@material-ui/core'
 import React from 'react'
 import Scene from '../../Planner/Scene/Scene'
-import '../MyGarden/MyGarden.css'
 import API from '../../../utils/API'
 import Typography from '@material-ui/core/Typography';
 

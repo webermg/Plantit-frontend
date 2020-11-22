@@ -7,7 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { useHistory } from 'react-router-dom';
 import { Hidden } from "@material-ui/core";
 import TokenExpiry from '../../utils/TokenExpiry';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -30,7 +29,6 @@ const useStyles = makeStyles({
 //A simple card that displays possible results to choose from either our database or trefle API results.
 export default function PlantSearchCard(props) {
 
-    const history = useHistory();
     const classes = useStyles();
     const trefleToken = TokenExpiry.getLocalExpiry("trefleToken")
     const [favorite, setFavorite] = useState(false);

@@ -110,21 +110,6 @@ const tabSelect = (e) => {
     setOpen(false);
   };
 
-  // const renderButton = () => {
-  //   let isMobile = props.isMobile
-  //   if (isMobile) {
-  //     return (
-  //       <MenuItem onClick={handleClickOpen}>
-  //       <Typography>
-  //           Log In
-  //       </Typography>
-  //     </MenuItem>
-  //     )
-  //   } else {return (
-      
-  //   )}
-  // }
-
   return (
     <div>
       <MenuItem onClick={handleClickOpen}>

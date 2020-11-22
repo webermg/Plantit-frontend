@@ -18,7 +18,6 @@ import BackButton from "../../BackButton/BackButton";
 import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator'
 
 
 const theme = createMuiTheme({
