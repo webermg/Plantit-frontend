@@ -7,6 +7,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import API from '../../utils/API';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 
 const theme = createMuiTheme({
@@ -110,6 +112,7 @@ export default function Comment(data) {
     else if (data.viewerId === data.userId) {
       return <div>
     <MuiThemeProvider theme={theme}>
+      <Card variant='outlined' style={{backgroundColor: fade('#fff', 0.7), padding: '10px', marginBottom: '5px'}}>
         <Button
           variant="contained"
           color="secondary"
@@ -127,18 +130,23 @@ export default function Comment(data) {
       <Typography variant="h6" gutterBottom component="p">
         {text}
       </Typography>
+
+      </Card>
+
       </MuiThemeProvider>
     </div>
   }
   // Otherwise show the comment and author
   else {
     return <div>
+       <Card variant= 'outlined' style={{backgroundColor: fade('#fff', 0.7), padding: '10px', marginBottom: '5px'}}>
       <Typography variant="h5" gutterBottom component="span">
         From: {data.user}
       </Typography>
       <Typography variant="h6" gutterBottom component="p">
         {text}
       </Typography>
+      </Card>
     </div>
 
   }

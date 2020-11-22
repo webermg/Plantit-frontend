@@ -3,22 +3,16 @@ import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-// import Badge from '@material-ui/core/Badge';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
-// import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import FilterVintage from "@material-ui/icons/FilterVintage"
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import Login from '../Login/Login.js';
 import Signup from '../Signup/Signup';
 import API from '../../utils/API';
-// import { Link, useLocation } from "react-router-dom";
+import Tooltip from '@material-ui/core/Tooltip'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -48,30 +42,12 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
-  // searchIcon: {
-  //   padding: theme.spacing(0, 2),
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
   inputRoot: {
 
     color: 'inherit',
 
   },
-  // inputInput: {
-  //   padding: theme.spacing(1, 1, 1, 0),
-  //   // vertical padding + font size from searchIcon
-  //   paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-  //   transition: theme.transitions.create("width"),
-  //   width: "100%",
-  //   [theme.breakpoints.up("md")]: {
-  //     width: "20ch",
-  //   },
-  // },
+
   sectionDesktop: {
     display: "none",
     [theme.breakpoints.up("md")]: {
@@ -163,7 +139,6 @@ export default function NavBar() {
     localStorage.removeItem("id");
     localStorage.removeItem("isVisited")
     localStorage.setItem("isLoggedIn", false)
-    // redirect to home pageA
     handleMenuClose()
     history.push("/")
 
@@ -192,39 +167,6 @@ export default function NavBar() {
     }
   }
 
-  
-  // const renderUserMenu = function() {
-  //   if (isLoggedIn) {
-  //     return (
-  //       <Menu
-  //         anchorEl={anchorEl}
-  //         anchorOrigin={{ vertical: "top", horizontal: "right" }}
-  //         id={menuId}
-  //         keepMounted
-  //         transformOrigin={{ vertical: "top", horizontal: "right" }}
-  //         open={isMenuOpen}
-  //         onClose={handleMenuClose}
-  //       >
-  //       <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem>
-  //       <MenuItem onClick={Logout}>Log Out</MenuItem>
-  //       </Menu>
-  //     )
-  //   } else {return (
-  //     <Menu
-  //     anchorEl={anchorEl}
-  //     anchorOrigin={{ vertical: "top", horizontal: "right" }}
-  //     id={menuId}
-  //     keepMounted
-  //     transformOrigin={{ vertical: "top", horizontal: "right" }}
-  //     open={isMenuOpen}
-  //     onClose={handleMenuClose}
-  //   >
-  //        <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/>
-  //        <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose} isMobile={false}/> 
-  //   </Menu>
-
-  //   )
-  // }}
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = function() {
@@ -338,6 +280,7 @@ export default function NavBar() {
         </Typography>
       </MenuItem>
 
+      <Tooltip title="User Settings">
         <IconButton
               edge="end"
               aria-label="account of current user"
@@ -348,6 +291,7 @@ export default function NavBar() {
             >
               <FilterVintage />
             </IconButton>
+          </Tooltip>
             {renderUserMenu()}
       </div>
       )
@@ -385,19 +329,6 @@ export default function NavBar() {
               Plant-It!{" "}
             </IconButton>
           </Typography>
-          {/* <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Plant Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div> */}
           <div className={classes.grow} />
           {renderDesktopMenu()}
           <div className={classes.sectionMobile}>

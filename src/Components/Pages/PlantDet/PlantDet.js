@@ -18,6 +18,7 @@ import BackButton from "../../BackButton/BackButton";
 import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 
 const theme = createMuiTheme({
@@ -64,9 +65,27 @@ const useStyles = makeStyles((theme) => ({
 
   root3: {
     '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '30ch',
+      [theme.breakpoints.down('xs')]: {
+        width: '25ch',
+      },
+      [theme.breakpoints.up('sm')]: {
+        width: '70ch',
+      },
+     
     },
+    [theme.breakpoints.down('xs')]: {
+      width: '25ch',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '70ch',
+    },
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+
+
+    
   },
   paper: {
     padding: theme.spacing(1),
@@ -282,9 +301,6 @@ export default function PlantDet() {
               <BackButton />
             </Grid>
           </Grid>
-          <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
-            <BackButton />
-          </Grid>
         </Grid>
 
           {/* Plant DetailsCard */}
@@ -325,15 +341,16 @@ export default function PlantDet() {
                       gutterBottom
                       variant="h4"
                       component="h2">
-                      Scientific Name: {plantDetails.scientific_name}
+                      Scientific Name: <i> {plantDetails.scientific_name} </i>
                     </Typography>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      <p>Native Areas: </p>
+                    <Typography gutterBottom variant="h6" component="h2">
+                      <p><strong>Native Areas: </strong></p>
                       <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
                     </Typography>
 
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Form: {update ? <TextField
+                  <Typography gutterBottom variant="h6" component="h2">
+                    <strong>Form:</strong>
+                     {update ? <TextField
                       id="outlined-static"
                       style={{ margin: 8, background: "white" }}
                       name="growth_habit"
@@ -370,7 +387,8 @@ export default function PlantDet() {
                         {update ?
                           <FormControl component="fieldset" className={classes.formControl}>
                             <FormGroup>
-                              <FormLabel component="legend">Growth Months (check all that apply)</FormLabel>
+                              <FormLabel component="legend"><Typography gutterBottom variant="h6" component="h2" style={{color:'#1b1918'}}>
+                                <strong>Growth Months (check all that apply):</strong></Typography></FormLabel>
                               <Grid item xs>
                                 <FormControlLabel control={<Checkbox checked={months.Jan} onChange={handleMonthChange} name="Jan" />} label="Jan" />
                                 <FormControlLabel control={<Checkbox checked={months.Feb} onChange={handleMonthChange} name="Feb" />} label="Feb" />
@@ -393,8 +411,8 @@ export default function PlantDet() {
                           </FormControl>
                           :
                           <Grid item>
-                            <Typography gutterBottom variant="h5" component="h2">
-                              <p>Growing months:{plantDetails.growth_months} </p>
+                            <Typography gutterBottom variant="h6" component="h2">
+                              <p><strong>Growth Months:</strong>{plantDetails.growth_months} </p>
                             </Typography>
                           </Grid>}
                       </Grid>
@@ -402,8 +420,8 @@ export default function PlantDet() {
 
                     {/* Watering */}
                     <Grid item >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        Watering (mm): {update ? <React.Fragment>
+                      <Typography gutterBottom variant="h6" component="h2">
+                        <strong>Watering (mm):</strong> {update ? <React.Fragment>
                           <TextField
                             label="Min"
                             style={{ margin: 8, width: '8ch' }}
@@ -441,8 +459,8 @@ export default function PlantDet() {
 
                     {/* Temperature */}
                     <Grid item >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        Temperature (°F): {update ? <React.Fragment>
+                      <Typography gutterBottom variant="h6" component="h2">
+                        <strong>Temperature (°F):</strong> {update ? <React.Fragment>
                           <TextField
                             label="Min"
                             style={{ margin: 8, width: '8ch' }}
@@ -480,8 +498,8 @@ export default function PlantDet() {
 
                     {/* Poisonous */}
                     <Grid item >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        Poisonous: {update ? <TextField
+                      <Typography gutterBottom variant="h6" component="h2">
+                        <strong>Poisonous:</strong> {update ? <TextField
                           style={{ margin: 8 }}
                           name="toxicity"
                           variant="outlined"
@@ -500,8 +518,8 @@ export default function PlantDet() {
 
                     {/* Cultivation */}
                     <Grid item >
-                      <Typography gutterBottom variant="h5" component="h2">
-                        Cultivation details: {update ? <TextField
+                      <Typography gutterBottom variant="h6" component="h2">
+                        <strong>Cultivation Details:</strong> {update ? <TextField
                           style={{ margin: 8 }}
                           name="growth"
                           variant="outlined"
@@ -528,9 +546,9 @@ export default function PlantDet() {
                     <Grid container>
 
                       {/* Light Req */}
-                      <Grid item >
-                        <Typography gutterBottom variant="h5" component="h2">
-                          Light Requirement (low to high): {update.light} {update ? <Slider
+                      <Grid item xs={11}>
+                        <Typography gutterBottom variant="h6" component="h2">
+                          <strong>Light Requirement (low to high):</strong> {update.light} {update ? <Slider
                             key={`slider-${update.light}`}
                             aria-labelledby="discrete-slider"
                             valueLabelDisplay="auto"
@@ -559,10 +577,10 @@ export default function PlantDet() {
 
                       {/* Soil Preferences */}
                       <Grid item >
-                        <Typography gutterBottom variant="h5" component="h2">
-                          <p>Soil Preferences:</p>
+                        <Typography gutterBottom variant="h6" component="h2">
+                          <p><strong>Soil Preferences:</strong></p>
                           <ul>
-                            <li>  PH Restrictions: {update ? <React.Fragment>
+                            <li>  <strong>pH Restrictions:</strong>  {update ? <React.Fragment>
                               <TextField
                                 label="Min"
                                 style={{ margin: 8, width: '8ch' }}
@@ -596,7 +614,7 @@ export default function PlantDet() {
                               />
                             </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
 
-                            <li> Soil Nutriments: {update ?
+                            <li> <strong>Soil Nutriments:</strong> {update ?
                               <Slider
                                 aria-labelledby="discrete-slider"
                                 key={`slider-${update.soil_nutriments}`}
@@ -622,7 +640,7 @@ export default function PlantDet() {
                                 className={classes.thumb}
                               />} </li>
 
-                            <li> Soil texture: {update ?
+                            <li> <strong>Soil Texture:</strong> {update ?
                               <Slider
                                 aria-labelledby="discrete-slider"
                                 valueLabelDisplay="auto"
@@ -647,7 +665,7 @@ export default function PlantDet() {
                                 disabled
                                 className={classes.thumb}
                               />} </li>
-                            <li> Sowing Description: {update ? <TextField
+                            <li> <strong>Sowing Description:</strong> {update ? <TextField
                               style={{ margin: 8 }}
                               name="sowing"
                               defaultValue={update.sowing}
@@ -731,7 +749,7 @@ export default function PlantDet() {
                           <FormControl className={classes.formControl}>
                             <TextField
                               id="outlined-multiline-static"
-                              label="Comment"
+                              label="Leave A Comment"
                               multiline
                               rows={4}
                               variant="outlined"
