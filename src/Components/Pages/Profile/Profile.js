@@ -6,8 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import RecentCard from "../../Recent/Recent";
 import "../MyPlant/MyPlant.css";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Location from "../../Location/Location";
 import Interests from "../../Interests/Interests";
@@ -17,6 +16,26 @@ const theme = createMuiTheme({
   palette: {
     background: {
       default: "#005254",
+    },
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+    action: {
+      disabled: {
+        light: '#c88f76',
+        main: '#bb7354',
+        dark: '#82503a',
+        contrastText: '#fff',
+      },
     },
   },
   textField: {
@@ -111,6 +130,7 @@ export default class profile extends Component {
                       lg={4}
                       style={{ background: "#cac5b9" }}
                     >
+                      <Typography style={{ margin: "2%" }}>
                       <h3>City, State, and/or Country:</h3>
                       <p>{this.state.user.location}</p>
                       {/* Button to open location modal */}
@@ -125,6 +145,7 @@ export default class profile extends Component {
                       <p>{this.state.user.skills}</p>
                       {/* Button to open Skills modal */}
                       <Skills id={this.state.id} />
+                      </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
