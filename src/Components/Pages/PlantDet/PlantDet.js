@@ -264,7 +264,7 @@ export default function PlantDet() {
       <Grid container style={{ background: '#005254' }}>
         <Typography
           className={"MuiTypography--heading"}
-          variant={"h4"}
+          variant={"h3"}
           fontWeight="bold"
           component="h4"
           align="center"
@@ -278,26 +278,27 @@ export default function PlantDet() {
 
 
   return (
-    <MuiThemeProvider theme={theme}>
-
-      <React.Fragment>
-        {console.log(isFavorite)}
-        <PlantDetModal
-          open={open}
-          handleClose={handleClose}
-        />
-        <Grid container mx="auto" className={classes.root} style={{ background: '#005254', justifyContent: 'center', margin: 'auto' }}>
-          {/* Header title and button */}
-          <Grid container >
-            <Grid item xs={12}>
-              <Typography
-                className={"MuiTypography--heading"}
-                variant={"h4"}
-                fontWeight="bold"
-                component="h4"
-                style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
-              >
-                Plant Details
+<MuiThemeProvider theme={theme}>
+    
+    <React.Fragment>
+      {console.log(isFavorite)}
+      <PlantDetModal 
+      open={open}
+      handleClose={handleClose}
+       />
+      <Grid container mx="auto" className={classes.root} style={{ background: '#005254', justifyContent: 'center', margin: 'auto' }}>
+        {/* Header title and button */}
+        <Grid container >
+          <Grid item xs={12}>
+            <Typography
+              className={"MuiTypography--heading"}
+              variant={"h3"}
+              fontWeight="bold"
+              component="h1"
+              align="center"
+              style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
+            >
+              Plant Details
           </Typography>
             </Grid>
             <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
@@ -351,28 +352,29 @@ export default function PlantDet() {
                       <span>{plantDetails.native ? plantDetails.native.join(', ') : ""}</span>
                     </Typography>
 
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Form: {update.growth_habit} {update ? <TextField
-                        id="outlined-static"
-                        style={{ margin: 8, background: "white" }}
-                        name="growth_habit"
-                        label="Form"
-                        defaultValue={update.growth_habit}
-                        variant="outlined"
-                        margin="normal"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleUpdateChange}
-                      /> : plantDetails.growth_habit}
-                    </Typography>
-                  </CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    Form: {update ? <TextField
+                      id="outlined-static"
+                      style={{ margin: 8, background: "white" }}
+                      name="growth_habit"
+                      label="Form"
+                      defaultValue={update.growth_habit}
+                      variant="outlined"
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={handleUpdateChange}
+                    /> : plantDetails.growth_habit}
+                  </Typography>
+                </CardContent>
+              </Grid>
+              <Grid item sm={12} md={6} >
+                <CardMedia style={{ margin: "5vh" }}>
+                  <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
+                </CardMedia>
                 </Grid>
-                <Grid item sm={12} md={6} >
-                  <CardMedia style={{ margin: "5vh" }}>
-                    <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
-                  </CardMedia>
-                </Grid>
+
               </Grid>
 
               {/*Form and Saved info  */}
@@ -438,24 +440,24 @@ export default function PlantDet() {
                             onChange={handleUpdateChange}
                           />
 
-                          <TextField
-                            label="Max"
-                            style={{ margin: 8, width: '8ch' }}
-                            name="watering_max"
-                            defaultValue={update.watering_max}
-                            variant="outlined"
-                            margin="normal"
-                            InputProps={{
-                              className: classes.input
-                            }}
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            onChange={handleUpdateChange}
-                          />
-                        </React.Fragment> : (plantDetails.watering_min + "-" + plantDetails.watering_max + "mm")}
-                      </Typography>
-                    </Grid>
+                        <TextField
+                          label="Max"
+                          style={{ margin: 8, width: '8ch' }}
+                          name="watering_max"
+                          defaultValue={update.watering_max}
+                          variant="outlined"
+                          margin="normal"
+                          InputProps={{
+                            className: classes.input
+                          }}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                          onChange={handleUpdateChange}
+                        />
+                      </React.Fragment> : (plantDetails.watering_min + " - " + plantDetails.watering_max + " mm")}
+                    </Typography>
+                  </Grid>
 
                     {/* Temperature */}
                     <Grid item >
@@ -688,7 +690,7 @@ export default function PlantDet() {
               </Grid>
 
               {/* Submit button */}
-              <Grid container>
+              {update ? <Grid container>
                 <Grid item xs={12} s={6}>
                   <CardContent style={{ marginLeft: "5vh" }}>
                     <Grid item style={{ justifyContent: 'center' }}>
@@ -703,7 +705,7 @@ export default function PlantDet() {
                     </Grid>
                   </CardContent>
                 </Grid>
-              </Grid>
+                </Grid> : null }
 
               {/* Comment Section */}
               <div>
