@@ -14,6 +14,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Grid from "@material-ui/core/Grid";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import Eco from '@material-ui/icons/Eco'
 
 
 
@@ -42,6 +43,7 @@ export default function PlantSearchCard(props) {
         }
         
     }
+
     
 useEffect(()=>{
     if(props.data.favorite) setFavorite(true)
@@ -59,11 +61,16 @@ useEffect(()=>{
                                 title={"Identifying image of " + props.data.common_name}
                             />
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
+                                <div style= {{display: 'flex', alignItems: 'center'}}>
+                                {props.inDatabase? <Typography gutterBottom variant="h5" component="h2">
                                     {props.data.common_name}
-                                </Typography>
+                                    <Eco color= 'secondary' gutterBottom />
+                                </Typography> : <Typography gutterBottom variant="h5" component="h2">
+                                    {props.data.common_name}
+                                </Typography>}
+                                </div>
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    {props.data.scientific_name}
+                                   <i>{props.data.scientific_name}</i> 
                                 </Typography>
                             </CardContent>
                         <CardActions>

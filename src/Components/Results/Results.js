@@ -41,9 +41,6 @@ export default function Results(props) {
     if (`${props.submittedSearch}` !== "") {
       const databasePromise = new Promise((resolve, reject) => {
         API.getDatabasePlants(`${props.submittedSearch}`).then(result => {
-          console.log("database promise")
-          console.log(result)
-
           if (result.data.name === "MongoError") {
             setPlantsInDatabase([])
             resolve([])
@@ -62,7 +59,6 @@ export default function Results(props) {
         const trefleResults = new Promise((resolve, reject) => {
           if (!trefleToken) {
             API.getToken().then(result => {
-              // console.log("double api")
               TokenExpiry.setLocalExpiry("trefleToken", result.data.token)
               resolve(API.getSearchedPlants(`${props.submittedSearch}`, result.data.token, page))
             }, err => reject(err))
@@ -73,21 +69,17 @@ export default function Results(props) {
 
 
         trefleResults.then(result => {
-          // console.log("trefle promise")
           if (page > 1 && result.data.name === "Error") {
             setPlantsInTrefle([]);
             resolve([]);
-            // console.log("No more plants to be found")
           } else {
             setPlantsInTrefle(result.data);
             resolve(result.data);
           }
         }).catch(err => {
-          // console.log(err)
           if (page > 1 && err.error === true) {
             setPlantsInTrefle([]);
             resolve([])
-            // console.log("No more plants to be found")
           } else {
             reject(err)
           }
@@ -98,10 +90,8 @@ export default function Results(props) {
         const userID = localStorage.getItem("id");
         if (!userID) resolve(null)
         API.getUser(userID).then(result => {
-          // console.log("user promise")
           if (userID && result.data.myPlants.length !== 0) {
             const myPlantSlugs = result.data.myPlants.map(element => element.slug);
-            // console.log(myPlantSlugs)
             resolve(myPlantSlugs);
           } else resolve([]);
 
@@ -124,11 +114,8 @@ export default function Results(props) {
     database.then(databaseData => {
       trefle.then(trefleData => {
         if (databaseData) {
-          console.log(databaseData)
           let databaseSlugs = databaseData.map(element => element.slug);
-          console.log(databaseSlugs);
           const newPlants = trefleData.filter(element => !(databaseSlugs.includes(element.slug)))
-          console.log(newPlants)
           setPlantsInTrefle(newPlants)
 
           user.then(userData => {
@@ -144,7 +131,6 @@ export default function Results(props) {
               }
             }
             setPlantsInDatabase(databaseData)
-            console.log("all done!")
           }, err => {
             console.log(err)
           })
@@ -175,7 +161,6 @@ export default function Results(props) {
   }
 
   const newPlantInDatabase = function (slug, token) {
-    console.log(token)
     API.getNewPlant(slug, token)
       .then(result => {
         console.log(result)
@@ -197,7 +182,6 @@ export default function Results(props) {
       >
         <Grid container justify="center" style={{ height: 500, overflowY: 'auto' }}>
           {/* Section with plants already in our database */}
-          {/* {console.log(plantsInDatabase)} */}
           {Array.isArray(plantsInDatabase) ? _.chunk(plantsInDatabase, 2).map(elements => (
             <Grid key={elements[0]._id} item>
               <PlantSearchCard
@@ -235,33 +219,6 @@ export default function Results(props) {
       </Grid>
 
       <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
-
-        {/* Upon button being clicked, button for more plants does an api call  */}
-        {/* next and back buttons to get more results from trefle */}
-        {/* <Box p={1} flexShrink={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            endIcon={<ArrowBackIcon />}
-            onClick={() => page > 1 ? setPage(page - 1) : null}
-          ><Hidden only="xs">
-              LEFT
-                </Hidden>
-          </Button>
-        </Box>
-        <Box p={1} flexShrink={1}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            endIcon={<ArrowForwardIcon />}
-            onClick={() => plantsInTrefle.length === 0 ? null : setPage(page++)}
-          ><Hidden only="xs">
-              RIGHT
-                </Hidden>
-          </Button>
-        </Box> */}
       </Box>
     </div >
   )

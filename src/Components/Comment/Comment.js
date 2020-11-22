@@ -7,6 +7,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import API from '../../utils/API';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 
 const theme = createMuiTheme({
@@ -41,20 +43,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Comment(data) {
-  console.log("rerendered")
   const classes = useStyles();
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(data.comment)
 
   const handleUpdateChange = (event) => {
-    console.log(event.target.value)
     setText(event.target.value)
   }
 
   // Save Comment that has been edited
   const saveEdit = () => {
     API.editComment(data.commentId, text).then(result => {
-      console.log(result)
       setEditing(false)
     })
   }
@@ -62,7 +61,6 @@ export default function Comment(data) {
   // Delete Comment that has be selected to be edited
   const deleteComment = () => {
     API.deleteComment(data.commentId).then(result => {
-      console.log(result)
       setText("This comment was deleted")
       setEditing(false)
     })
@@ -114,6 +112,7 @@ export default function Comment(data) {
     else if (data.viewerId === data.userId) {
       return <div>
     <MuiThemeProvider theme={theme}>
+      <Card variant='outlined' style={{backgroundColor: fade('#fff', 0.7), padding: '10px', marginBottom: '5px'}}>
         <Button
           variant="contained"
           color="secondary"
@@ -131,18 +130,23 @@ export default function Comment(data) {
       <Typography variant="h6" gutterBottom component="p">
         {text}
       </Typography>
+
+      </Card>
+
       </MuiThemeProvider>
     </div>
   }
   // Otherwise show the comment and author
   else {
     return <div>
+       <Card variant= 'outlined' style={{backgroundColor: fade('#fff', 0.7), padding: '10px', marginBottom: '5px'}}>
       <Typography variant="h5" gutterBottom component="span">
         From: {data.user}
       </Typography>
       <Typography variant="h6" gutterBottom component="p">
         {text}
       </Typography>
+      </Card>
     </div>
 
   }

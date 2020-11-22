@@ -91,17 +91,14 @@ export default function Scene(props) {
   useEffect(() => {
     //test drawing for effect
     if (activeDraw) {
-      console.log(activeDraw)
+      return
     }
     else {
       if (temp.points && temp.points.length > 4) {
-        console.log("added")
-        console.log(temp.points)
         const toAdd = { ...temp }
         toAdd.id = Date.now() + Math.random();
         toAdd.x=0;
         toAdd.y=0;
-        console.log(toAdd)
         const polys = getPolygons()
         polys.push(toAdd);
         setPolygons(polys);
@@ -184,7 +181,6 @@ export default function Scene(props) {
   }
 
   const completeDraw = (e) => {
-    console.log(e)
     const tempPoints = [...temp.points]
     if(e.type==="click") {
       // tempPoints.pop()
@@ -234,17 +230,12 @@ export default function Scene(props) {
 
       const x = e.evt.layerX ? e.evt.layerX : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
       const y = e.evt.layerY ? e.evt.layerY : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
-      const touching = !e.evt.layerX
       const coords = [...temp.points]
       let distToFirst = 1000
       if (temp.points && temp.points.length > 2) {
         distToFirst = (x - coords[0]) ** 2 + (y - coords[1]) ** 2
       }
       if (distToFirst <= 25**2) {
-        if(!touching) {
-          // coords.pop()
-          // coords.pop()
-        }
         setTemp({ ...temp, points: coords });
         setActiveDraw(null)
       }
@@ -322,12 +313,10 @@ export default function Scene(props) {
   const handleDrawBtnClick = (imageURL,i) => {
     selectShape(null);
     if (activeDraw === i) {
-      console.log("drawing off")
       setActiveDraw(null)
       setTemp({});
     }
     else {
-      console.log("drawing on")
       setActiveDraw(i);
       setTemp({ points: [], fillPatternImage: imageURL })
     }
@@ -378,11 +367,6 @@ export default function Scene(props) {
     }
     stageRef.current.container().style.cursor='crosshair'
     const tempCopy = [...temp.points]
-    // if (tempCopy.length >= 2) {
-    //   tempCopy.pop();
-    //   tempCopy.pop();
-    // }
-    
     let distToFirst = 1000;
     let xFirst, yFirst
     if (tempCopy.length >= 6) {
@@ -392,8 +376,6 @@ export default function Scene(props) {
     }
 
     if (distToFirst <= 400) {
-      // tempCopy.push(xFirst)
-      // tempCopy.push(yFirst)
       setMousePos({
         mouseX: xFirst,
         mouseY: yFirst
@@ -409,8 +391,6 @@ export default function Scene(props) {
         mouseX: pos[0],
         mouseY: pos[1]
       })
-      // tempCopy.push(pos[0])
-      // tempCopy.push(pos[1])
     }
     setTemp({ ...temp, points: tempCopy });
   }
