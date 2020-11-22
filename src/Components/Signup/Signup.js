@@ -78,7 +78,6 @@ export default function Signup(props) {
             localStorage.setItem("id", newUser.data.userInfo.id)
             API.getUser(newUser.data.userInfo.id)
                 .then (profileData => {
-                console.log(profileData)
                 props.setProfileState({
                     username: profileData.data.username,
                     email: profileData.data.email,
@@ -102,25 +101,6 @@ export default function Signup(props) {
           }
         })}
       }
-
-      // const renderButton = () => {
-      //   let isMobile = props.isMobile
-      //   if (isMobile) {
-      //     return (
-      //       <MenuItem onClick={handleClickOpen}>
-      //       <Typography>
-      //           Sign Up
-      //       </Typography>
-      //     </MenuItem>
-      //     )
-      //   } 
-      //   else {return (
-      //     <MenuItem onClick={handleClickOpen}>
-      //       Sign Up
-      //     </MenuItem>
-      //   )}
-      // }
-
     
     return (
         <div>

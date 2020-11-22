@@ -34,7 +34,6 @@ export default function Skills(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(props.id)
     API.updateUserSkills(props.id, skills)
     .then(result => {
       console.log(result) 

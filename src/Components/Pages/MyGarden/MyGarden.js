@@ -15,7 +15,6 @@ export default function MyGarden() {
         if (id) {
             API.getUser(id).then(res => {
                 setUserData(res.data);
-                console.log(res)
             });
         }
         else setUserData({})

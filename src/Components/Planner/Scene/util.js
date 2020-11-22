@@ -18,7 +18,6 @@ const util = {
     if(gridCornerLL[1] > stageHeight) gridCornerLL[1]=stageHeight
     if(gridCornerLR[0] > stageWidth) gridCornerLR[0]=stageWidth
     if(gridCornerLR[1] > stageHeight) gridCornerLR[1]=stageHeight
-    // console.log(x + " " + y + " " + gridCornerUL + " " + gridCornerUR + " " + gridCornerLL + " " + gridCornerLR)
     let min = Number.MAX_SAFE_INTEGER;
     let closest;
     const distToUL = (x - gridCornerUL[0]) ** 2 + (y - gridCornerUL[1]) ** 2

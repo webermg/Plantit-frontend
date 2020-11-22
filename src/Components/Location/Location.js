@@ -35,10 +35,8 @@ export default function Location(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose()
-    console.log(props.id)
     API.updateUserLocation(props.id, location)
     .then(result => {
-      console.log("location:", location.value) 
     })
     handleClose();
   };

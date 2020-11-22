@@ -143,8 +143,6 @@ export default function PlantDet() {
   useEffect(() => {
     API.getPlantID(slug)
       .then(result => {
-        console.log('result from ' + slug + ': ' + result.data)
-        console.log(result.data)
         setPlantDetails(result.data.dbPlant)
         setComments(result.data.dbComment)
 
@@ -152,7 +150,6 @@ export default function PlantDet() {
           setOpen(true)
           setUpdate({ ...update, ...result.data.dbPlant })
           if (result.data.dbPlant.growth_months && result.data.dbPlant.growth_months.length > 0) {
-            console.log(result.data.dbPlant.growth_months)
             const monthList = {
               Jan: false,
               Feb: false,
@@ -174,17 +171,17 @@ export default function PlantDet() {
           }
         }
 
-        if (localStorage.getItem("id")) {
-          API.getMyPlants(localStorage.getItem("id"))
-            .then(myplants => {
-              const mySlugs = myplants.data.map(element => element.slug)
-              console.log(mySlugs);
-              console.log(result.data.dbPlant.slug)
-              if (mySlugs.includes(result.data.dbPlant.slug)) {
-                console.log('is favorite')
-                setIsFavorite(true)
+
+        if(localStorage.getItem("id")) {
+      API.getMyPlants(localStorage.getItem("id"))
+      .then(myplants =>{
+        const mySlugs = myplants.data.map(element => element.slug)
+        if(mySlugs.includes(result.data.dbPlant.slug)){
+          setIsFavorite(true)
+
               }
             })
+
         }
       }).catch(err => console.log(err))
 
@@ -194,7 +191,6 @@ export default function PlantDet() {
 
     API.favoritePlant(plantDetails._id, localStorage.getItem("id"))
       .then(result => {
-        console.log(result)
         setIsFavorite(true)
       },
         err => console.log(err))
@@ -206,17 +202,11 @@ export default function PlantDet() {
 
   const handleUpdateChange = (event) => {
     let { name, value } = event.target
-    console.log(`${name}`)
-    console.log(`${value}`)
-
     setUpdate({ ...update, [name]: value });
   }
 
   const handleSliderChange = (name, value) => {
-    console.log(name);
-    console.log(value)
     setUpdate({ ...update, [name]: value });
-    console.log(update)
   }
 
   const handleMonthChange = (event) => {
@@ -230,25 +220,21 @@ export default function PlantDet() {
         growth_months.push(month);
       }
     }
-    console.log(growth_months)
     API.updatePlant(plantDetails._id, update, growth_months)
       .then(result => {
-        console.log(result)
-        if (localStorage.getItem("id")) {
-          API.makeComment(plantDetails._id, localStorage.getItem("id"), "Initial review completed!")
-            .then(commentResult => {
-              console.log(commentResult);
-              setReset(!reset)
-              setUpdate(false)
-            })
+        if(localStorage.getItem("id")) {
+          API.makeComment(plantDetails._id,localStorage.getItem("id"), "Initial review completed!")
+          .then(commentResult => {
+            setReset(!reset)
+            setUpdate(false)
+          })
         }
         else {
-          API.makeComment(plantDetails._id, "5fb83d88db974b470c3395e4", "Initial review completed!")
-            .then(commentResult => {
-              console.log(commentResult);
-              setReset(!reset)
-              setUpdate(false)
-            })
+          API.makeComment(plantDetails._id,"5fb83d88db974b470c3395e4", "Initial review completed!")
+          .then(commentResult => {
+            setReset(!reset)
+            setUpdate(false)
+          })
         }
 
       })
@@ -292,7 +278,6 @@ export default function PlantDet() {
 <MuiThemeProvider theme={theme}>
     
     <React.Fragment>
-      {console.log(isFavorite)}
       <PlantDetModal 
       open={open}
       handleClose={handleClose}
@@ -316,10 +301,13 @@ export default function PlantDet() {
               <BackButton />
             </Grid>
           </Grid>
+          <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
+            <BackButton />
+          </Grid>
+        </Grid>
 
           {/* Plant DetailsCard */}
           <Grid container style={{ background: '#005254', padding: '1%' }}>
-            {console.log(comments)}
             <Card style={{ background: '#cac5b9' }}>
 
               {/* Plant Det Head with Pic */}
@@ -812,7 +800,6 @@ export default function PlantDet() {
               </div>
 
             </Card>
-          </Grid >
         </Grid >
       </React.Fragment >
     </MuiThemeProvider>

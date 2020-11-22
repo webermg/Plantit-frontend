@@ -95,13 +95,10 @@ export default function Scene(props) {
     }
     else {
       if (temp.points && temp.points.length > 4) {
-        console.log("added")
-        console.log(temp.points)
         const toAdd = { ...temp }
         toAdd.id = Date.now() + Math.random();
         toAdd.x=0;
         toAdd.y=0;
-        console.log(toAdd)
         const polys = getPolygons()
         polys.push(toAdd);
         setPolygons(polys);
@@ -194,7 +191,6 @@ export default function Scene(props) {
   }
 
   const endDragPolygon = (e, index) => {
-    console.log(e)
     const polyPoints = [...polygons[index].points]
     const offsetX = e.target.attrs.x;
     const offsetY = e.target.attrs.y;
@@ -221,9 +217,7 @@ export default function Scene(props) {
   }
 
   const handleStageClick = (e) => {
-    console.log(e)
     if (!activeDraw) {
-      // console.log(e)
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
       selectShape(null)
     }
@@ -234,14 +228,11 @@ export default function Scene(props) {
       const coords = [...temp.points]
       let distToFirst = 1000
       if (temp.points && temp.points.length > 2) {
-        console.log(x + " " + y + " " + coords[0] + " " + coords[1])
         distToFirst = (x - coords[0]) ** 2 + (y - coords[1]) ** 2
       }
-      console.log(options.snapDist)
       if (distToFirst <= options.snapDist**2) {
         coords.pop()
         coords.pop()
-        console.log("drawing off")
         setTemp({ ...temp, points: coords });
         setActiveDraw(null)
       }
@@ -254,7 +245,6 @@ export default function Scene(props) {
   }
 
   const handleKeyPress = (e) => {
-    console.log(e)
     if (drawRef.current) {
       e.preventDefault();
       if (e.keyCode === 27) {
@@ -263,7 +253,6 @@ export default function Scene(props) {
     }
     else {
       if (e.keyCode === 46 && selectRef.current) {
-        console.log(selectRef.current)
         deleteShape(selectRef.current)
       }
     }
@@ -316,12 +305,10 @@ export default function Scene(props) {
   const handleDrawBtnClick = (imageURL,i) => {
     selectShape(null);
     if (activeDraw === i) {
-      console.log("drawing off")
       setActiveDraw(null)
       setTemp({});
     }
     else {
-      console.log("drawing on")
       setActiveDraw(i);
       setTemp({ points: [], fillPatternImage: imageURL })
     }
@@ -373,7 +360,6 @@ export default function Scene(props) {
       tempCopy.pop();
       tempCopy.pop();
     }
-    // console.log(tempCopy.points)
 
     let distToFirst = 1000;
     let xFirst, yFirst
@@ -381,7 +367,6 @@ export default function Scene(props) {
       xFirst = temp.points[0]
       yFirst = temp.points[1]
       distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
-      // console.log(distToFirst)
     }
 
     if (distToFirst <= 400) {
@@ -398,7 +383,6 @@ export default function Scene(props) {
       pos = util.checkVertexSnap(coords[0],coords[1],options.snapDist, polygons)
       //if no vertex snap check grid snap
       if(coords[0] === pos[0] && coords[1] === pos[1]) pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
-      // console.log(pos)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
@@ -432,9 +416,6 @@ export default function Scene(props) {
     const itemBounds = util.getObjectSnappingEdges(thisShape);
     const guides = util.getGuides(lineGuideStops, itemBounds, options.snapDist);
     if(guides.length === 0) return;
-    // console.log(thisObj.x + " " + thisObj.y)
-    // console.log(lineGuideStops)
-    // console.log(itemBounds)
     let absPos = e.target.absolutePosition();
     guides.forEach((lg) => {
       switch (lg.snap) {
