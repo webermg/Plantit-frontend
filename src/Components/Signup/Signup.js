@@ -10,6 +10,24 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
 
 export default function Signup(props) {
     const [open, setOpen] = useState(false);
@@ -104,6 +122,7 @@ export default function Signup(props) {
     
     return (
         <div>
+          <MuiThemeProvider theme={theme}>
           <MenuItem onClick={handleClickOpen}>
             <Typography variant="button" display="block" gutterBottom>
             Sign Up
@@ -118,6 +137,7 @@ export default function Signup(props) {
               </DialogContentText>
               <TextField
                 autoFocus
+                color='secondary'
                 margin="dense"
                 label="Username"
                 type="text"
@@ -135,6 +155,7 @@ export default function Signup(props) {
               <TextField
                 autoFocus
                 margin="dense"
+                color='secondary'
                 label="Email Address"
                 type="email"
                 required
@@ -150,6 +171,7 @@ export default function Signup(props) {
                 </Typography>
               <TextField
                 autoFocus
+                color='secondary'
                 margin="dense"
                 label="Password"
                 type="password"
@@ -175,6 +197,7 @@ export default function Signup(props) {
             </DialogActions>
             </form>
           </Dialog>
+          </MuiThemeProvider>
         </div>
       )
 }
