@@ -41,20 +41,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Comment(data) {
-  console.log("rerendered")
   const classes = useStyles();
   const [editing, setEditing] = useState(false)
   const [text, setText] = useState(data.comment)
 
   const handleUpdateChange = (event) => {
-    console.log(event.target.value)
     setText(event.target.value)
   }
 
   // Save Comment that has been edited
   const saveEdit = () => {
     API.editComment(data.commentId, text).then(result => {
-      console.log(result)
       setEditing(false)
     })
   }
@@ -62,7 +59,6 @@ export default function Comment(data) {
   // Delete Comment that has be selected to be edited
   const deleteComment = () => {
     API.deleteComment(data.commentId).then(result => {
-      console.log(result)
       setText("This comment was deleted")
       setEditing(false)
     })

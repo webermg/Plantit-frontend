@@ -31,14 +31,12 @@ class MyPlant extends Component {
     // const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")
     
-    console.log(this.state.userID)
     if (this.state.userID === null) {
       this.props.history.push("/")
     } else if (this.state.userID != null) {
       API.getMyPlants(this.state.userID)
       .then(result => {
         if (result.data) {
-          console.log(result.data)
           this.setState({plants: result.data})
         }
     }).catch(err => {

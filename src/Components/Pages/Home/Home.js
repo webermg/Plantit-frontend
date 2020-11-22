@@ -84,9 +84,7 @@ class Home extends Component {
         // API call to load featured Plants when page loads
         API.getFeaturedPlants()
             .then(result => {
-                console.log(result.data)
                 const featuredPlants = result.data.map(element => { return element.plantInfo[0] })
-                console.log(featuredPlants)
                 this.setState({ plants: featuredPlants })
             })
     }
