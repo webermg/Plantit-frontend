@@ -95,7 +95,7 @@ export default function TabMenu(props) {
         <ForeGroundPanel onClick={props.onForegroundClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={3}>
-        <OptionsPanel {...props.options} onChange={props.onOptionChange} onSliderChange={props.onSliderChange}/>
+        <OptionsPanel {...props.options} onChange={props.onOptionChange} onSnapSliderChange={props.onSnapSliderChange} onGridSliderChange={props.onGridSliderChange}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={4}>
         Item Five

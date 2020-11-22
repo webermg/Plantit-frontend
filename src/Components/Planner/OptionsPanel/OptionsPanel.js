@@ -4,7 +4,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import {Switch,Slider,Typography} from '@material-ui/core';
 
 export default function OptionsPanel(props) {
-  
+  const [snapSliderVal, setSnapSliderVal] = React.useState(props.snapDist)
+  const [gridSliderVal, setGridSliderVal] = React.useState(props.gridSize)
+
+  const onSnapSliderChange = (e,v) => {
+    setSnapSliderVal(v)
+  }
+
+  const onGridSliderChange = (e,v) => {
+    setGridSliderVal(v)
+  }
+
   return (
     <FormGroup>
       <FormControlLabel
@@ -39,13 +49,11 @@ export default function OptionsPanel(props) {
         Snap Distance
       </Typography>
       <Slider
-        defaultValue={props.snapDist}
-        // getAriaValueText={valuetext}
-        aria-label='snapDist'
-        name="snapDist"
+        value={snapSliderVal}
         aria-labelledby="discrete-slider1"
         valueLabelDisplay="auto"
-        onChangeCommitted={props.onSliderChange}
+        onChangeCommitted={props.onSnapSliderChange}
+        onChange={onSnapSliderChange}
         step={5}
         marks
         min={5}
@@ -56,14 +64,11 @@ export default function OptionsPanel(props) {
         Grid Size
       </Typography>
       <Slider
-        defaultValue={props.gridSize}
-        // value={props.gridSize}
-        // getAriaValueText={value=>value}
-        aria-label='gridSize'
-        name="gridSize"
+        value={gridSliderVal}
         aria-labelledby="discrete-slider2"
         valueLabelDisplay="auto"
-        onChangeCommitted={props.onSliderChange}
+        onChangeCommitted={props.onGridSliderChange}
+        onChange={onGridSliderChange}
         step={10}
         marks
         min={20}
