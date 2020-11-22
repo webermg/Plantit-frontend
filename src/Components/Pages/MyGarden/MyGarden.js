@@ -26,11 +26,11 @@ export default function MyGarden() {
         <Container fixed disableGutters style={{marginBottom: '20px'}}>
             <Typography
                 className={"MuiTypography--heading"}
-                variant={"h4"}
+                variant={"h3"}
                 fontWeight="bold"
                 component="h4"
                 align="center"
-                style={{ color: "#a9a9a9", margin: "2%" }}
+                style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
             >
                 My Garden
         </Typography>

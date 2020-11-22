@@ -6,6 +6,25 @@ import { Hidden, TextField, Typography } from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
 import API from '../../utils/API';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  }
+})
 
 const useStyles = makeStyles((theme) => ({
 
@@ -17,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     float: "right",
     position: "relative",
-    backgroundColor: "#b1bb78"
   }
 }));
 
@@ -31,23 +49,27 @@ export default function Comment(data) {
     setText(event.target.value)
   }
 
+  // Save Comment that has been edited
   const saveEdit = () => {
     API.editComment(data.commentId, text).then(result => {
       setEditing(false)
     })
   }
 
+  // Delete Comment that has be selected to be edited
   const deleteComment = () => {
     API.deleteComment(data.commentId).then(result => {
       setText("This comment was deleted")
       setEditing(false)
     })
   }
+  // If editing then render the save and delete buttons
   if (editing) {
     return <div>
+    <MuiThemeProvider theme={theme}>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         className={classes.button}
         endIcon={<SaveIcon />}
         onClick={saveEdit}
@@ -57,7 +79,7 @@ export default function Comment(data) {
       </Button>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         className={classes.button}
         endIcon={<DeleteIcon />}
         onClick={deleteComment}
@@ -81,12 +103,16 @@ export default function Comment(data) {
           }}
           onChange={handleUpdateChange}
         />
+        </MuiThemeProvider>
       </div>
-    } else if (data.viewerId === data.userId) {
+    } 
+    // If you are the user with the comment then the edit button is rendered
+    else if (data.viewerId === data.userId) {
       return <div>
+    <MuiThemeProvider theme={theme}>
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.button}
           endIcon={<EditIcon />}
           onClick={() => setEditing(true)}
@@ -101,8 +127,10 @@ export default function Comment(data) {
       <Typography variant="h6" gutterBottom component="p">
         {text}
       </Typography>
+      </MuiThemeProvider>
     </div>
   }
+  // Otherwise show the comment and author
   else {
     return <div>
       <Typography variant="h5" gutterBottom component="span">

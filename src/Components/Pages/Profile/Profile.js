@@ -68,14 +68,14 @@ export default class profile extends Component {
           <div className={classes.root}>
             <Container>
             <Grid item xs={12}>
-                <Typography
-                  className={"MuiTypography--heading"}
-                  variant={"h1"}
-                  fontWeight="bold"
-                  component="h1"
-                  align="center"
-                  style={{ color: "#a9a9a9", margin: "2%" }}
-                >
+            <Typography
+              className={"MuiTypography--heading"}
+              variant={"h3"}
+              fontWeight="bold"
+              component="h3"
+              align="center"
+              style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
+            >
                   {this.state.user.username}'s Profile
                 </Typography>
               </Grid>

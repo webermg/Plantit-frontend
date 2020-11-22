@@ -64,16 +64,18 @@ class MyPlant extends Component {
     return (
       <div>
       <Grid container style={{ padding: 60, background:'#005254'}} className={classes.root}>
-          <Typography
-                    className={"MuiTypography--heading"}
-                    variant={"h4"}
-                    fontWeight="bold"
-                    component="h4"
-                    align="center"
-                    style={{ color: "#a9a9a9" }}
-                >
-                    My Plants
-            </Typography>
+          <Grid item xs={12}>
+            <Typography
+              className={"MuiTypography--heading"}
+              variant={"h3"}
+              fontWeight="bold"
+              component="h4"
+              align="center"
+              style={{ color: "#a9a9a9", marginTop: "0%", marginLeft: "2%" }}
+            >
+              My Plants
+          </Typography>
+          </Grid>
            <Grid item xs={12} mx="auto" style={{margin: '2%'}} >
             <BackButton/>
             </Grid>
