@@ -17,9 +17,15 @@ export default function Skills(props) {
     setOpen(true);
   };
 
+  function refreshPage() {
+    window.location.reload(false);
+  }
+  
   const handleClose = () => {
     setOpen(false);
+    refreshPage();
   };
+
 
   const handleUpdate = (event) => {
     let {value} = event.target
