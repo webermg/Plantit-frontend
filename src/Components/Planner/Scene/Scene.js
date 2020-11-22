@@ -601,7 +601,14 @@ export default function Scene(props) {
                 images.map(img => <Tooltip key={img.id} {...img}/>)
               )}
               {selectedId && (
-                util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
+                <React.Fragment>
+                {util.isPolygon(polygons, selectedId) && <Line
+                  points={util.getOutline(polygons,selectedId)}
+                  stroke="red"
+                  strokeWidth={1}
+                  />  
+                }
+                {util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
                 key={i}
                 x={coords[0]} 
                 y={coords[1]} 
@@ -621,7 +628,9 @@ export default function Scene(props) {
                   const idx = polygons.findIndex(poly=>poly.id===selectedId)
                   handleVertexDragEnd(idx)
                 }}
-                />)
+                />
+                )}
+                </React.Fragment>
               )}
               {guideLines.map((line,i) => {
                 let points = [];
