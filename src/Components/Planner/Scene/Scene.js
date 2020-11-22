@@ -6,9 +6,10 @@ import Konva from "konva";
 import { Stage, Layer, Line, Circle, Rect } from "react-konva";
 
 import PlanGrid from '../PlanGrid/PlanGrid';
-// import sceneStyle from './sceneStyle';
+import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import TabMenu from '../TabMenu/TabMenu'
 import API from '../../../utils/API';
 import util from './util'
@@ -19,7 +20,7 @@ const STAGE_WIDTH = 800;
 const RADIUS = 8;
 
 export default function Scene(props) {
-  // const classes = sceneStyle;
+  const classes = sceneStyle;
 
   const [polygons, _setPolygons] = useState([])
 
@@ -220,7 +221,7 @@ export default function Scene(props) {
   }
 
   const handleStageClick = (e) => {
-    console.log(e.target)
+    console.log(e)
     if (!activeDraw) {
       // console.log(e)
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
@@ -487,10 +488,10 @@ export default function Scene(props) {
   }
 
   return (
-    <Grid container spacing={0} justify='space-around'>
-      
-      <Grid item xs={3}>
-        <Paper>
+    <Grid container spacing={1} justify='space-around'>
+      <Hidden mdDown>
+      <Grid item lg={3} xs={12} className={classes.menu}>
+        <Paper style={{marginTop:35,height:800}}>
           <TabMenu 
             active={activeDraw}
             onDrawClick={handleDrawBtnClick} 
@@ -503,8 +504,9 @@ export default function Scene(props) {
             />
       </Paper>
       </Grid>
+      </Hidden>
       {/* <Paper> */}
-      <Grid item>
+      <Grid item lg={8} xs={12}>
         <Grid container direction='column'>
           <Grid item>
 
@@ -519,8 +521,8 @@ export default function Scene(props) {
             completeDraw={completeDraw}
             />
           </Grid>
-          <Grid item>
-          <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+          <Grid item justify="center">
+          <Stage className={classes.gardenPlanner} ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onTap={handleStageClick} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
             <Layer listening={!options.lockBackground} visible={!options.hideBackground}>
               {polygons.map((item, i) => <Polygon {...item}
                 key={i}
@@ -597,40 +599,40 @@ export default function Scene(props) {
               {hoveredImage && !options.alwaysShowTooltips && (
                 <Tooltip {...hoveredImage}/>
               )}
+                {selectedId && (
+                  <React.Fragment>
+                  {util.isPolygon(polygons, selectedId) && <Line
+                    points={util.getOutline(polygons,selectedId)}
+                    stroke="red"
+                    strokeWidth={1}
+                    />  
+                  }
+                  {util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
+                  key={i}
+                  x={coords[0]} 
+                  y={coords[1]} 
+                  radius={RADIUS} 
+                  fill='white'
+                  stroke='black'
+                  strokeWidth={1}
+                  draggable
+                  onDragStart={e => {
+                    const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                    handleVertexDragStart(idx)
+                  }}
+                  onDragMove={e => {
+                    handleCircleDrag(e, i);
+                  }}
+                  onDragEnd={e => {
+                    const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                    handleVertexDragEnd(idx)
+                  }}
+                  />
+                  )}
+                  </React.Fragment>
+                )}
               {options.alwaysShowTooltips && (
                 images.map(img => <Tooltip key={img.id} {...img}/>)
-              )}
-              {selectedId && (
-                <React.Fragment>
-                {util.isPolygon(polygons, selectedId) && <Line
-                  points={util.getOutline(polygons,selectedId)}
-                  stroke="red"
-                  strokeWidth={1}
-                  />  
-                }
-                {util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
-                key={i}
-                x={coords[0]} 
-                y={coords[1]} 
-                radius={RADIUS} 
-                fill='white'
-                stroke='black'
-                strokeWidth={1}
-                draggable
-                onDragStart={e => {
-                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
-                  handleVertexDragStart(idx)
-                }}
-                onDragMove={e => {
-                  handleCircleDrag(e, i);
-                }}
-                onDragEnd={e => {
-                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
-                  handleVertexDragEnd(idx)
-                }}
-                />
-                )}
-                </React.Fragment>
               )}
               {guideLines.map((line,i) => {
                 let points = [];
@@ -645,6 +647,22 @@ export default function Scene(props) {
             </Layer>
           </Stage>
           </Grid>
+          <Hidden lgUp>
+      <Grid item className={classes.menu}>
+        <Paper style={{marginTop:35}}>
+          <TabMenu 
+            active={activeDraw}
+            onDrawClick={handleDrawBtnClick} 
+            onForegroundClick={handleObjectBtnClick} 
+            myPlants={props.userData.myPlants} 
+            options={options} 
+            onOptionChange={handleOptionsChange}
+            onSnapSliderChange={handleSnapDistSliderChange}
+            onGridSliderChange={handleGridSizeSliderChange}
+            />
+      </Paper>
+      </Grid>
+      </Hidden>
         </Grid>
         </Grid>
       {/* </Paper> */}

@@ -48,14 +48,15 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
-    
+    maxHeight: 800
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
+    // flexGrow:1
   },
   tabPanel: {
     overflow: 'scroll',
-    // width: '70%'
+    flexGrow:1
   }
 }));
 
@@ -77,7 +78,7 @@ export default function TabMenu(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Plots" {...a11yProps(0)} />
+        <Tab label="Plots" {...a11yProps(0)}/>
         <Tab label="Plants" {...a11yProps(1)} />
         <Tab label="Other" {...a11yProps(2)} />
         <Tab label="Options" {...a11yProps(3)} />
