@@ -276,7 +276,7 @@ export default function PlantDet() {
               style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
             >
               Plant Details
-          </Typography>
+            </Typography>
             </Grid>
             <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
               <BackButton />
@@ -289,8 +289,6 @@ export default function PlantDet() {
 
         {/* Plant DetailsCard */}
         <Grid container style={{ background: '#005254', padding: '1%' }}>
-          <Card style={{ background: '#cac5b9' }}>
-
           {/* Plant DetailsCard */}
           <Grid container style={{ background: '#005254', padding: '1%' }}>
             <Card style={{ background: '#cac5b9' }}>
