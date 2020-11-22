@@ -3,6 +3,24 @@ import React from 'react'
 import Scene from '../../Planner/Scene/Scene'
 import API from '../../../utils/API'
 import Typography from '@material-ui/core/Typography';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
 
 
 
@@ -22,6 +40,7 @@ export default function MyGarden() {
     if (userData === null) return <h1>loading...</h1>
 
     return (
+        <MuiThemeProvider theme={theme}>
         <Container fixed disableGutters style={{marginBottom: '20px'}}>
             <Typography
                 className={"MuiTypography--heading"}
@@ -34,7 +53,8 @@ export default function MyGarden() {
                 My Garden
         </Typography>
             <Scene userData={userData} />
-        </Container>)
+        </Container>
+        </MuiThemeProvider>)
 
 
 }
