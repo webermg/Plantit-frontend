@@ -48,7 +48,6 @@ export default function Login(props) {
       localStorage.setItem("id", userLogin.data.userInfo.id)
       API.getUser(userLogin.data.userInfo.id)
       .then (profileData => {
-        console.log(profileData)
         if(profileData) {
           props.setProfileState({
             username: profileData.data.username,
@@ -75,7 +74,6 @@ export default function Login(props) {
         }
       })
     }).catch(err => {
-      console.log(err.response.status)
       if (err.response.status === 403) {
         setErrorState({passwordError: "Your password was incorrect."})
       } else if (err.response.status === 404) {

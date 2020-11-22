@@ -54,7 +54,6 @@ export default class profile extends Component {
       this.props.history.push("/");
     } else if (userID != null) {
       API.getUser(userID).then((result) => {
-        console.log(result.data);
         this.setState({ user: result.data, plants: result.data.myPlants, id: result.data._id });
       });
     }

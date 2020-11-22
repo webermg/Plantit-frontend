@@ -34,10 +34,8 @@ export default function Interests(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     handleClose()
-    console.log(props.id)
     API.updateUserInterests(props.id, interests)
     .then(result => {
-      console.log("interests:", interests.value) 
     })
     handleClose();
   };
