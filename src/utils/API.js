@@ -23,6 +23,9 @@ const API = {
             myGardenImg: data.myGardenImg
         })
     },
+    getGardenImgs: function() {
+        return axios.get(URL_BASE + "api/gardenimgs")
+    },
     updateUserLocation: function (query, data) {
         return axios.put(URL_BASE + "user/" + query + '/location', {
             location: data.value
