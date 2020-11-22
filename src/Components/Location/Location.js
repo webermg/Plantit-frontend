@@ -11,7 +11,6 @@ import API from '../../utils/API';
 export default function Location(props) {
   const [open, setOpen] = useState(false);
   const [location, setLocation] = useState("");
-  const [reset, setReset] = useState(true);
 
   const handleClickOpen = () => {
     setOpen(true);

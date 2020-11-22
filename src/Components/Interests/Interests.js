@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,7 +11,6 @@ import API from '../../utils/API';
 export default function Interests(props) {
   const [open, setOpen] = useState(false);
   const [interests, setInterests] = useState("");
-  const [reset, setReset] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
