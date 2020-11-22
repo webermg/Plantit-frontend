@@ -45,6 +45,14 @@ export default function OptionsPanel(props) {
         control={<Switch value="on" checked={props.gridSnap} onChange={props.onChange} name="gridSnap" />}
         label="Snap to Grid"
       />
+      <FormControlLabel
+        control={<Switch value="on" checked={props.vertexSnap} onChange={props.onChange} name="vertexSnap" />}
+        label="Snap to Vertices"
+      />
+      <FormControlLabel
+        control={<Switch value="on" checked={props.objectSnap} onChange={props.onChange} name="objectSnap" />}
+        label="Snap to Objects"
+      />
       <Typography id="discrete-slider1" gutterBottom>
         Snap Distance
       </Typography>
@@ -58,7 +66,7 @@ export default function OptionsPanel(props) {
         marks
         min={5}
         max={30}
-        disabled={!props.gridSnap}
+        disabled={!props.gridSnap && !props.objectSnap && !props.vertexSnap}
       />
       <Typography id="discrete-slider2" gutterBottom>
         Grid Size
