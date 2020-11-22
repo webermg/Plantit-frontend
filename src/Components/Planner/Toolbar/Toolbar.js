@@ -36,11 +36,11 @@ export default function Toolbar(props) {
           {props.selectedId &&
             (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group" style={{marginRight:30}}>
               <Button color='secondary' startIcon={<DeleteIcon />} style={{marginRight:30}} onClick={() => props.onDelete(props.selectedId)}>Delete</Button>
-              <Button onClick={() => props.toFront(props.selectedId)}>Bring to Front</Button>
-              <Button onClick={() => props.toBack(props.selectedId)}>Send to Back</Button>
+              <Button onClick={() => props.toFront(props.selectedId)} style={{background:'#BB7354'}}>Bring to Front</Button>
+              <Button onClick={() => props.toBack(props.selectedId)} style={{background:'#BB7354'}}>Send to Back</Button>
             </ButtonGroup>)}
             {props.drawing && (<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group" style={{marginRight:30}}>
-              <Button onClick={props.completeDraw}>Complete</Button>
+              <Button onClick={props.completeDraw} style={{background:'#BB7354'}}>Complete</Button>
               <Button color='secondary' onClick={props.cancelDraw}>Discard</Button>
             </ButtonGroup>)}
         </Grid>
@@ -53,7 +53,8 @@ export default function Toolbar(props) {
                 props.onPublish()
                 handleClick()
                 disable(5000)
-              }}>publish</Button>
+              }}
+              style={{background:'#BB7354'}}>publish</Button>
           </ButtonGroup>
         </Grid>
       </Grid>
