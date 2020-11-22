@@ -34,14 +34,16 @@ export default function Scene(props) {
   })
 
   const [mousePos, setMousePos] = useState({
-    mouseX: 0,
-    mouseY: 0
+    mouseX: -1,
+    mouseY: -1
   });
   const [options, setOptions] = useState({ 
     displayGrid: true,
     gridSize: 50,
     snapDist: 20,
     gridSnap: true,
+    vertexSnap: true,
+    objectSnap: true,
     lockBackground: false,
     lockForeground: false,
     hideBackground: false,
@@ -180,10 +182,14 @@ export default function Scene(props) {
     setTemp({points:[]})
     setActiveDraw(null)
   }
-  const completeDraw = () => {
+
+  const completeDraw = (e) => {
+    console.log(e)
     const tempPoints = [...temp.points]
-    tempPoints.pop()
-    tempPoints.pop()
+    if(e.type==="click") {
+      // tempPoints.pop()
+      // tempPoints.pop()
+    }
     setTemp({...temp, points:tempPoints})
     setActiveDraw(null)
   }
@@ -193,7 +199,6 @@ export default function Scene(props) {
   }
 
   const endDragPolygon = (e, index) => {
-    console.log(e)
     const polyPoints = [...polygons[index].points]
     const offsetX = e.target.attrs.x;
     const offsetY = e.target.attrs.y;
@@ -221,23 +226,25 @@ export default function Scene(props) {
   }
 
   const handleStageClick = (e) => {
-    console.log(e)
     if (!activeDraw) {
       if (e.target instanceof Konva.Line || e.target instanceof Konva.Image) return
       selectShape(null)
     }
     else {
 
-      const x = e.evt.layerX
-      const y = e.evt.layerY
+      const x = e.evt.layerX ? e.evt.layerX : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
+      const y = e.evt.layerY ? e.evt.layerY : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
+      const touching = !e.evt.layerX
       const coords = [...temp.points]
       let distToFirst = 1000
       if (temp.points && temp.points.length > 2) {
         distToFirst = (x - coords[0]) ** 2 + (y - coords[1]) ** 2
       }
-      if (distToFirst <= options.snapDist**2) {
-        coords.pop()
-        coords.pop()
+      if (distToFirst <= 25**2) {
+        if(!touching) {
+          // coords.pop()
+          // coords.pop()
+        }
         setTemp({ ...temp, points: coords });
         setActiveDraw(null)
       }
@@ -269,6 +276,11 @@ export default function Scene(props) {
     selectShape(null)
     setPolygons(polys)
     setImages(imagesRef.current.filter(item => item.id !== id))
+  }
+
+  const clearAll = () => {
+    setPolygons([])
+    setImages([])
   }
 
   const bringToFront = id => {
@@ -332,13 +344,13 @@ export default function Scene(props) {
   }
 
   const handleCircleDrag = (e, circle) => {
-    const mouseX = e.evt.layerX
-    const mouseY = e.evt.layerY
+    const mouseX = e.evt.layerX ? e.evt.layerX : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
+    const mouseY = e.evt.layerY ? e.evt.layerY : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
     const newPoints = [...temp.points];
     //check vertex snap
     //if no vertex snap then check grid snap
-    let pos = util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId);
-    if(pos[0] === mouseX && pos[1] === mouseY) pos = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
+    let pos = options.vertexSnap ? util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId) : [mouseX,mouseY];
+    if(pos[0] === mouseX && pos[1] === mouseY && options.gridSnap) pos = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
     newPoints[2 * circle] = pos[0];
     newPoints[2 * circle + 1] = pos[1];
     const absPos = e.target.absolutePosition()
@@ -366,24 +378,22 @@ export default function Scene(props) {
     }
     stageRef.current.container().style.cursor='crosshair'
     const tempCopy = [...temp.points]
-    if (tempCopy.length >= 2) {
-      tempCopy.pop();
-      tempCopy.pop();
-    }
-    // console.log(tempCopy.points)
-
+    // if (tempCopy.length >= 2) {
+    //   tempCopy.pop();
+    //   tempCopy.pop();
+    // }
+    
     let distToFirst = 1000;
     let xFirst, yFirst
     if (tempCopy.length >= 6) {
       xFirst = temp.points[0]
       yFirst = temp.points[1]
       distToFirst = (xFirst - coords[0]) ** 2 + (yFirst - coords[1]) ** 2
-      // console.log(distToFirst)
     }
 
     if (distToFirst <= 400) {
-      tempCopy.push(xFirst)
-      tempCopy.push(yFirst)
+      // tempCopy.push(xFirst)
+      // tempCopy.push(yFirst)
       setMousePos({
         mouseX: xFirst,
         mouseY: yFirst
@@ -395,23 +405,24 @@ export default function Scene(props) {
       pos = util.checkVertexSnap(coords[0],coords[1],options.snapDist, polygons)
       //if no vertex snap check grid snap
       if(coords[0] === pos[0] && coords[1] === pos[1]) pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
-      // console.log(pos)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
       })
-      tempCopy.push(pos[0])
-      tempCopy.push(pos[1])
+      // tempCopy.push(pos[0])
+      // tempCopy.push(pos[1])
     }
     setTemp({ ...temp, points: tempCopy });
   }
 
   const handleObjectBtnClick = data => {
+    const width = data.w ? data.w : 50;
+    const height = data.h ? data.h : 50;
     const newObj = {
       x: 100,
       y: 100,
-      width: 50,
-      height: 50,
+      width: width,
+      height: height,
       src: data.src,
       tooltip_text: data.text,
       id: Date.now() + Math.random(),
@@ -422,6 +433,7 @@ export default function Scene(props) {
   }
 
   const handleObjectDrag = e => {
+    if(!options.objectSnap) return
     const shapes = stageRef.current.find('Image')
     const thisShape = shapes.filter(image => image.attrs.id === e.target.attrs.id)[0];
 
@@ -429,9 +441,6 @@ export default function Scene(props) {
     const itemBounds = util.getObjectSnappingEdges(thisShape);
     const guides = util.getGuides(lineGuideStops, itemBounds, options.snapDist);
     if(guides.length === 0) return;
-    // console.log(thisObj.x + " " + thisObj.y)
-    // console.log(lineGuideStops)
-    // console.log(itemBounds)
     let absPos = e.target.absolutePosition();
     guides.forEach((lg) => {
       switch (lg.snap) {
@@ -503,6 +512,7 @@ export default function Scene(props) {
             onOptionChange={handleOptionsChange}
             onSnapSliderChange={handleSnapDistSliderChange}
             onGridSliderChange={handleGridSizeSliderChange}
+            clearAll={clearAll}
             />
       </Paper>
       </Grid>
@@ -528,7 +538,7 @@ export default function Scene(props) {
             ref={stageRef} 
             height={STAGE_HEIGHT} 
             width={STAGE_WIDTH} 
-            onTap={handleStageClick} 
+            onTouchStart={handleStageClick} 
             onClick={handleStageClick} 
             onMouseMove={handleMouseMove} 
             style={{ display: 'inline-block', background: '#DDDDDD' }}>
@@ -540,6 +550,7 @@ export default function Scene(props) {
                 vertexDragStart={handleVertexDragStart}
                 vertexDragEnd={handleVertexDragEnd}
                 onSelect={() => {
+                  if(activeDraw) return
                   selectShape(item.id)
                 }}
                 // onClick={e => handleClick(e, i)}
@@ -559,6 +570,7 @@ export default function Scene(props) {
                     shapeProps={img}
                     isSelected={img.id === selectedId}
                     onSelect={() => {
+                      if(activeDraw) return
                       selectShape(img.id);
                     }}
                     onChange={(newAttrs) => {
@@ -576,9 +588,11 @@ export default function Scene(props) {
             </Layer>
               {options.displayGrid && <PlanGrid gridSize={options.gridSize} height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
             <Layer>
-              {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
+              {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} fill='#CCCCCC'/>}
+              {mousePos.mouseX>=0 && mousePos.mouseY>=0 && activeDraw && temp.points.length>0 && <Line points={[temp.points[0],temp.points[1],mousePos.mouseX,mousePos.mouseY]} stroke='black' strokeWidth={2} />}
+              {mousePos.mouseX>=0 && mousePos.mouseY>=0 &&  activeDraw && temp.points.length>0 && <Line points={[mousePos.mouseX,mousePos.mouseY,temp.points[temp.points.length-2],temp.points[temp.points.length-1]]} stroke='black' strokeWidth={2} />}
               {activeDraw && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
-              {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
+              {temp.points && temp.points.length > 2 && temp.points[0] === mousePos.mouseX && temp.points[1] === mousePos.mouseY && <Circle
                 x={temp.points[0]}
                 y={temp.points[1]}
                 radius={8}
@@ -674,6 +688,7 @@ export default function Scene(props) {
             onOptionChange={handleOptionsChange}
             onSnapSliderChange={handleSnapDistSliderChange}
             onGridSliderChange={handleGridSizeSliderChange}
+            clearAll={clearAll}
             />
       </Paper>
       </Grid>
