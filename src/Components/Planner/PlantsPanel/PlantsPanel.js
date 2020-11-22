@@ -18,7 +18,7 @@ export default function PlantsPanel(props) {
         <Button
         color='primary'
         size='small'
-        onClick={()=>console.log("clicked")}
+        onClick={()=>console.log("")}
         style={{width:'10%'}}>
             <Link target={"_blank"} to={'plant/'+plant.slug}><HelpOutline/></Link>
         </Button>

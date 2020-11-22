@@ -111,7 +111,6 @@ export default function Signup(props) {
 
         })
         .catch(err => {
-          console.log(err)
           if (err.response.status === 422) {
             setErrorState({emailError: "A user with this e-mail already exists."})
           } else if (err.response.status === 403) {

@@ -1,16 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../utils/API';
 import PlantSearchCard from '../PlantSearchCard/PlantSearchCard';
-import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { makeStyles } from '@material-ui/core/styles';
-import { Hidden } from "@material-ui/core";
-import { Redirect, useHistory } from 'react-router-dom';
-import Axios from 'axios';
-import { result } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import TokenExpiry from '../../utils/TokenExpiry';
 import _ from 'lodash'
@@ -100,10 +93,11 @@ export default function Results(props) {
 
 
       Promise.all([databasePromise, treflePromise, userPromise]).then(result => {
-        console.log(result)
         filterTrefle(databasePromise, treflePromise, userPromise)
-      }, err => console.log(err)).catch(err => {
-        console.log(err)
+      }, err => {
+        throw err;
+      }).catch(err => {
+        throw err;
       })
     }
   }, [props.submittedSearch, page])
@@ -132,7 +126,7 @@ export default function Results(props) {
             }
             setPlantsInDatabase(databaseData)
           }, err => {
-            console.log(err)
+            throw err;
           })
         }
       })
@@ -143,18 +137,19 @@ export default function Results(props) {
   function addFavorite(slug, plantId, userId, token) {
     if (plantId) {
       API.favoritePlant(plantId, userId)
-        .then(result => {
-          console.log(result)
-        },
-          err => console.log(err))
+        .catch(err => {
+          throw err;
+        })
     } else {
       API.getNewPlant(slug, token)
         .then(result => {
           API.favoritePlant(result.data._id, userId)
-            .then(result => {
-              console.log(result)
+            .catch(err => {
+              throw err;
             })
-        }, err => console.log(err))
+        }, err => {
+          throw err;
+        })
 
     }
 
@@ -163,9 +158,10 @@ export default function Results(props) {
   const newPlantInDatabase = function (slug, token) {
     API.getNewPlant(slug, token)
       .then(result => {
-        console.log(result)
         history.push("/plant/" + result.data.slug)
-      }, err => console.log(err))
+      }, err => {
+        throw err;
+      })
   }
 
   const classes = useStyles();

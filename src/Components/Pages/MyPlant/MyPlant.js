@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import RecentCard from "../../Recent/Recent";
-import plants from "../../../plantArray.json";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
-import { Redirect, useHistory } from 'react-router-dom';
-import { HistoryOutlined } from "@material-ui/icons";
 import BackButton from "../../BackButton/BackButton";
 
 const useStyles = makeStyles(() => ({
@@ -40,7 +34,7 @@ class MyPlant extends Component {
           this.setState({plants: result.data})
         }
     }).catch(err => {
-      console.log(err)
+      throw err
     })}}
 
 
@@ -63,7 +57,7 @@ class MyPlant extends Component {
     } 
     return (
       <div>
-      <Grid container style={{ padding: 60, background:'#005254'}} className={classes.root}>
+      <Grid container style={{ padding: 60, background:'#005254', paddingTop:"2%"}} className={classes.root}>
           <Grid item xs={12}>
             <Typography
               className={"MuiTypography--heading"}
@@ -87,14 +81,13 @@ class MyPlant extends Component {
             style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
           />
           {this.state.plants.map((plant) => (
-            <Grid item xs>
+            <Grid item xs key={plant.slug}>
               <RecentCard
                removePlant = {this.removePlant}
+               key = {plant.slug}
                 _id={plant._id}
                 common_name={plant.common_name}
                 slug={plant.slug}
-                // wateringMin={plant.watering[0]}
-                // wateringMax={plant.watering[1]}
                 image_url={plant.image_url}
                 isMyPlant= {true}
               />

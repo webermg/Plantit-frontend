@@ -163,8 +163,8 @@ export default function Scene(props) {
     API.updateUserGardenImg(props.userData._id, {
       myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.5})
     })
-    .then(res => console.log("published"))
-    .catch(err => console.log("error"))
+    .then(res => console.log(""))
+    .catch(err => {throw err})
   }
 
   const processLoadedData = (str) => {

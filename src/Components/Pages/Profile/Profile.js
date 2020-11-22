@@ -158,9 +158,10 @@ export default class profile extends Component {
                 <Grid item>
                   <Grid container spacing={2}>
                     {this.state.plants.map((plant) => (
-                      <Grid item xs>
+                      <Grid item xs key={plant.slug}>
                         <RecentCard
                           _id={plant._id}
+                          key={plant.slug}
                           common_name={plant.common_name}
                           slug={plant.slug}
                           image_url={plant.image_url}

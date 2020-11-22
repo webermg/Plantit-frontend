@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import '../Home/Home.css';
 import Search from "../../Search/Search";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import RecentCard from '../../Recent/Recent';
-import plants from "../../../plantArray.json";
 import Hidden from '@material-ui/core/Hidden';
 import Results from '../../Results/Results';
 import API from '../../../utils/API';
@@ -64,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 class Home extends Component {
     state = {
-        plants,
+        plants: [],
         searchValue: "",
         submittedSearch: "",
         seachedPlants: [],
