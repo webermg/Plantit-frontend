@@ -82,7 +82,6 @@ export default function About() {
                         <Typography
                             className={"MuiTypography--subheading"}
                             variant="subtitle1"
-                            component="subtitle1"
                             align="center"
                             style={{ color: "#a9a9a9" }}
                         >

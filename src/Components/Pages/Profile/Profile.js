@@ -81,8 +81,8 @@ export default class profile extends Component {
               </Grid>
             </Container>
             <Container>
-              <Typography style={{ color: "#a9a9a9", margin: "2%" }}>
-                <h2>My Garden:</h2>
+              <Typography variant="h2" style={{ color: "#a9a9a9", margin: "2%" }}>
+                My Garden:
               </Typography>
               <Grid container>
                 <Grid item xs={8}>
@@ -109,14 +109,17 @@ export default class profile extends Component {
               </Grid>
             </Container>
             <Container spacing={5}>
-            <Typography style={{ color: "#a9a9a9", margin: "2%" }}>
-                <h2>My Plants:</h2>
+            <Typography 
+            variant = "h2"
+            style={{ color: "#a9a9a9", margin: "2%" }}>
+                My Plants:
               </Typography>
               <Grid container spacing={2}>
                 {this.state.plants.map((plant) => (
-                  <Grid item xs={3}>
+                  <Grid item xs={3} key={plant.slug}>
                     <RecentCard
                       _id={plant._id}
+                      key={plant.slug}
                       common_name={plant.common_name}
                       slug={plant.slug}
                       image_url={plant.image_url}

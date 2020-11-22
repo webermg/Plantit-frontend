@@ -36,7 +36,7 @@ export default function Skills(props) {
     event.preventDefault();
     API.updateUserSkills(props.id, skills)
     .then(result => {
-      console.log(result) 
+      console.log("") 
     })
     handleClose();
   };

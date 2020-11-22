@@ -24,7 +24,7 @@ export default function Gallery() {
   const [gardens, setGardens] = React.useState(null)
 
   React.useEffect(() => {
-    API.getGardenImgs().then(res => setGardens(res.data.filter(garden=>garden.myGardenImg!==""))).catch(err => console.log(err))
+    API.getGardenImgs().then(res => setGardens(res.data.filter(garden=>garden.myGardenImg!==""))).catch(err => {throw err})
     
   }, [])
 

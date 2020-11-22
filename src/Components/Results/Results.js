@@ -100,10 +100,10 @@ export default function Results(props) {
 
 
       Promise.all([databasePromise, treflePromise, userPromise]).then(result => {
-        console.log(result)
         filterTrefle(databasePromise, treflePromise, userPromise)
-      }, err => console.log(err)).catch(err => {
-        console.log(err)
+      }, err => err)
+      .catch(err => {
+        throw err;
       })
     }
   }, [props.submittedSearch, page])
@@ -132,7 +132,7 @@ export default function Results(props) {
             }
             setPlantsInDatabase(databaseData)
           }, err => {
-            console.log(err)
+            throw err;
           })
         }
       })
@@ -143,18 +143,16 @@ export default function Results(props) {
   function addFavorite(slug, plantId, userId, token) {
     if (plantId) {
       API.favoritePlant(plantId, userId)
-        .then(result => {
-          console.log(result)
-        },
-          err => console.log(err))
+        .catch(err => {
+          throw err;
+        })
     } else {
       API.getNewPlant(slug, token)
         .then(result => {
           API.favoritePlant(result.data._id, userId)
-            .then(result => {
-              console.log(result)
-            })
-        }, err => console.log(err))
+        }, err => {
+          throw err;
+        })
 
     }
 
@@ -163,9 +161,10 @@ export default function Results(props) {
   const newPlantInDatabase = function (slug, token) {
     API.getNewPlant(slug, token)
       .then(result => {
-        console.log(result)
         history.push("/plant/" + result.data.slug)
-      }, err => console.log(err))
+      }, err => {
+        throw err;
+      })
   }
 
   const classes = useStyles();

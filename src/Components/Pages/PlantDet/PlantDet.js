@@ -183,7 +183,9 @@ export default function PlantDet() {
             })
 
         }
-      }).catch(err => console.log(err))
+      }).catch(err => {
+        throw err;
+      })
 
   }, [reset])
 
@@ -193,7 +195,9 @@ export default function PlantDet() {
       .then(result => {
         setIsFavorite(true)
       },
-        err => console.log(err))
+        err => {
+          throw err
+        })
   }
 
   const handleCommentChange = (event) => {
@@ -244,7 +248,6 @@ export default function PlantDet() {
   const newComment = function () {
     API.makeComment(plantDetails._id, localStorage.getItem("id"), value)
       .then(result => {
-        console.log(result)
         setValue("")
         setReset(!reset)
       })
