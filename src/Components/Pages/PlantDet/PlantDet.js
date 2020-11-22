@@ -287,10 +287,6 @@ export default function PlantDet() {
           </Grid>
         </Grid>
 
-        {/* Plant DetailsCard */}
-        <Grid container style={{ background: '#005254', padding: '1%' }}>
-          <Card style={{ background: '#cac5b9' }}>
-
           {/* Plant DetailsCard */}
           <Grid container style={{ background: '#005254', padding: '1%' }}>
             <Card style={{ background: '#cac5b9' }}>
@@ -783,7 +779,6 @@ export default function PlantDet() {
               </div>
 
             </Card>
-          </Grid >
         </Grid >
       </React.Fragment >
     </MuiThemeProvider>
