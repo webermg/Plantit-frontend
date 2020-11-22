@@ -75,7 +75,7 @@ export default function Search(props) {
              <TextField
              id="outlined-basic" 
              background="white"
-             color="primary.dark"
+             color="primary"
              label="Search for a plant!" 
              variant="outlined" 
              name="searchValue"

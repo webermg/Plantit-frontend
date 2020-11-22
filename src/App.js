@@ -9,6 +9,7 @@ import PlantDet from '../src/Components/Pages/PlantDet/PlantDet';
 import Results from './Components/Results/Results';
 import Profile from '../src/Components/Pages/Profile/Profile';
 import About from './Components/Pages/About/About';
+import Gallery from './Components/Pages/Gallery/Gallery';
 
 
 
@@ -28,6 +29,7 @@ function App() {
       <Route exact path="/plant/:slug" component={PlantDet}/>
       <Route exact path="/plantsearch" component={Results}/>
       <Route exact path="/profile" component={Profile}/>
+      <Route exact path="/gallery" component={Gallery}/>
     </Router>
   );
 }
