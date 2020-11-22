@@ -121,7 +121,7 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        Caitlin served as Project Manger and worked primarily on
+                        Caitlin served as Project Manager and worked primarily on
                         the frontend build with React and Material UI. It was
                         incredible working with such a dedicated team!
                       </Typography>
@@ -178,7 +178,7 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        Janelle primary focused on the frontend working with
+                        Janelle primarily focused on the frontend working with
                         React and Material-Ui. It was a blast to combine a love
                         of coding and gardens!
                       </Typography>
@@ -347,8 +347,7 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        We are going to learn different kinds of species in
-                        nature that live together to form amazing environment.
+                        Matt worked on the front end with React and Konva and utilized his engineering tool experience as the primary developer of the garden planner tool.
                       </Typography>
                       <Divider className={"MuiDivider-root"} light />
                       <Button
