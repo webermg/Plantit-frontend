@@ -33,15 +33,15 @@ export default function Gallery() {
   return (
     <Container style={{ marginBottom: '20px' }}>
       <Typography
-        className={"MuiTypography--heading"}
-        variant={"h4"}
-        fontWeight="bold"
-        component="h4"
-        align="center"
-        style={{ color: "#a9a9a9", margin: "2%" }}
-      >
-        Gallery
-        </Typography>
+              className={"MuiTypography--heading"}
+              variant={"h3"}
+              fontWeight="bold"
+              component="h4"
+              align="center"
+              style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
+            >
+              Gallery
+          </Typography>
       <Grid container spacing={1} justify='space-evenly'>
       {gardens.map((garden,i) =>
         <Grid key={i} item xs={12} sm={6} md={4}>

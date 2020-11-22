@@ -224,7 +224,7 @@ export default function PlantDet() {
       <Grid container style={{ background: '#005254' }}>
         <Typography
           className={"MuiTypography--heading"}
-          variant={"h4"}
+          variant={"h3"}
           fontWeight="bold"
           component="h4"
           align="center"
@@ -250,9 +250,10 @@ export default function PlantDet() {
           <Grid item xs={12}>
             <Typography
               className={"MuiTypography--heading"}
-              variant={"h4"}
+              variant={"h3"}
               fontWeight="bold"
-              component="h4"
+              component="h1"
+              align="center"
               style={{ color: "#a9a9a9", marginTop: "2%", marginLeft: "2%" }}
             >
               Plant Details
@@ -310,7 +311,7 @@ export default function PlantDet() {
                   </Typography>
 
                   <Typography gutterBottom variant="h5" component="h2">
-                    Form: {update.growth_habit} {update ? <TextField
+                    Form: {update ? <TextField
                       id="outlined-static"
                       style={{ margin: 8, background: "white" }}
                       name="growth_habit"
@@ -411,7 +412,7 @@ export default function PlantDet() {
                           }}
                           onChange={handleUpdateChange}
                         />
-                      </React.Fragment> : (plantDetails.watering_min + "-" + plantDetails.watering_max + "mm")}
+                      </React.Fragment> : (plantDetails.watering_min + " - " + plantDetails.watering_max + " mm")}
                     </Typography>
                   </Grid>
 
@@ -450,7 +451,7 @@ export default function PlantDet() {
                           }}
                           onChange={handleUpdateChange}
                         />
-                      </React.Fragment> : (plantDetails.temperature_min + "-" + plantDetails.temperature_max + " °F")}
+                      </React.Fragment> : (plantDetails.temperature_min + " - " + plantDetails.temperature_max + " °F")}
                     </Typography>
                   </Grid>
 
@@ -568,9 +569,9 @@ export default function PlantDet() {
                               }}
                               onChange={handleUpdateChange}
                             />
-                          </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
+                          </React.Fragment> : (plantDetails.ph_min + " - " + plantDetails.ph_max)}</li>
 
-                          <li> Soil Nutriments: {update ?
+                          <li> Soil Nutriments (low to high): {update ?
                             <Slider
                               aria-labelledby="discrete-slider"
                               key={`slider-${update.soil_nutriments}`}
@@ -595,7 +596,7 @@ export default function PlantDet() {
                               disabled
                             />} </li>
 
-                          <li> Soil texture: {update ?
+                          <li> Soil texture (low to high): {update ?
                             <Slider
                               aria-labelledby="discrete-slider"
                               valueLabelDisplay="auto"
@@ -642,7 +643,7 @@ export default function PlantDet() {
             </Grid>
 
             {/* Submit button */}
-            <Grid container>
+            {update ? <Grid container>
               <Grid item xs={12} s={6}>
                 <CardContent style={{ marginLeft: "5vh" }}>
                   <Grid item style={{justifyContent:'center'}}>
@@ -652,7 +653,8 @@ export default function PlantDet() {
                   </Grid>
                 </CardContent>
               </Grid>
-            </Grid>
+            </Grid> : null }
+
 
             {/* Comment Section */}
             <div>
