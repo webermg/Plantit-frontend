@@ -235,8 +235,9 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        We are going to learn different kinds of species in
-                        nature that live together to form amazing environment.
+                        Ann primarily focused the database, manipulating it and
+                        connecting it to the page. It was wonderful to learn more
+                        about botany!
                       </Typography>
                       <Divider className={"MuiDivider-root"} light />
                       <Button
