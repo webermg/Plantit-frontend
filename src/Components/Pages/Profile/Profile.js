@@ -37,13 +37,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const passProps = () => {
-//   return (
-//     <Location setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>
-
-//   )
-// }
-
 export default class profile extends Component {
   state = {
     id: "",
@@ -75,7 +68,7 @@ export default class profile extends Component {
           <CssBaseline />
           <div className={classes.root}>
             <Container>
-              <Grid item xs={12}>
+            <Grid item xs={12}>
                 <Typography
                   className={"MuiTypography--heading"}
                   variant={"h1"}
@@ -101,14 +94,17 @@ export default class profile extends Component {
                 </Grid>
                 <Grid item xs={4} style={{ background: "#cac5b9" }}>
                   <h3 >
-                    City, State, and/or Country: {this.state.user.location}
+                    City, State, and/or Country: 
                   </h3>
+                  <p>{this.state.user.location}</p>
                   <Location id={this.state.id}/>
     
-                  <h3>Gardening Interests: {this.state.user.interests}</h3>
+                  <h3>Gardening Interests: </h3>
+                  <p>{this.state.user.interests}</p>
                   <Interests id={this.state.id}/>
 
-                  <h3>Gardening Skills: {this.state.user.skills}</h3>
+                  <h3>Gardening Skills:</h3>
+                  <p>{this.state.user.skills}</p>
                   <Skills id={this.state.id}/>
                 </Grid>
               </Grid>
@@ -130,6 +126,7 @@ export default class profile extends Component {
                 ))}
               </Grid>
             </Container>
+          
           </div>
         </React.Fragment>
       </MuiThemeProvider>
