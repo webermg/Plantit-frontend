@@ -12,6 +12,7 @@ import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import FormControl from '@material-ui/core/FormControl'
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
+import Card from '@material-ui/core/Card'
 
 let theme = createMuiTheme({
     palette: {
@@ -45,6 +46,17 @@ const useStyles = makeStyles({
     button: {
         margin:25,
       },
+    img: {
+        [theme.breakpoints.down('sm')]: {
+            minHeight: '100vh',
+            minWidth: '30%'
+          },
+        [theme.breakpoints.up('md')]: {
+            height: 750
+          },
+        flexGrow: 1
+
+    }
 });
 
 export default function Hero (props) {
@@ -57,15 +69,16 @@ export default function Hero (props) {
     return (
         <React.Fragment>
             <MuiThemeProvider theme={theme}>
-            < Grid container className={classes.root} align="center">
-                <Grid item
+            < Grid container align="center">
+                <Grid item xs={12}>
+                <Card
                     className={classes.img}
                     mx="auto"
                     style={{
-                        backgroundSize: 'contain',
+                        backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
-                        height:750,
-                        width:'100%',
+                        backgroundPosition: 'center',
+                        color: 'white',
                         title:"hand holding a plant",
                         backgroundImage: 'url("https://res.cloudinary.com/dbd23cfw2/image/upload/v1605767404/project%203/hero-image_rjjksh.jpg")'
                     }}>
@@ -128,6 +141,7 @@ export default function Hero (props) {
 
                     </form>
                     </ThemeProvider>
+                    </Card>
                 </Grid>
             </Grid>
             </MuiThemeProvider>
