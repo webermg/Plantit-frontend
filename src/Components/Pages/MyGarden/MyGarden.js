@@ -24,7 +24,7 @@ export default function MyGarden() {
     if (userData === null) return <h1>loading...</h1>
 
     return (
-        <Container style={{marginBottom: '20px'}}>
+        <Container fixed disableGutters style={{marginBottom: '20px'}}>
             <Typography
                 className={"MuiTypography--heading"}
                 variant={"h3"}
