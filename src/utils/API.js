@@ -16,7 +16,26 @@ const API = {
     updateUserGarden: function (query, data) {
         return axios.put(URL_BASE + "user/" + query + '/garden', {
             myGarden: data.myGarden,
+        })
+    },
+    updateUserGardenImg: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/gardenimg', {
             myGardenImg: data.myGardenImg
+        })
+    },
+    updateUserLocation: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/location', {
+            location: data.value
+        })
+    },
+    updateUserInterests: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/interests', {
+            interests: data.value
+        })
+    },
+    updateUserSkills: function (query, data) {
+        return axios.put(URL_BASE + "user/" + query + '/skills', {
+            skills: data.value
         })
     },
     deleteMyPlant: function (data) {
@@ -61,16 +80,18 @@ const API = {
         })
     },
 
+    
     editComment : function (commentId,commentUpdate) {
         return axios.put(URL_BASE + "comment/edit", {
             commentId,
             commentUpdate
         })
     },
-
+    
     deleteComment : function(commentId) {
         return axios.delete(URL_BASE+"comment/delete/"+commentId)
     },
+    
 
     getMyPlants: function (userId) {
         return axios.get(URL_BASE + "myplants/" + userId)

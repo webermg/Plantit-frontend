@@ -37,15 +37,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const passProps = () => {
-//   return (
-//     <Location setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>
-
-//   )
-// }
-
 export default class profile extends Component {
   state = {
+    id: "",
     user: "",
     plants: [],
     location: "",
@@ -53,12 +47,6 @@ export default class profile extends Component {
     interests: [],
   };
 
-  handleInputChange = (event) => {
-    let { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
   componentDidMount() {
     const userID = localStorage.getItem("id");
 
@@ -67,17 +55,10 @@ export default class profile extends Component {
     } else if (userID != null) {
       API.getUser(userID).then((result) => {
         console.log(result.data);
-        this.setState({ user: result.data, plants: result.data.myPlants });
+        this.setState({ user: result.data, plants: result.data.myPlants, id: result.data._id });
       });
     }
   }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    API.myLocation().then((res) => {
-      console.log("Results of submit location:", res);
-      this.setState({ location: res.data });
-    });
-  };
 
   render() {
     const classes = useStyles;
@@ -87,7 +68,7 @@ export default class profile extends Component {
           <CssBaseline />
           <div className={classes.root}>
             <Container>
-              <Grid item xs={12}>
+            <Grid item xs={12}>
                 <Typography
                   className={"MuiTypography--heading"}
                   variant={"h1"}
@@ -113,15 +94,18 @@ export default class profile extends Component {
                 </Grid>
                 <Grid item xs={4} style={{ background: "#cac5b9" }}>
                   <h3 >
-                    City, State, and/or Country: {this.state.user.location}
+                    City, State, and/or Country: 
                   </h3>
-                  <Location/>
+                  <p>{this.state.user.location}</p>
+                  <Location id={this.state.id}/>
     
-                  <h3>Gardening Interests: {this.state.user.interests}</h3>
-                  <Interests/>
+                  <h3>Gardening Interests: </h3>
+                  <p>{this.state.user.interests}</p>
+                  <Interests id={this.state.id}/>
 
-                  <h3>Gardening Skills: {this.state.user.skills}</h3>
-                  <Skills/>
+                  <h3>Gardening Skills:</h3>
+                  <p>{this.state.user.skills}</p>
+                  <Skills id={this.state.id}/>
                 </Grid>
               </Grid>
             </Container>
@@ -142,6 +126,7 @@ export default class profile extends Component {
                 ))}
               </Grid>
             </Container>
+          
           </div>
         </React.Fragment>
       </MuiThemeProvider>

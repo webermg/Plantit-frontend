@@ -8,7 +8,28 @@ import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { Hidden } from "@material-ui/core";
+import { createMuiTheme, useTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,22 +38,19 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
   root: {
-    display: 'flex',
-    flexWrap: 'wrap'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: '25ch',
+    
   },
   input: {
-    background: 'white'
-},
+    backgroundColor: 'transparent',
+    color: '614051' },
   button: {
     margin: theme.spacing(1),
     float: "right",
     position: "relative",
-    backgroundColor: "#b1bb78"
   }
 }));
 
@@ -40,21 +58,46 @@ export default function Search(props) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
+       <MuiThemeProvider theme={theme}>
       <form onSubmit={ props.handleFormSubmit} noValidate autoComplete="off">
-        <FormControl className={classes.formControl} >
-          <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" p={1} m={1}>
-            <Box p={1} flexShrink={1}>
-            <TextField 
-              id="outlined-basic" 
-              background="white"
-              label="Plant?" 
-              variant="outlined" 
-              name="searchValue"
-              InputProps={{
-                className: classes.input}}
-              value={props.state.searchValue}
-              onChange={props.handleInputChange}
-              />
+        {/* <FormControl className={classes.formControl} > */}
+        <Paper style={{backgroundColor: fade('#fff', 0.7)}}>
+        
+          < Grid container className={classes.root} align="center">
+            
+            <Grid item xs={12}>
+              
+            <Box display="flex" flexDirection="row" flexWrap="wrap" alignContent="flex-start" justifyContent="center" p={1} m={1}>
+            <Typography variant= 'h5' component= 'h2' style= {{ margin: "0em", padding: "10px", textAlign: 'center' }}>
+                 Search for a plant to begin your gardening journey!
+              </Typography>
+
+             <TextField
+             id="outlined-basic" 
+             background="white"
+             color="primary.dark"
+             label="Search for a plant!" 
+             variant="outlined" 
+             name="searchValue"
+             style={{ margin: 8, width: '75%'}}
+             InputProps={{
+               className: classes.input}}
+             value={props.state.searchValue}
+             onChange={props.handleInputChange}
+             />
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                className={classes.button}
+                endIcon={<LocalFloristIcon />}
+                onClick={props.handleFormSubmit}
+              ><Hidden only="xs">Search</Hidden>
+              </Button>
+              </Box>
+            
+            </Grid>
+           
               
               {/* <Autocomplete
                 id="combo-box-demo"
@@ -67,22 +110,13 @@ export default function Search(props) {
                 value={props.state.searchValue}
                 />} */}
               {/* /> */}
-            </Box>
-            <Box p={1} flexShrink={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                endIcon={<LocalFloristIcon />}
-                onClick={props.handleFormSubmit}
-              ><Hidden only="xs">
-                  Search
-                </Hidden>
-              </Button>
-            </Box>
-          </Box>
-        </FormControl>
+             
+              </Grid>
+              </Paper>
+       
+        {/* </FormControl> */}
       </form>
+      </MuiThemeProvider>
     </div>
    
   );

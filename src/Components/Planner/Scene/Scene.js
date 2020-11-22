@@ -3,23 +3,23 @@ import Polygon from '../Polygon/Polygon'
 import PlanImage from '../PlanImage/PlanImage'
 import Tooltip from '../Tooltip/Tooltip'
 import Konva from "konva";
-import { Stage, Layer, Line, Circle, Transformer, Rect } from "react-konva";
-import _ from "lodash";
+import { Stage, Layer, Line, Circle, Rect } from "react-konva";
+
 import PlanGrid from '../PlanGrid/PlanGrid';
-import sceneStyle from './sceneStyle';
+// import sceneStyle from './sceneStyle';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import TabMenu from '../TabMenu/TabMenu'
-import useDidMountEffect from '../Hooks/useDidMountEffect';
 import API from '../../../utils/API';
 import util from './util'
+import Toolbar from '../Toolbar/Toolbar';
 
 const STAGE_HEIGHT = 800;
 const STAGE_WIDTH = 800;
-const RADIUS = 6;
+const RADIUS = 8;
 
 export default function Scene(props) {
-  const classes = sceneStyle;
+  // const classes = sceneStyle;
 
   const [polygons, _setPolygons] = useState([])
 
@@ -45,6 +45,9 @@ export default function Scene(props) {
     gridSnap: true,
     lockBackground: false,
     lockForeground: false,
+    hideBackground: false,
+    hideForeground: false,
+    alwaysShowTooltips: false
   })
   
   //refs
@@ -95,13 +98,15 @@ export default function Scene(props) {
         console.log(temp.points)
         const toAdd = { ...temp }
         toAdd.id = Date.now() + Math.random();
+        toAdd.x=0;
+        toAdd.y=0;
         console.log(toAdd)
         const polys = getPolygons()
         polys.push(toAdd);
         setPolygons(polys);
         // setTemp({})
       }
-      setTemp({})
+      setTemp({points:[]})
     }
     //test temp for completeness
     //if complete then add
@@ -144,19 +149,24 @@ export default function Scene(props) {
       images: images,
       options: options
     }
-    const id = selectedId
-    // selectShape(null)
+    
     API.updateUserGarden(props.userData._id, {
       myGarden:JSON.stringify(data),
-      myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.1})
     }).then(res=>{
-      selectShape(id)
       console.log("saved")});
   }
 
   const loadFromUser = () => {
     let dataStr = props.userData.myGarden;
     if(dataStr !== null) processLoadedData(dataStr)
+  }
+
+  const publishGardenImg = () => {
+    API.updateUserGardenImg(props.userData._id, {
+      myGardenImg:stageRef.current.toDataURL({mimetype:'image/jpeg',quality:0.5})
+    })
+    .then(res => console.log("published"))
+    .catch(err => console.log("error"))
   }
 
   const processLoadedData = (str) => {
@@ -166,13 +176,47 @@ export default function Scene(props) {
     setOptions(data.options);
   }
 
+  const cancelDraw = () => {
+    setTemp({points:[]})
+    setActiveDraw(null)
+  }
+  const completeDraw = () => {
+    const tempPoints = [...temp.points]
+    tempPoints.pop()
+    tempPoints.pop()
+    setTemp({...temp, points:tempPoints})
+    setActiveDraw(null)
+  }
+
+  const dragPolygon = () => {
+    selectShape(null)
+  }
+
+  const endDragPolygon = (e, index) => {
+    console.log(e)
+    const polyPoints = [...polygons[index].points]
+    const offsetX = e.target.attrs.x;
+    const offsetY = e.target.attrs.y;
+    for(let i = 0; i < polyPoints.length; i++) {
+      if(i%2===0) polyPoints[i] += offsetX
+      else polyPoints[i] += offsetY
+    }
+    const polys = getPolygons()
+    polys[index].points = polyPoints;
+    setPolygons(polys);
+    e.target.absolutePosition({x:0,y:0})
+  }
+
   const handleOptionsChange = (e) => {
     setOptions({ ...options, [e.target.name]: e.target.checked });
   }
   
-  const handleOptionsSliderChange = (e,v) => {
-    console.log(e)
-    if(v !== options[e.target.ariaLabel]) setOptions({ ...options, [e.target.ariaLabel]: v });
+  const handleSnapDistSliderChange = (e,v) => {
+    if(v !== options.snapDist) setOptions({ ...options, snapDist: v });
+  }
+  
+  const handleGridSizeSliderChange = (e,v) => {
+    if(v !== options.gridSize) setOptions({ ...options, gridSize: v });
   }
 
   const handleStageClick = (e) => {
@@ -213,11 +257,7 @@ export default function Scene(props) {
     if (drawRef.current) {
       e.preventDefault();
       if (e.keyCode === 27) {
-        setTemp({})
-      }
-      if (e.keyCode === 27 || e.keyCode === 13) {
-        console.log("drawing off")
-        setActiveDraw(null)
+        cancelDraw()
       }
     }
     else {
@@ -231,15 +271,50 @@ export default function Scene(props) {
   const deleteShape = id => {
     let polys = getPolygons()
     polys = polys.filter(item => item.id !== id)
+    selectShape(null)
     setPolygons(polys)
     setImages(imagesRef.current.filter(item => item.id !== id))
-    selectShape(null)
+  }
+
+  const bringToFront = id => {
+    //figure out which collection
+    let collection, func;
+    let item = polygons.find(poly=>id===poly.id);
+    if(item) {
+      collection=polygons.slice()
+      func=setPolygons
+    }
+    else {
+      collection=images.slice()
+      func=setImages
+      item = images.find(img=>img.id===id)
+    }
+    collection = collection.filter(element=>id!==element.id);
+    collection.push(item)
+    func(collection)
+  }
+
+  const sendToBack = id => {
+    //figure out which collection
+    let collection, func;
+    let item = polygons.find(poly=>id===poly.id);
+    if(item) {
+      collection=polygons.slice()
+      func=setPolygons
+    }
+    else {
+      collection=images.slice()
+      func=setImages
+      item = images.find(img=>img.id===id)
+    }
+    collection = collection.filter(element=>id!==element.id);
+    collection.unshift(item)
+    func(collection)
   }
 
   const handleDrawBtnClick = (imageURL,i) => {
-    // console.log(activeDraw)
     selectShape(null);
-    if (activeDraw) {
+    if (activeDraw === i) {
       console.log("drawing off")
       setActiveDraw(null)
       setTemp({});
@@ -259,47 +334,40 @@ export default function Scene(props) {
     setHoveredImage(null)
   }
 
-  const handleCircleDrag = (e, index, circle) => {
-    console.log(e.target.absolutePosition())
+  const handleCircleDrag = (e, circle) => {
     const mouseX = e.evt.layerX
     const mouseY = e.evt.layerY
-    const newPoints = [...polygons[index].points];
-    
+    const newPoints = [...temp.points];
     //check vertex snap
     //if no vertex snap then check grid snap
     let pos = util.checkVertexSnap(mouseX, mouseY, options.snapDist, polygons, selectedId);
     if(pos[0] === mouseX && pos[1] === mouseY) pos = util.checkGridSnap(mouseX, mouseY, options.snapDist, options.gridSize, options.gridSize);
-    
     newPoints[2 * circle] = pos[0];
     newPoints[2 * circle + 1] = pos[1];
-
     const absPos = e.target.absolutePosition()
     absPos.x=pos[0];
     absPos.y=pos[1];
     e.target.absolutePosition(absPos)
-    // console.log(newPoints)
-    const temp = getPolygons()
-    temp[index].points = newPoints;
-    setPolygons(temp);
+    setTemp({...temp, points:newPoints})
   }
 
-  const handleVertexDragStart = (e, index, circle) => {
-    
+  const handleVertexDragStart = (index) => {
+    setTemp({points:[...polygons[index].points]})
   }
 
-  const handleVertexDragEnd = (e, index, circle) => {
-    
+  const handleVertexDragEnd = (index) => {
+    const polys = getPolygons()
+    polys[index].points = [...temp.points];
+    setPolygons(polys);
+    setTemp({points:[]})
   }
 
   const handleMouseMove = (e) => {
     const coords = [e.evt.layerX, e.evt.layerY]
     if (!activeDraw) {
-
       return;
     }
-    // console.log("hi")
     const tempCopy = [...temp.points]
-    // console.log(temp.points)
     if (tempCopy.length >= 2) {
       tempCopy.pop();
       tempCopy.pop();
@@ -366,7 +434,6 @@ export default function Scene(props) {
     // console.log(thisObj.x + " " + thisObj.y)
     // console.log(lineGuideStops)
     // console.log(itemBounds)
-    console.log(guides)
     let absPos = e.target.absolutePosition();
     guides.forEach((lg) => {
       switch (lg.snap) {
@@ -420,9 +487,10 @@ export default function Scene(props) {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs>
-        <Paper className={classes.paper}>
+    <Grid container spacing={0} justify='space-around'>
+      
+      <Grid item xs={3}>
+        <Paper>
           <TabMenu 
             active={activeDraw}
             onDrawClick={handleDrawBtnClick} 
@@ -430,78 +498,156 @@ export default function Scene(props) {
             myPlants={props.userData.myPlants} 
             options={options} 
             onOptionChange={handleOptionsChange}
-            onSliderChange={handleOptionsSliderChange}/>
-          {/* <img src="/images/imageonline-co-split-image (26).png" alt="" onDragStart={testFunc} onDragMove={testFunc} onDragEnd={testFunc} onDrop={testFunc} onDropCapture={testFunc}/> */}
-        </Paper>
+            onSnapSliderChange={handleSnapDistSliderChange}
+            onGridSliderChange={handleGridSizeSliderChange}
+            />
+      </Paper>
       </Grid>
-      <Grid item xs>
-        <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
-          <Layer listening={!options.lockBackground}>
-            {polygons.map((item, i) => <Polygon {...item}
-              key={i}
-              isSelected={item.id === selectedId}
-              onDragMove={handleCircleDrag}
-              onSelect={() => {
-                selectShape(item.id)
-              }}
-              // onClick={e => handleClick(e, i)}
-              num={i}
-              radius={RADIUS} />)}
-            
+      {/* <Paper> */}
+      <Grid item>
+        <Grid container direction='column'>
+          <Grid item>
 
-          </Layer>
-          <Layer listening={!options.lockForeground}>
-            {images.map((img, i) => {
-              return (
-                <PlanImage
-                  key={i}
-                  shapeProps={img}
-                  isSelected={img.id === selectedId}
-                  onSelect={() => {
-                    selectShape(img.id);
+          <Toolbar 
+            selectedId={selectedId} 
+            drawing={activeDraw}
+            onPublish={publishGardenImg} 
+            onDelete={deleteShape}
+            toFront={bringToFront}
+            toBack={sendToBack}
+            cancelDraw={cancelDraw}
+            completeDraw={completeDraw}
+            />
+          </Grid>
+          <Grid item>
+          <Stage className='garden-planner' ref={stageRef} height={STAGE_HEIGHT} width={STAGE_WIDTH} onClick={handleStageClick} onMouseMove={handleMouseMove} style={{ display: 'inline-block', background: '#DDDDDD' }}>
+            <Layer listening={!options.lockBackground} visible={!options.hideBackground}>
+              {polygons.map((item, i) => <Polygon {...item}
+                key={i}
+                isSelected={item.id === selectedId}
+                onDragMove={handleCircleDrag}
+                vertexDragStart={handleVertexDragStart}
+                vertexDragEnd={handleVertexDragEnd}
+                onSelect={() => {
+                  selectShape(item.id)
+                }}
+                // onClick={e => handleClick(e, i)}
+                num={i}
+                radius={RADIUS} 
+                onDragStart={dragPolygon}
+                onDragEnd={endDragPolygon}
+                />)}
+            </Layer>
+            <Layer listening={!options.lockForeground} visible={!options.hideForeground}>
+              {images.map((img, i) => {
+                return (
+                  <PlanImage
+                    key={i}
+                    shapeProps={img}
+                    isSelected={img.id === selectedId}
+                    onSelect={() => {
+                      selectShape(img.id);
+                    }}
+                    onChange={(newAttrs) => {
+                      const imgs = images.slice();
+                      imgs[i] = newAttrs;
+                      setImages(imgs);
+                    }}
+                    onMouseEnter={handleImageMouseover}
+                    onMouseLeave={handleImageMouseout}
+                    onDragMove={handleObjectDrag}
+                    onDragEnd={handleObjectDragEnd}
+                  />
+                );
+              })}
+            </Layer>
+              {options.displayGrid && <PlanGrid gridSize={options.gridSize} height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
+            <Layer>
+              {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
+              {activeDraw && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
+              {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
+                x={temp.points[0]}
+                y={temp.points[1]}
+                radius={8}
+                fill="green"
+                stroke="black"
+                strokeWidth={1}
+                rotateEnabled={false}
+              />}
+              {options.lockForeground && images.map((img,i) => (
+                <Rect
+                  key={i}  
+                  x={img.x}
+                  y={img.y}
+                  width={img.width}
+                  height={img.height}
+                  tooltip_text={img.tooltip_text}
+                  onMouseEnter={() => {
+                    handleImageMouseover({
+                      x:img.x,
+                      y:img.y,
+                      width:img.width,
+                      height:img.height,
+                      tooltip_text:img.tooltip_text
+                    })
                   }}
-                  onChange={(newAttrs) => {
-                    const imgs = images.slice();
-                    imgs[i] = newAttrs;
-                    setImages(imgs);
-                  }}
-                  onMouseEnter={handleImageMouseover}
                   onMouseLeave={handleImageMouseout}
-                  onDragMove={handleObjectDrag}
-                  onDragEnd={handleObjectDragEnd}
                 />
-              );
-            })}
-          </Layer>
-            {options.displayGrid && <PlanGrid gridSize={options.gridSize} height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
-          <Layer>
-            {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} />}
-            {activeDraw && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
-            {temp.points && temp.points.length > 2 && temp.points[0] === temp.points[temp.points.length - 2] && temp.points[1] === temp.points[temp.points.length - 1] && <Circle
-              x={temp.points[0]}
-              y={temp.points[1]}
-              radius={8}
-              fill="green"
-              stroke="black"
-              strokeWidth={1}
-              rotateEnabled={false}
-            />}
-            {hoveredImage && (
-              <Tooltip {...hoveredImage}/>
-            )}
-            {guideLines.map((line,i) => {
-              let points = [];
-              if(line.orientation==='H') {
-                points = [0,line.lineGuide,STAGE_WIDTH,line.lineGuide]
-              }
-              if(line.orientation==='V') {
-                points = [line.lineGuide,0,line.lineGuide,STAGE_HEIGHT]
-              }
-              return (<Line key={i} points={points} stroke='rgb(0,161,255)' strokeWidth={1} dash={[4,6]}/>)
-            })}
-          </Layer>
-        </Stage>
-      </Grid>
-    </Grid>
+              ))}
+              {hoveredImage && !options.alwaysShowTooltips && (
+                <Tooltip {...hoveredImage}/>
+              )}
+              {options.alwaysShowTooltips && (
+                images.map(img => <Tooltip key={img.id} {...img}/>)
+              )}
+              {selectedId && (
+                <React.Fragment>
+                {util.isPolygon(polygons, selectedId) && <Line
+                  points={util.getOutline(polygons,selectedId)}
+                  stroke="red"
+                  strokeWidth={1}
+                  />  
+                }
+                {util.getPoints(polygons,selectedId).map((coords,i) => <Circle 
+                key={i}
+                x={coords[0]} 
+                y={coords[1]} 
+                radius={RADIUS} 
+                fill='white'
+                stroke='black'
+                strokeWidth={1}
+                draggable
+                onDragStart={e => {
+                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                  handleVertexDragStart(idx)
+                }}
+                onDragMove={e => {
+                  handleCircleDrag(e, i);
+                }}
+                onDragEnd={e => {
+                  const idx = polygons.findIndex(poly=>poly.id===selectedId)
+                  handleVertexDragEnd(idx)
+                }}
+                />
+                )}
+                </React.Fragment>
+              )}
+              {guideLines.map((line,i) => {
+                let points = [];
+                if(line.orientation==='H') {
+                  points = [0,line.lineGuide,STAGE_WIDTH,line.lineGuide]
+                }
+                if(line.orientation==='V') {
+                  points = [line.lineGuide,0,line.lineGuide,STAGE_HEIGHT]
+                }
+                return (<Line key={i} points={points} stroke='rgb(0,161,255)' strokeWidth={1} dash={[4,6]}/>)
+              })}
+            </Layer>
+          </Stage>
+          </Grid>
+        </Grid>
+        </Grid>
+      {/* </Paper> */}
+  </Grid>
   )
 }

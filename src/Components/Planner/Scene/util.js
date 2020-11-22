@@ -176,6 +176,23 @@ const util = {
       });
     }
     return guides;
+  },
+
+  getPoints: function(polygons, selectedId) {
+    let poly = polygons.find(item => item.id===selectedId)
+    return poly ? _.chunk(poly.points,2) : []
+  },
+
+  isPolygon: function(polygons, selectedId) {
+    return polygons.findIndex(item=>item.id===selectedId) !== -1;
+  },
+
+  getOutline: function(polygons, selectedId) {
+    let poly = polygons.find(item => item.id===selectedId)
+    let pts = [...poly.points]
+    pts.push(pts[0])
+    pts.push(pts[1])
+    return pts;
   }
 }
 

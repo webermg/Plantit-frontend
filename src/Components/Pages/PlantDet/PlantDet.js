@@ -13,6 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Checkbox, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/Favorite';
 import BackButton from "../../BackButton/BackButton";
 import CardMedia from "@material-ui/core/CardMedia";
 
@@ -119,17 +120,27 @@ export default function PlantDet() {
             setMonths(monthList)
           }
         }
-      }).catch(err => console.log(err))
-    // if(localStorage.getItem("id")) {
 
-    // }
+        if(localStorage.getItem("id")) {
+      API.getMyPlants(localStorage.getItem("id"))
+      .then(myplants =>{
+        const mySlugs = myplants.data.map(element => element.slug)
+        if(mySlugs.includes(result.data.dbPlant.slug)){
+          console.log('is favorite')
+          setIsFavorite(true)
+        }
+      })
+    }
+      }).catch(err => console.log(err))
+    
   }, [reset])
 
-  function addFavorite() {
+  function makeFavorite() {
 
     API.favoritePlant(plantDetails._id, localStorage.getItem("id"))
       .then(result => {
         console.log(result)
+        setIsFavorite(true)
       },
         err => console.log(err))
   }
@@ -168,6 +179,23 @@ export default function PlantDet() {
     API.updatePlant(plantDetails._id, update, growth_months)
       .then(result => {
         console.log(result)
+        if(localStorage.getItem("id")) {
+          API.makeComment(plantDetails._id,localStorage.getItem("id"), "Initial review completed!")
+          .then(commentResult => {
+            console.log(commentResult);
+            setReset(!reset)
+            setUpdate(false)
+          })
+        }
+        else {
+          API.makeComment(plantDetails._id,"5fb83d88db974b470c3395e4", "Initial review completed!")
+          .then(commentResult => {
+            console.log(commentResult);
+            setReset(!reset)
+            setUpdate(false)
+          })
+        }
+        
       })
   }
 
@@ -243,8 +271,9 @@ export default function PlantDet() {
                         variant="contained"
                         size="small" color="primary"
                         style={{ background: '#614051' }}
-                        endIcon={<FavoriteIcon />}
-                      // onClick={makeFavorite}
+                        endIcon={isFavorite ? <FavoriteIcon /> : 
+                        <FavoriteBorderIcon/>}
+                      onClick={makeFavorite}
                       ><Hidden only="xs">
                           Save
                         </Hidden>

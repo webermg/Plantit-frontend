@@ -23,9 +23,6 @@ const useStyles = makeStyles({
     media: {
         height: 250,
     },
-    button1: {
-        backgroundColor: '#b1bb78'
-    }
 });
 
 
@@ -55,9 +52,8 @@ useEffect(()=>{
 
         return (
             <React.Fragment>
-                <Box p={1} flexShrink={1} boxShadow={3} style={{ width: '90%', margin: "0.83em", background: 'white' }}>
-                    <Card className={classes.root} variant="outlined" style={{ margin: "5vh" }}>
-                        <CardActionArea>
+                <Box p={1} flexShrink={1} boxShadow={3} style={{ margin: "0.83em", background: 'white' }}>
+                    <Card className={classes.root} variant="outlined" style={{ margin: "1vh" }}>
                             <CardMedia
                                 className={classes.media}
                                 image={props.data.image_url}
@@ -71,7 +67,6 @@ useEffect(()=>{
                                     {props.data.scientific_name}
                                 </Typography>
                             </CardContent>
-                        </CardActionArea>
                         <CardActions>
                             <Button
                                 className={classes.button1}
