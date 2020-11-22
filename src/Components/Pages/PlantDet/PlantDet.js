@@ -13,8 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { Checkbox, FormControlLabel, FormGroup, FormLabel, Hidden, Slider } from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/Favorite';
-import BackButton from "../../BackButton/BackButton";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';import BackButton from "../../BackButton/BackButton";
 import PlantDetModal from "../../PlantDetModal/PlantDetModal";
 import CardMedia from "@material-ui/core/CardMedia";
 
@@ -128,6 +127,8 @@ export default function PlantDet() {
       API.getMyPlants(localStorage.getItem("id"))
       .then(myplants =>{
         const mySlugs = myplants.data.map(element => element.slug)
+        console.log(mySlugs);
+        console.log(result.data.dbPlant.slug)
         if(mySlugs.includes(result.data.dbPlant.slug)){
           console.log('is favorite')
           setIsFavorite(true)
@@ -212,10 +213,6 @@ export default function PlantDet() {
       })
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -242,6 +239,7 @@ export default function PlantDet() {
 
   return (
     <React.Fragment>
+      {console.log(isFavorite)}
       <PlantDetModal 
       open={open}
       handleClose={handleClose}
@@ -291,16 +289,14 @@ export default function PlantDet() {
                         variant="contained"
                         size="small" color="primary"
                         style={{ background: '#614051' }}
-                        endIcon={isFavorite ? <FavoriteIcon /> : 
-                        <FavoriteBorderIcon/>}
-                      onClick={makeFavorite}
+                        endIcon={isFavorite ? <FavoriteIcon/>: <FavoriteBorderIcon/>}
+                      onClick={() => makeFavorite()}
                       ><Hidden only="xs">
                           Save
                         </Hidden>
                       </Button>
                     </Grid>
                   </Grid>
-
                   <Typography
                     fontWeight="bold"
                     gutterBottom
