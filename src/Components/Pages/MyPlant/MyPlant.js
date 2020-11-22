@@ -5,6 +5,25 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import API from "../../../utils/API";
 import BackButton from "../../BackButton/BackButton";
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,7 +41,6 @@ class MyPlant extends Component {
   
 
   componentDidMount() {
-    // const userID = localStorage.getItem("id")
     const token = localStorage.getItem("token")
     
     if (this.state.userID === null) {
@@ -57,6 +75,7 @@ class MyPlant extends Component {
     } 
     return (
       <div>
+        <MuiThemeProvider theme={theme}>
       <Grid container style={{ padding: 60, background:'#005254', paddingTop:"2%"}} className={classes.root}>
           <Grid item xs={12}>
             <Typography
@@ -96,6 +115,7 @@ class MyPlant extends Component {
         </Grid>
       </div>
       </Grid>
+      </MuiThemeProvider>
       </div>
     );
   }
