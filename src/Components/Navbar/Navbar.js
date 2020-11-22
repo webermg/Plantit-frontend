@@ -325,7 +325,7 @@ export default function NavBar() {
       <AppBar position="fixed" style={{ background: '#614051' }}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            <IconButton component={RouterLink} to={"/"}>
+            <IconButton component={RouterLink} style={{color:'white'}} to={"/"}>
               Plant-It!{" "}
             </IconButton>
           </Typography>
