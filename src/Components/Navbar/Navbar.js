@@ -181,7 +181,7 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {isLoggedIn? <MenuItem component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
+      {isLoggedIn? <MenuItem onClick={handleMenuClose} component={RouterLink} to={"/profile"}>My Profile</MenuItem> :
          <Login setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/>}
          {isLoggedIn? <MenuItem onClick={Logout}>Log Out</MenuItem> : 
          <Signup setLoginState={setLoginState} setProfileState={setUserState} handleClose={handleMenuClose}/> }
@@ -251,6 +251,11 @@ export default function NavBar() {
           My Garden
         </Typography>
       </MenuItem>
+      <MenuItem component={RouterLink} to={"/gallery"}>
+        <Typography>
+            Gallery
+        </Typography>
+      </MenuItem>
       <MenuItem component={RouterLink} to={"/profile"}>
       <Typography>
           My Profile
@@ -289,6 +294,11 @@ export default function NavBar() {
             My Garden
         </Typography>
       </MenuItem>
+      <MenuItem component={RouterLink} to={"/gallery"}>
+        <Typography>
+            Gallery
+        </Typography>
+      </MenuItem>
       <MenuItem component={RouterLink} to={"/about"}>
         <Typography>
             About Us
@@ -319,6 +329,11 @@ export default function NavBar() {
           My Garden
         </Typography>
       </MenuItem>
+      <MenuItem component={RouterLink} to={"/gallery"}>
+        <Typography>
+          Gallery
+        </Typography>
+      </MenuItem>
 
         <IconButton
               edge="end"
@@ -345,6 +360,11 @@ export default function NavBar() {
                 My Garden
               </Typography>
             </MenuItem>
+            <MenuItem component={RouterLink} to={"/gallery"}>
+        <Typography>
+          Gallery
+        </Typography>
+      </MenuItem>
             <IconButton
               edge="end"
               aria-label="account of current user"
