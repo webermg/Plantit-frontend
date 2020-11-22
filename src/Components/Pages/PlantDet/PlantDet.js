@@ -301,9 +301,6 @@ export default function PlantDet() {
               <BackButton />
             </Grid>
           </Grid>
-          <Grid item xs={12} mx="auto" style={{ marginTop: ".5%", marginLeft: '2%' }} >
-            <BackButton />
-          </Grid>
         </Grid>
 
           {/* Plant DetailsCard */}
