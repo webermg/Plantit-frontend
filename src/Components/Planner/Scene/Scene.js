@@ -492,7 +492,6 @@ export default function Scene(props) {
             onSnapSliderChange={handleSnapDistSliderChange}
             onGridSliderChange={handleGridSizeSliderChange}
             clearAll={clearAll}
-            loggedIn={props.userData._id}
             />
       </Paper>
       </Grid>
@@ -511,6 +510,7 @@ export default function Scene(props) {
             toBack={sendToBack}
             cancelDraw={cancelDraw}
             completeDraw={completeDraw}
+            loggedIn={props.userData._id}
             />
           </Grid>
           <Grid item>
