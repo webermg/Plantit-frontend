@@ -233,7 +233,7 @@ export default function PlantDet() {
           })
         }
         else {
-          API.makeComment(plantDetails._id,"5fb83d88db974b470c3395e4", "Initial review completed!")
+          API.makeComment(plantDetails._id,"5fbafc4abc1a830017f12c35", "Initial review completed!")
           .then(commentResult => {
             setReset(!reset)
             setUpdate(false)
@@ -370,7 +370,7 @@ export default function PlantDet() {
               </Grid>
               <Grid item sm={12} md={6} >
                 <CardMedia style={{ margin: "5vh" }}>
-                  <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
+                  <img alt={plantDetails.scientific_name} src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
                 </CardMedia>
                 </Grid>
 
