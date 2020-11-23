@@ -292,7 +292,7 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        Maria Waslick primarily worked on the back-end routes and user management process, as well as front-end styling and user experience. She’s had a great experience working on such an expansive project, and is excited to share it with you!
+                        Maria primarily worked on the back-end routes and user management process, as well as front-end styling. It was great to work on such an expansive project!
                       </Typography>
                       <Divider className={"MuiDivider-root"} light />
                       <Button
