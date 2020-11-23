@@ -414,7 +414,7 @@ export default function PlantDet() {
                           :
                           <Grid item>
                             <Typography gutterBottom variant="h6" component="h2">
-                              <p><strong>Growth Months:</strong>{plantDetails.growth_months} </p>
+                              <strong>Growth Months:</strong>{plantDetails.growth_months ? plantDetails.growth_months.join(', ') : ""}
                             </Typography>
                           </Grid>}
                       </Grid>
@@ -494,7 +494,7 @@ export default function PlantDet() {
                             }}
                             onChange={handleUpdateChange}
                           />
-                        </React.Fragment> : (plantDetails.temperature_min + "-" + plantDetails.temperature_max + " °F")}
+                        </React.Fragment> : (plantDetails.temperature_min + " - " + plantDetails.temperature_max + " °F")}
                       </Typography>
                     </Grid>
 
@@ -614,7 +614,7 @@ export default function PlantDet() {
                                 }}
                                 onChange={handleUpdateChange}
                               />
-                            </React.Fragment> : (plantDetails.ph_min + "-" + plantDetails.ph_max)}</li>
+                            </React.Fragment> : (plantDetails.ph_min + " - " + plantDetails.ph_max)}</li>
 
                             <li> <strong>Soil Nutriments:</strong> {update ?
                               <Slider
