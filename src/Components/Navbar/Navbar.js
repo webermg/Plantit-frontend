@@ -21,12 +21,6 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -324,9 +318,9 @@ export default function NavBar() {
       <div className={classes.grow}>
       <AppBar position="fixed" style={{ background: '#614051' }}>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            <IconButton component={RouterLink} style={{color:'white'}} to={"/"}>
-              Plant-It!{" "}
+          <Typography variant="h6" noWrap>
+            <IconButton component={RouterLink} className={classes.title} style={{color:'white'}} maxWidth='px' to={"/"}>
+            <img src='/images/plantitlogo.png' alt='Plant-it Logo' width='150px'></img>
             </IconButton>
           </Typography>
           <div className={classes.grow} />
