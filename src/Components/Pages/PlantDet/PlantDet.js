@@ -370,7 +370,7 @@ export default function PlantDet() {
               </Grid>
               <Grid item sm={12} md={6} >
                 <CardMedia style={{ margin: "5vh" }}>
-                  <img src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
+                  <img alt={plantDetails.scientific_name} src={plantDetails.image_url} style={{ height: 500, width: '100%', objectfit: 'cover' }} />
                 </CardMedia>
                 </Grid>
 
