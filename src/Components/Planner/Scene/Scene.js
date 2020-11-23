@@ -239,8 +239,10 @@ export default function Scene(props) {
         setActiveDraw(null)
       }
       else {
-        coords.push(x)
-        coords.push(y)
+        let pos = options.vertexSnap ? util.checkVertexSnap(x, y, options.snapDist, polygons) : [x,y];
+        if(pos[0] === x && pos[1] === y && options.gridSnap) pos = util.checkGridSnap(x, y, options.snapDist, options.gridSize, options.gridSize);
+        coords.push(pos[0])
+        coords.push(pos[1])
         setTemp({ ...temp, points: coords });
       }
     }
@@ -381,11 +383,12 @@ export default function Scene(props) {
       })
     }
     else {
-      let pos;
+      
       //check vertex snap
-      pos = util.checkVertexSnap(coords[0],coords[1],options.snapDist, polygons)
+      let pos = options.vertexSnap ? util.checkVertexSnap(coords[0], coords[1], options.snapDist, polygons) : [coords[0],coords[1]];
+      
       //if no vertex snap check grid snap
-      if(coords[0] === pos[0] && coords[1] === pos[1]) pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
+      if(coords[0] === pos[0] && coords[1] === pos[1] && options.gridSnap) pos = util.checkGridSnap(coords[0], coords[1], options.snapDist, options.gridSize, options.gridSize)
       setMousePos({
         mouseX: pos[0],
         mouseY: pos[1]
@@ -568,7 +571,7 @@ export default function Scene(props) {
             </Layer>
               {options.displayGrid && <PlanGrid gridSize={options.gridSize} height={STAGE_HEIGHT} width={STAGE_WIDTH} />}
             <Layer>
-              {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} fill='#CCCCCC'/>}
+              {temp.points && <Line closed points={temp.points} stroke='black' strokeWidth={2} fill='green' opacity={0.4}/>}
               {mousePos.mouseX>=0 && mousePos.mouseY>=0 && activeDraw && temp.points.length>0 && <Line points={[temp.points[0],temp.points[1],mousePos.mouseX,mousePos.mouseY]} stroke='black' strokeWidth={2} />}
               {mousePos.mouseX>=0 && mousePos.mouseY>=0 &&  activeDraw && temp.points.length>0 && <Line points={[mousePos.mouseX,mousePos.mouseY,temp.points[temp.points.length-2],temp.points[temp.points.length-1]]} stroke='black' strokeWidth={2} />}
               {activeDraw && <Circle x={mousePos.mouseX} y={mousePos.mouseY} radius={5} fill='black' />}
