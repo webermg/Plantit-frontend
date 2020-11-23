@@ -1,13 +1,29 @@
 import React, { Component } from "react";
 import RecentCard from "../../Recent/Recent";
-import plants from "../../../plantArray.json";
-// import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import "../MyPlant/MyPlant.css";
 import API from "../../../utils/API";
+import BackButton from "../../BackButton/BackButton";
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -15,50 +31,92 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
 class MyPlant extends Component {
   state = {
-    plants,
+    plants: [],
+    userID: localStorage.getItem("id"),
+    isMyPlant: true
   };
+  
 
   componentDidMount() {
-    const userID = localStorage.getItem("id")
-    API.getUser(userID)
-    .then(result => {
-      console.log(result.data)
-      this.setState({plants: result.data.myPlants})
-    })
-  }
+    const token = localStorage.getItem("token")
+    
+    if (this.state.userID === null) {
+      this.props.history.push("/")
+    } else if (this.state.userID != null) {
+      API.getMyPlants(this.state.userID)
+      .then(result => {
+        if (result.data) {
+          this.setState({plants: result.data})
+        }
+    }).catch(err => {
+      throw err
+    })}}
 
-  removePLant = (id) => {
-    const plants = this.state.plants.filter((plant) => plant.id !== id);
+
+
+  removePlant = (id) => {
+    const plants = this.state.plants.filter((plant) => plant._id !== id);
     this.setState({ plants });
+    API.deleteMyPlant({
+      userID: this.state.userID,
+      plantID: id
+    }).then ((res, err)=>{
+      if (err) throw err;
+    })
   };
 
   render() {
     const classes = useStyles;
+    if (this.state.plants === null) {
+      return <h1>loading...</h1>
+    } 
     return (
-        <Container style={{ padding: 60}} className={classes.root}>
+      <div>
+        <MuiThemeProvider theme={theme}>
+      <Grid container style={{ padding: 60, background:'#005254', paddingTop:"2%"}} className={classes.root}>
+          <Grid item xs={12}>
+            <Typography
+              className={"MuiTypography--heading"}
+              variant={"h3"}
+              fontWeight="bold"
+              component="h4"
+              align="center"
+              style={{ color: "#a9a9a9", marginTop: "0%", marginLeft: "2%" }}
+            >
+              My Plants
+          </Typography>
+          </Grid>
+           <Grid item xs={12} mx="auto" style={{margin: '2%'}} >
+            <BackButton/>
+            </Grid>
+            
       <div >
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
           <Typography
             component="div"
             style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
           />
           {this.state.plants.map((plant) => (
-            <Grid item xs={4}>
+            <Grid item xs key={plant.slug}>
               <RecentCard
+               removePlant = {this.removePlant}
+               key = {plant.slug}
                 _id={plant._id}
                 common_name={plant.common_name}
                 slug={plant.slug}
-                // wateringMin={plant.watering[0]}
-                // wateringMax={plant.watering[1]}
                 image_url={plant.image_url}
+                isMyPlant= {true}
               />
             </Grid>
           ))}
         </Grid>
       </div>
-      </Container>
+      </Grid>
+      </MuiThemeProvider>
+      </div>
     );
   }
 }

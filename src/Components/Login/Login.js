@@ -7,49 +7,38 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem'
+import Typography from '@material-ui/core/Typography'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
-export default function Login() {
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#806673',
+      main: '#614051',
+      dark: '#432c38', 
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#c88f76',
+      main: '#bb7354',
+      dark: '#82503a',
+      contrastText: '#fff',
+    },
+  },
+});
+
+
+export default function Login(props) {
   const [open, setOpen] = useState(false);
   const [loginFormState, setLoginFormState] = useState({
     email: "",
     password: ""
   });
-  const [profileState, setProfileState] = useState({
-    username: "",
-    email: "",
-    myPlants: [],
-    myGarden: "",
-    token: "",
-    isLoggedIn: false
+  const [errorState, setErrorState] = useState({
+    emailError: "",
+    passwordError: ""
   })
-
-  useEffect(fetchUserData, [])
-
-  function fetchUserData() {
-    const token = localStorage.getItem("token");
-    API.getUser(token).then(profileData => {
-      if (profileData) {
-        setProfileState({
-          username: profileData.username,
-          email: profileData.email,
-          myPlants: profileData.myPlants,
-          myGarden: profileData.myGarden,
-          token: token,
-          isLoggedIn: true
-        })
-      } else {
-        localStorage.removeItem("token");
-        setProfileState({
-          username: "",
-          email: "",
-          myPlants: [],
-          myGarden: "",
-          isLoggedIn: false
-        })
-      }
-    }
-    )
-  }
 
   const inputChange = event => {
     event.preventDefault()
@@ -58,18 +47,26 @@ export default function Login() {
       ...loginFormState,
       [name]: value
     })
+    setErrorState({
+      emailError: "",
+      passwordError: ""
+    })
   }
 
   const formSubmit = event => {
     event.preventDefault();
-    API.login(loginFormState).then(newToken => {
-      localStorage.setItem("token", newToken.data.token)
-      localStorage.setItem("id", newToken.data.userInfo.id)
-      API.getUser(newToken.data.userInfo.id)
+    if (!loginFormState.email) {
+      setErrorState({emailError: "Please enter an e-mail address."})
+    } else if (!loginFormState.password) {
+      setErrorState({passwordError: "Please enter a password."})
+    } else {
+    API.login(loginFormState).then(userLogin => {
+      localStorage.setItem("token", userLogin.data.token)
+      localStorage.setItem("id", userLogin.data.userInfo.id)
+      API.getUser(userLogin.data.userInfo.id)
       .then (profileData => {
-        console.log(profileData)
         if(profileData) {
-          setProfileState({
+          props.setProfileState({
             username: profileData.data.username,
             email: profileData.data.email,
             myPlants: profileData.data.myPlants,
@@ -77,10 +74,12 @@ export default function Login() {
             token: profileData.data.token,
             isLoggedIn: true
           })
-          handleClose();
+          localStorage.setItem("isLoggedIn", true);
+          props.setLoginState(true)
+          props.handleClose();
         } else {
           localStorage.removeItem("token");
-          setProfileState({
+          props.setProfileState({
             name: "",
             email: "",
             tanks: [],
@@ -88,10 +87,36 @@ export default function Login() {
             id: "",
             isLoggedIn: false
           })
-          handleClose();
+          props.handleClose();
         }
       })
+    }).catch(err => {
+      if (err.response.status === 403) {
+        setErrorState({passwordError: "Your password was incorrect."})
+      } else if (err.response.status === 404) {
+        setErrorState({emailError: "We can't find a user with that e-mail address."})
+      }
+      
     })
+  }
+}
+
+const tabSelect = (e) => {
+  if (e.keyCode === 9) {
+     document.getElementById("email").focus()
+    }
+}
+
+  const tabDown = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("password").focus()
+      }
+  }
+
+  const tabDown2 = (e) => {
+    if (e.keyCode === 9) {
+       document.getElementById("submitbtn").focus()
+      }
   }
 
   const handleClickOpen = () => {
@@ -104,11 +129,15 @@ export default function Login() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ background: '#894f62', color: "#FFFFFF"}}>
+      <MuiThemeProvider theme={theme}>
+      <MenuItem onClick={handleClickOpen}>
+        <Typography variant="button" display="block" gutterBottom>
         Log In
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
+        </Typography>
+      </MenuItem>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth='true'>
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
+        <form noValidate autoComplete="off" onSubmit={formSubmit}>
         <DialogContent>
           <DialogContentText>
             Log into your Plant-It Account!
@@ -116,33 +145,49 @@ export default function Login() {
           <TextField
             autoFocus
             margin="dense"
+            color='secondary'
             label="Email Address"
             type="email"
+            required
             onChange= {inputChange}
+            onKeyDown= {tabDown}
             value = {loginFormState.email}
             name = "email"
+            id= "email"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.emailError}
+          </Typography>
           <TextField
             autoFocus
             margin="dense"
+            color='secondary'
             label="Password"
             type="password"
+            required
             onChange= {inputChange}
+            onKeyDown= {tabDown2}
             value = {loginFormState.password}
             name = "password"
+            id = "password"
             fullWidth
           />
+          <Typography variant="caption">
+            {errorState.passwordError}
+          </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={formSubmit} color="primary">
+          <Button type='submit' id="submitbtn" disabled={!loginFormState.email || !loginFormState.password} color="primary">
             Submit
           </Button>
         </DialogActions>
+        </form>
       </Dialog>
+      </MuiThemeProvider>
     </div>
   );
 }

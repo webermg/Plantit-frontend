@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import DrawPanel from '../DrawPanel/DrawPanel';
 import ForeGroundPanel from '../ForegroundPanel/ForegroundPanel';
 import PlantsPanel from '../PlantsPanel/PlantsPanel';
@@ -48,14 +49,15 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
-    height: 800,
+    maxHeight: 800
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
+    // flexGrow:1
   },
   tabPanel: {
-    overflow: 'scroll',
-    width: '70%'
+    overflow: 'auto',
+    flexGrow:1
   }
 }));
 
@@ -77,28 +79,28 @@ export default function TabMenu(props) {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Tab label="Plots" {...a11yProps(0)} />
+        <Tab label="Plots" {...a11yProps(0)}/>
         <Tab label="Plants" {...a11yProps(1)} />
         <Tab label="Other" {...a11yProps(2)} />
         <Tab label="Options" {...a11yProps(3)} />
-        {/* <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
+        <Tab label="Clear" {...a11yProps(4)} />
+        {/* <Tab label="Item Six" {...a11yProps(5)} />
         <Tab label="Item Seven" {...a11yProps(6)} /> */}
       </Tabs>
       <TabPanel className={classes.tabPanel} value={value} index={0}>
-        <DrawPanel onClick={props.onDrawClick}/>
+        <DrawPanel active={props.active} onClick={props.onDrawClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={1}>
-        <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/>
+        {props.myPlants ? <PlantsPanel myPlants={props.myPlants} onClick={props.onForegroundClick}/> : "Log in to add plants"}
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={2}>
         <ForeGroundPanel onClick={props.onForegroundClick}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={3}>
-        <OptionsPanel {...props.options} onChange={props.onOptionChange}/>
+        <OptionsPanel {...props.options} onChange={props.onOptionChange} onSnapSliderChange={props.onSnapSliderChange} onGridSliderChange={props.onGridSliderChange}/>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={4}>
-        Item Five
+        <Button variant="contained" color="secondary" onClick={props.clearAll}>Clear</Button>
       </TabPanel>
       <TabPanel className={classes.tabPanel} value={value} index={5}>
         Item Six
