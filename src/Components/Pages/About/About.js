@@ -219,7 +219,7 @@ export default function About() {
                     <CardMedia
                       className={"MuiCardMedia-root"}
                       image={
-                        "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605846985/project%203/Ann_Headshot_paslhl.jpg"
+                        "https://res.cloudinary.com/dbd23cfw2/image/upload/v1606088759/project%203/Ann_Headshot1_wni57i.jpg"
                       }
                       style={{ height: 150 }}
                     />
@@ -276,7 +276,7 @@ export default function About() {
                     <CardMedia
                       className={"MuiCardMedia-root"}
                       image={
-                        "https://res.cloudinary.com/dbd23cfw2/image/upload/v1605925536/project%203/mariawaslickprofile_vvqmth.png"
+                        "https://res.cloudinary.com/dbd23cfw2/image/upload/v1606088837/project%203/mwpicture_cropped_xyuhbo.png"
                       }
                       style={{ height: 150 }}
                     />
@@ -292,8 +292,7 @@ export default function About() {
                         className={"MuiTypography--subheading"}
                         variant={"caption"}
                       >
-                        We are going to learn different kinds of species in
-                        nature that live together to form amazing environment.
+                        Maria Waslick primarily worked on the back-end routes and user management process, as well as front-end styling and user experience. She’s had a great experience working on such an expansive project, and is excited to share it with you!
                       </Typography>
                       <Divider className={"MuiDivider-root"} light />
                       <Button
