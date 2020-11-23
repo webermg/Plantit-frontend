@@ -8,6 +8,7 @@ import { TextField } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import Card from '@material-ui/core/Card'
 
+
 let theme = createMuiTheme({
     palette: {
         primary: {
@@ -76,20 +77,26 @@ export default function Hero(props) {
                                     backgroundPosition: 'center',
                                     color: 'white',
                                     title: "hand holding a plant",
-                                    backgroundImage: 'url("https://res.cloudinary.com/dbd23cfw2/image/upload/v1605767404/project%203/hero-image_rjjksh.jpg")'
+                                    backgroundImage: `url(${"/images/hero-image3.png"})`
                                 }}>
                                    
                                     {/* Hero Image Text */}
                                     
                                 <ThemeProvider theme={theme}>
-                                    <Typography variant="h3" style={{ margin: 40 }}>
-                                        Plant-It
-                                    </Typography>
-                                    <Hidden only="xs">
-                                        <Typography variant="h5" style={{ margin: 25 }} >
-                                            We are here to build a plant community, spread plant knowledge and assist in planning your garden.
+                                    <Grid container>
+                                        <Grid item xs={12} style={{paddingTop: '50px'}}>
+                                            <img src='/images/plantitlogo.png' alt='Plant-it Logo' width='70%'></img>
+                                        </Grid>
+
+                                        <Grid item xs={12}>
+                                        <Hidden only="xs">
+                                        <Typography variant="h5" >
+                                            We are here to build a plant community, spread plant knowledge, and assist in planning your garden.
                                         </Typography>
                                     </Hidden>
+                                        </Grid>
+                                    </Grid>
+                                   
 
                                     {/* Search Bar on Hero */}
                                     <form onSubmit={props.handleFormSubmit} noValidate autoComplete="off">
