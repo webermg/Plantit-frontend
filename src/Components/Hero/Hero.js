@@ -80,6 +80,7 @@ export default function Hero(props) {
                                 }}>
                                    
                                     {/* Hero Image Text */}
+                                    
                                 <ThemeProvider theme={theme}>
                                     <Typography variant="h3" style={{ margin: 40 }}>
                                         Plant-It
