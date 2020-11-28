@@ -8,6 +8,7 @@ Plant-it is a garden planner, discussion forum, and plant information center. Th
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
+* [Technologies](#technologies)
 * [License](#license)
 * [Contributing](#Contributing)
 * [Tests](#Tests)
@@ -18,6 +19,16 @@ For the development environment to be ready, please use node.js and run npm inst
 Please click on the video walkthrough provided to explore this application. 
 
 [video walkthrough]()
+
+
+## Technologies
+
+* [React](https://reactjs.org/)
+* [MongoDB](https://www.mongodb.com/)
+* [Material UI](https://material-ui.com/)
+* [JSON Web Tokens](https://jwt.io/introduction/)
+* Various npm packages, please see the package.json for more information.
+
 ## License 
 
 Copyright 2020 Matt Weber, Ann Guinee, Janelle Deane, Maria Waslick, Caitlin Bouroncle
