@@ -13,7 +13,7 @@ Plant-it is a garden planner, discussion forum, and plant information center. Th
 * [Tests](#Tests)
 * [Questions](#Questions)
 ## Installation
-For the development environment to be ready, please use node.js and run npm install for all of the dependencies. Also, you will need to run the plantit-server application, which may be found at [Plantit-frontend](https://github.com/GnuArtemis/Plantit-Server), with npm install as well.
+For the development environment to be ready, please use node.js and run npm install for all of the dependencies. Also, you will need to run the plantit-server application, which may be found at [Plantit-Server](https://github.com/GnuArtemis/Plantit-Server), with npm install as well.
 ## Usage 
 Please click on the video walkthrough provided to explore this application. 
 
