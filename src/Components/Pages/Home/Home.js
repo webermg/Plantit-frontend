@@ -57,7 +57,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
         margin: theme.spacing(2),
-        background: '#cac5b9'
+        background: '#cac5b9',
+        
     },
 }));
 class Home extends Component {
@@ -151,12 +152,12 @@ class Home extends Component {
 
                                  {/*Featured Plants only visible on nonmobile views  */}
                                 <Hidden only={["xs", "sm"]}>
-                                    <Grid item md={3} mx="auto" p={1} m={1} style={{ width: '35%', margin: '2%' }}>
-                                        <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                    <Grid item md={3} mx="auto" p={1} m={1} style={{ height: '85vh', width: '35%', margin: '2%' }}>
+                                        <Paper className={classes.paper} style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#cac5b9' }}>
                                             <Typography variant='h4' component= 'h1' style={{ margin: "0em", padding: "25px", textAlign: 'center' }}>
                                                 Featured Plants
                                             </Typography>
-                                            <Grid item style={{ height: 600, overflowY: 'auto', padding: '20px' }}>
+                                            <Grid item style={{ flexGrow: 1, overflowY: 'auto', padding: '20px' }}>
                                                 {this.state.plants.map(plant => (
                                                     <RecentCard
                                                         _id={plant._id}
@@ -174,8 +175,8 @@ class Home extends Component {
                                 </Hidden>
 
                                 {/* Search Results */}
-                                <Grid item md mx="auto" style={{ width: 'auto', margin: '2%' }}>
-                                    <Paper className={classes.paper} style={{ background: '#cac5b9' }}>
+                                <Grid item md mx="auto" style={{height: '85vh', width: 'auto', margin: '2%' }}>
+                                    <Paper className={classes.paper} style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#cac5b9' }}>
                                         <Search handleFormSubmit={this.handleFormSubmit}
                                             handleInputChange={this.handleInputChange} state={this.state} />
                                         {/* <h2 style={{margin: "0em", padding: "1em"}}>Search Results</h2> */}
