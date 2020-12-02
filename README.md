@@ -8,16 +8,27 @@ Plant-it is a garden planner, discussion forum, and plant information center. Th
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
+* [Technologies](#technologies)
 * [License](#license)
 * [Contributing](#Contributing)
 * [Tests](#Tests)
 * [Questions](#Questions)
 ## Installation
-For the development environment to be ready, please use node.js and run npm install for all of the dependencies. Also, you will need to run the plantit-server application, which may be found at [Plantit-frontend](https://github.com/GnuArtemis/Plantit-Server), with npm install as well.
+For the development environment to be ready, please use node.js and run npm install for all of the dependencies. Also, you will need to run the plantit-server application, which may be found at [Plantit-Server](https://github.com/GnuArtemis/Plantit-Server), with npm install as well.
 ## Usage 
 Please click on the video walkthrough provided to explore this application. 
 
 [video walkthrough]()
+
+
+## Technologies
+
+* [React](https://reactjs.org/)
+* [MongoDB](https://www.mongodb.com/)
+* [Material UI](https://material-ui.com/)
+* [JSON Web Tokens](https://jwt.io/introduction/)
+* Various npm packages, please see the package.json for more information.
+
 ## License 
 
 Copyright 2020 Matt Weber, Ann Guinee, Janelle Deane, Maria Waslick, Caitlin Bouroncle
