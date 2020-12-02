@@ -227,8 +227,8 @@ export default function Scene(props) {
     }
     else {
 
-      const x = e.evt.layerX ? e.evt.layerX : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
-      const y = e.evt.layerY ? e.evt.layerY : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
+      const x = e.evt.layerX// : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
+      const y = e.evt.layerY// : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
       const coords = [...temp.points]
       let distToFirst = 1000
       if (temp.points && temp.points.length > 2) {
@@ -334,8 +334,9 @@ export default function Scene(props) {
   }
 
   const handleCircleDrag = (e, circle) => {
-    const mouseX = e.evt.layerX ? e.evt.layerX : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
-    const mouseY = e.evt.layerY ? e.evt.layerY : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
+    console.log(e)
+    const mouseX = e.evt.layerX// : e.evt.touches[0].pageX-stageRef.current.content.offsetLeft
+    const mouseY = e.evt.layerY// : e.evt.touches[0].pageY-stageRef.current.content.offsetTop
     const newPoints = [...temp.points];
     //check vertex snap
     //if no vertex snap then check grid snap
@@ -520,8 +521,7 @@ export default function Scene(props) {
           <Stage  
             ref={stageRef} 
             height={STAGE_HEIGHT} 
-            width={STAGE_WIDTH} 
-            onTouchStart={handleStageClick} 
+            width={STAGE_WIDTH}  
             onClick={handleStageClick} 
             onMouseMove={handleMouseMove} 
             style={{ display: 'inline-block', background: '#DDDDDD' }}>
