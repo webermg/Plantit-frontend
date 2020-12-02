@@ -10,7 +10,7 @@ export default function PlantsPanel(props) {
       <Button 
         key={i}
         onClick={()=>{
-          const imgsrc = plant.image_url !== null ? plant.image_url : 'images/placeholder.png'
+          const imgsrc = plant.image_url !== null ? plant.image_url : 'images/foreground/placeholder.png'
           props.onClick({
           src:imgsrc,
           text:plant.common_name})}}
