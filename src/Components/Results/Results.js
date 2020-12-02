@@ -13,8 +13,10 @@ import _ from 'lodash'
 const useStyles = makeStyles((theme) => ({
 
   root: {
+    flexGrow: 1,
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    overflowY: 'auto'
   },
   button: {
     margin: theme.spacing(1),
@@ -176,7 +178,7 @@ export default function Results(props) {
       // alignContent="flex-start" 
       // p={1} m={1}
       >
-        <Grid container justify="center" style={{ height: 500, overflowY: 'auto' }}>
+        <Grid container justify="center" style={{ overflowY: 'auto' }}>
           {/* Section with plants already in our database */}
           {Array.isArray(plantsInDatabase) ? _.chunk(plantsInDatabase, 2).map(elements => (
             <Grid key={elements[0]._id} item>
