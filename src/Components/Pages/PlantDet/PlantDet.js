@@ -233,7 +233,7 @@ export default function PlantDet() {
           })
         }
         else {
-          API.makeComment(plantDetails._id,"5fbafc4abc1a830017f12c35", "Initial review completed!")
+          API.makeComment(plantDetails._id,"5fc83eb192c6c6001778404b", "Initial review completed!")
           .then(commentResult => {
             setReset(!reset)
             setUpdate(false)
